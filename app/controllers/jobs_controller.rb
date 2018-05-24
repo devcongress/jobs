@@ -1,8 +1,6 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy]
 
-  # GET /jobs
-  # GET /jobs.json
   def index
     @jobs = Job.all
   end
@@ -11,22 +9,16 @@ class JobsController < ApplicationController
     @jobs = Job.all    
   end
 
-  # GET /jobs/1
-  # GET /jobs/1.json
   def show
   end
 
-  # GET /jobs/new
   def new
     @job = Job.new
   end
 
-  # GET /jobs/1/edit
   def edit
   end
 
-  # POST /jobs
-  # POST /jobs.json
   def create
     @job = Job.new(job_params)
 

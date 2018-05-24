@@ -2,45 +2,7 @@
 
 <h1>Jobs</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Role</th>
-      <th>Duration</th>
-      <th>Salary</th>
-      <th>Requirements</th>
-      <th>Qualification</th>
-      <th>Perks</th>
-      <th>Company</th>
-      <th>Contact email</th>
-      <th>Poster name</th>
-      <th>Poster email</th>
-      <th>Phone</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @jobs.each do |job| %>
-      <tr>
-        <td><%= job.role %></td>
-        <td><%= job.duration %></td>
-        <td><%= job.salary %></td>
-        <td><%= job.requirements %></td>
-        <td><%= job.qualification %></td>
-        <td><%= job.perks %></td>
-        <td><%= job.company %></td>
-        <td><%= job.contact_email %></td>
-        <td><%= job.poster_name %></td>
-        <td><%= job.poster_email %></td>
-        <td><%= job.phone %></td>
-        <td><%= link_to 'Show', job %></td>
-        <td><%= link_to 'Edit', edit_job_path(job) %></td>
-        <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'layouts/jobs-list' %>
 
 <br>
 
