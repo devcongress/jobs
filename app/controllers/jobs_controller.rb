@@ -7,6 +7,10 @@ class JobsController < ApplicationController
     @jobs = Job.all
   end
 
+  def list
+    @jobs = Job.all    
+  end
+
   # GET /jobs/1
   # GET /jobs/1.json
   def show
