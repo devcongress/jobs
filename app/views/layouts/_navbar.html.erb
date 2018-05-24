@@ -1,0 +1,59 @@
+<header class="navbar">
+  <section class="navbar-section">
+    <a class="navbar-brand mr-2" style="<%= @traffic_style %>"
+          href="/" title="<%= Rails.application.name %> (Current traffic: <%=
+          @traffic.to_i %>)"></a>
+
+        <% if @cur_url.present? && !header_links.keys.include?(@cur_url) &&
+        @heading.present? %>
+          <span id="headertitle">
+            <a href="<%= @cur_url %>"><%= @heading %></a>
+          </span>
+        <% end %>
+
+        <span class="headerlinks">
+          <% header_links.each do |u,v| %>
+            <a href="<%= u %>" class="btn btn-link <%= v[:class].join(" ") %>"><%=
+              v[:title] %></a>
+          <% end %>
+        </span>
+    <%# <div class="input-group input-inline">
+      <input class="form-input" type="text" placeholder="search">
+      <button class="btn btn-primary input-group-btn">Search</button>
+    </div> %>
+  </section>
+
+  <section class="navbar-section">
+
+    <% if @user && @user.can_submit_stories? %>
+      <%= link_to("New Story", new_story_path, :class => "btn btn-primary") %>
+      <div class="dropdown">
+          <a class="btn btn-link dropdown-toggle" tabindex="0">
+              <%= @user.username %>
+              <span class="menu-badge">
+                  <label class="label label-primary"><%= @user.karma %></label>
+              </span>
+          </a>
+          <ul class="menu">
+              <li class="menu-item">
+                  <a href="/u/<%= @user.username %>">Profile</a>
+              </li>
+              <% right_header_links.each do |u,v| %>
+                  <li class="menu-item">
+                  <a href="<%= u %>" class="<%= v[:class].join(" ") %>">
+                  <%= v[:title] %></a>
+                  </li>
+              <% end %>
+              <li class="menu-item">
+                  <%= link_to "Logout", { :controller => "login", :action => "logout" },
+                  :data => { :confirm => "Are you sure you want to logout?" },
+                  :method => "post" %>
+              </li>
+          </ul>
+      </div>
+    <% end %>
+    <% if !@user && Rails.application.open_signups? %>
+      <strong><a href="/invitations/open" class="signup-text">Sign Up Now</a></strong>
+    <% end %>
+  </section>
+</header>
