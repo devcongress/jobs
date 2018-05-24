@@ -1,10 +1,5 @@
 %h1 DevCongress Jobs
 %p Welcome to the DevCongress Jobs site, get hired!
--# = render partial: 'layouts/jobs-list'
 
-%table
-  %tbody
-    - @jobs.each do |job|
-      %tr
-        %td
-          = link_to job.role + " at " + job.company, job
+- @jobs.each do |job|
+    = link_to job.role + " at " + job.company, job
