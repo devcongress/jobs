@@ -1,0 +1,37 @@
+%p#notice= notice
+%p
+  %strong Role:
+  = @job.role
+%p
+  %strong Duration:
+  = @job.duration
+%p
+  %strong Salary:
+  = @job.salary
+%p
+  %strong Requirements:
+  = @job.requirements
+%p
+  %strong Qualification:
+  = @job.qualification
+%p
+  %strong Perks:
+  = @job.perks
+%p
+  %strong Company:
+  = @job.company
+%p
+  %strong Contact email:
+  = @job.contact_email
+%p
+  %strong Poster name:
+  = @job.poster_name
+%p
+  %strong Poster email:
+  = @job.poster_email
+%p
+  %strong Phone:
+  = @job.phone
+= link_to 'Edit', edit_job_path(@job)
+|
+= link_to 'Back', jobs_path

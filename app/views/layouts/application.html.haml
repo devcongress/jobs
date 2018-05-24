@@ -1,0 +1,9 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    = render 'layouts/meta_and_styles'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    = yield
+    = render 'layouts/footer'
