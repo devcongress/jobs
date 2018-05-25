@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     # passwords
     get   'new-pass',  to: 'devise/passwords#new',    as: :new_user_password
     get   'edit-pass', to: 'devise/passwords#edit',   as: :edit_user_password
-    patch 'edit-pass', to: 'devise/passwords#update', as: :user_password
+    patch 'edit-pass', to: 'devise/passwords#update', as: :update_user_password
     post  'new-pass',  to: 'devise/passwords#create', as: :user_password
   end
 
