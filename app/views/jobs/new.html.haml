@@ -1,3 +1,9 @@
-%h1 New Job
-= render 'form', job: @job
-= link_to 'Back', jobs_path
+- if user_signed_in?  
+    %h1 New Job
+    = render 'form', job: @job
+    = link_to 'Back', jobs_path
+- else
+    %p Please sign in to create a job listing
+    = link_to('Sign in', new_user_session_path)
+    %p or
+    = link_to('Sign up', new_user_registration_path)
