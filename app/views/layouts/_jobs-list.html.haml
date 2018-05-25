@@ -1,15 +1,4 @@
-- @jobs.each do |job|  
-    %td= job.role
-    %td= job.duration
-    %td= job.salary
-    %td= job.requirements
-    %td= job.qualification
-    %td= job.perks
-    %td= job.company
-    %td= job.contact_email
-    %td= job.poster_name
-    %td= job.poster_email
-    %td= job.phone
-    %td= link_to 'Show', job
-    %td= link_to 'Edit', edit_job_path(job)
-    %td= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' }
+.main--content
+    %ul.job--list
+        - @jobs.each do |job|
+            %li.job--list__item= link_to job.role + " at " + job.company, job
