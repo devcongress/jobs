@@ -1,5 +1,6 @@
 %p Welcome to the DevCongress Jobs site, get hired!
 
 .main--content
-    - @jobs.each do |job|
-        = link_to job.role + " at " + job.company, job
+    %ul.job--list
+        - @jobs.each do |job|
+            %li.job--list__item= link_to job.role + " at " + job.company, job
