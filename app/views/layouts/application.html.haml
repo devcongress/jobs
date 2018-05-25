@@ -5,5 +5,7 @@
     = render 'layouts/meta_and_styles'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
-    = yield
-    = render 'layouts/footer'
+    .main
+      = render 'layouts/navbar'
+      = yield
+      = render 'layouts/footer'

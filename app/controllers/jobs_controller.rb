@@ -5,10 +5,6 @@ class JobsController < ApplicationController
     @jobs = Job.all
   end
 
-  def list
-    @jobs = Job.all    
-  end
-
   def show
   end
 
