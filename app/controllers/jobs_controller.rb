@@ -1,5 +1,6 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy]
+  before_filter :require_permission, only: :edit
 
   def index
     @jobs = Job.all
@@ -50,6 +51,13 @@ class JobsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def require_permission
+    if current_user != Job.find(params[:id]).user
+      redirect_to root_path
+      #Or do something else here
     end
   end
 
