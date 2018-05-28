@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :jobs
   root to: "pages#index"
 
+  # get '/myjobs/',  to: 'jobs#new', as: :new_job
+
   devise_for :users, skip: [:sessions, :registrations, :passwords]
 
   devise_scope :user do

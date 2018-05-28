@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy]
-  before_filter :require_permission, only: :edit
+  before_action :require_permission, only: [:edit, :destroy]
 
   def index
     @jobs = Job.all
@@ -10,14 +10,14 @@ class JobsController < ApplicationController
   end
 
   def new
-    @job = Job.new
+    @job = current_user.jobs.build
   end
 
   def edit
   end
 
   def create
-    @job = Job.new(job_params)
+    @job = current_user.jobs.build(job_params)
 
     respond_to do |format|
       if @job.save
@@ -55,9 +55,11 @@ class JobsController < ApplicationController
   end
 
   def require_permission
-    if current_user != Job.find(params[:id]).user
-      redirect_to root_path
-      #Or do something else here
+    if current_user != @job.user
+      # redirect_to root_path
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'You are not authorized to edit another users job post.' }
+      end
     end
   end
 
@@ -69,6 +71,6 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:role, :duration, :salary, :requirements, :qualification, :perks, :company, :contact_email, :poster_name, :poster_email, :phone)
+      params.require(:job).permit(:role, :duration, :salary, :requirements, :qualification, :perks, :company, :contact_email, :poster_name, :poster_email, :phone, :user)
     end
 end

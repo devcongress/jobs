@@ -1,6 +1,4 @@
 %p Welcome to the DevCongress Jobs site, get hired!
 
 .main--content
-    %ul.job--list
-        - @jobs.each do |job|
-            %li.job--list__item= link_to job.role + " at " + job.company, job
+    = render 'layouts/jobs-list'
