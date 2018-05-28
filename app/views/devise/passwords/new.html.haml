@@ -1,3 +1,6 @@
+- content_for :title do
+  = "#{t('app.name')} | Forgot Your Password?"
+
 %h2 Forgot your password?
 = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
   = devise_error_messages!

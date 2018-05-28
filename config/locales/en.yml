@@ -31,3 +31,6 @@
 
 en:
   hello: "Hello world"
+  app:
+    author: "DevCongress"
+    name: "DevCongress Jobs"

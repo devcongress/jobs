@@ -1,9 +1,8 @@
 !!!
 %html
   %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title= yield(:title)
     = render 'layouts/meta_and_styles'
-    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
     .main
       - if user_signed_in?

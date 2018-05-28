@@ -1,3 +1,6 @@
+- content_for :title do
+  = "#{t('app.name')} | Log In"
+
 %h2 Log in
 = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
   .field
