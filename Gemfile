@@ -16,7 +16,6 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'haml', '~> 5.0', '>= 5.0.4'
 gem 'devise', '~> 4.4', '>= 4.4.3'
-gem 'purecss-sass'
 
 
 group :development, :test do
