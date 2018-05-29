@@ -159,20 +159,6 @@ footer,
     }
 }
 
-.job--list {
-    margin: 10px;
-    padding: 0;
-}
-
-.job--list__item {
-    list-style: none;
-    &:not(:last-child) {
-        border-bottom: 1px solid #666;
-    }
-}
-
-.job--list__item-link {}
-
 footer {
     margin-bottom: 100px;
 }
