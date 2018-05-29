@@ -1,14 +1,15 @@
 body {
     background-color: rgba(5, 175, 235, .10);
     color: #333;
-    margin: 33px;
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     font-size: 16px;
     line-height: 1.5;
+    width: 100%;
 }
 
 a {
     color: #000;
+    text-decoration: none;
     &:visited {
         color: #666;
     }
@@ -25,9 +26,10 @@ h6 {
 
 h1 {
     font-weight: 400;
-    font-size: 40px;
+    font-size: 2em;
     color: #05AFEB;
     letter-spacing: 0.04px;
+    margin: 0.4em 0 0;
 }
 
 div {
@@ -37,8 +39,12 @@ div {
     }
 }
 
-#notice {
-    color: green;
+.notice {
+    color: transparent;
+    margin: 0.7em 0 0.5em;
+    display: inline-block;
+    text-align: center;
+    animation: notice-disappear 8s;
 }
 
 .field_with_errors {
@@ -73,9 +79,9 @@ label {
 }
 
 .main {
-    width: 640px;
+    width: 100%;
+    max-width: 640px;
     margin: 0 auto;
-    text-align: center;
 }
 
 .navbar {
@@ -103,9 +109,70 @@ label {
     }
 }
 
+.page--title {
+    color: #EC058C;
+}
+
+.page--title,
+footer,
+.text--center {
+    text-align: center;
+}
+
 .main--content {
     background: #fff;
     border: 1px solid black;
     padding: 2.5%;
     text-align: left;
+}
+
+@keyframes notice-disappear {
+    0% {
+        // opacity: 100;
+        color: green;
+    }
+    100% {
+        opacity: 0;
+        color: transparent;
+    }
+}
+
+@-webkit-keyframes notice-disappear {
+    0% {
+        opacity: 100;
+        color: green;
+    }
+    100% {
+        opacity: 0;
+        color: transparent;
+    }
+}
+
+@-moz-keyframes notice-disappear {
+    0% {
+        opacity: 100;
+        color: green;
+    }
+    100% {
+        opacity: 0;
+        color: transparent;
+    }
+}
+
+.job--list {
+    margin: 10px;
+    padding: 0;
+}
+
+.job--list__item {
+    list-style: none;
+    &:not(:last-child) {
+        border-bottom: 1px solid #666;
+    }
+}
+
+.job--list__item-link {}
+
+footer {
+    margin-bottom: 100px;
 }

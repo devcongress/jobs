@@ -2,8 +2,7 @@
   = "#{t('app.name')} | #{@job.role} at #{@job.company}"
 
 %p
-  %h3
-    = @job.role + " at " + @job.company
+  %h2.page--title= @job.role + " at " + @job.company
 
 .main--content
   %p

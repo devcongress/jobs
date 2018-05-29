@@ -1,3 +1,21 @@
 // Place all the styles related to the Jobs controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.job--list {
+    margin: 10px;
+    padding: 0;
+}
+
+.job--list__item {
+    list-style: none;
+    padding: 10px;
+    &:not(:last-child) {
+        border-bottom: 1px solid rgba(151, 151, 151, .2);
+    }
+}
+
+.job--list__item-link {
+    &:hover {
+        color: #EC058C;
+    }
+}

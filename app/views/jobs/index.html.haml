@@ -1,8 +1,8 @@
 - content_for :title do
   = "#{t('app.name')} | All Jobs"
 
-%h1 Jobs
+%h2.page--title All Jobs
 .main--content
-    = render 'layouts/jobs-list'
+  = render 'layouts/jobs-list'
 %br/
 = link_to 'New Job', new_job_path

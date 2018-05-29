@@ -1,11 +1,10 @@
 !!!
 %html
   %head
-    %title= yield(:title)
     = render 'layouts/meta_and_styles'
   %body
     .main
       = render 'layouts/navbar'
-      %p#notice= notice
+      %span.notice= notice
       = yield
       = render 'layouts/footer'
