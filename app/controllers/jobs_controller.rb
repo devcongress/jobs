@@ -10,14 +10,23 @@ class JobsController < ApplicationController
   end
 
   def new
-    @job = current_user.jobs.build
+    respond_to do |format|
+      if user_signed_in
+        @job = current_user.jobs.build
+      else
+        # sign up to create a jobs post
+        format.html { redirect_to new_user_session_path, notice: 'Sign in to create a job post' }
+      end
+    end
   end
 
   def edit
   end
 
   def create
-    @job = current_user.jobs.build(job_params)
+    if user_signed_in
+      @job = current_user.jobs.build(job_params)
+    end
 
     respond_to do |format|
       if @job.save
