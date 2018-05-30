@@ -1,43 +1,41 @@
 - content_for :title do
   = "#{t('app.name')} | #{@job.role} at #{@job.company}"
 
-%p
-  %h2.page--title= @job.role + " at " + @job.company
+%h1.page--title= @job.role + " at " + @job.company
 
 .main--content
-  %p
-    %strong Role:
-    = @job.role
-  %p
-    %strong Duration:
-    = @job.duration
-  %p
-    %strong Salary:
-    = @job.salary
-  %p
-    %strong Requirements:
-    = @job.requirements
-  %p
-    %strong Qualification:
-    = @job.qualification
-  %p
-    %strong Perks:
-    = @job.perks
-  %p
-    %strong Company:
-    = @job.company
-  %p
-    %strong Contact email:
-    = @job.contact_email
-  %p
-    %strong Poster name:
-    = @job.poster_name
-  %p
-    %strong Poster email:
-    = @job.user.email
-  %p
-    %strong Phone:
-    = @job.phone
+  %h2.job--field__title Role
+  %p.job--field__content= @job.role
+  
+  %h2.job--field__title Duration
+  %p.job--field__content= @job.duration
+  
+  %h2.job--field__title Salary
+  %p.job--field__content= @job.salary
+  
+  %h2.job--field__title Requirements
+  %p.job--field__content= @job.requirements
+  
+  %h2.job--field__title Qualification
+  %p.job--field__content= @job.qualification
+  
+  %h2.job--field__title Perks
+  %p.job--field__content= @job.perks
+  
+  %h2.job--field__title Company
+  %p.job--field__content= @job.company
+  
+  %h2.job--field__title Contact email
+  %p.job--field__content= @job.contact_email
+  
+  %h2.job--field__title Poster name
+  %p.job--field__content= @job.poster_name
+  
+  %h2.job--field__title Poster email
+  %p.job--field__content= @job.user.email
+  
+  %h2.job--field__title Phone
+  %p.job--field__content= @job.phone
 
   - if user_signed_in?
     - if @job.user_id == current_user.id

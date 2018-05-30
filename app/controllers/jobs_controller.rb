@@ -9,13 +9,20 @@ class JobsController < ApplicationController
   def show
   end
 
+  def myjobs
+    if user_signed_in?
+      @jobs = current_user.jobs
+      # @jobs = Job.all(find)
+    else
+      redirect_to new_user_session_path, notice: 'Sign in see jobs you have posted'
+    end
+  end
+
   def new
-    respond_to do |format|
-      if current_user
-        @job = current_user.jobs.build
-      else
-        format.html { redirect_to new_user_session_path, notice: 'Sign in to create a job post' }
-      end
+    if user_signed_in?
+      @job = current_user.jobs.build
+    else
+      redirect_to new_user_session_path, notice: 'Sign in to create a job post'
     end
   end
 

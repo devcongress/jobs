@@ -19,3 +19,19 @@
         color: #EC058C;
     }
 }
+
+.job--field__title {
+    font-weight: 500;
+    color: #0097C6;
+    margin: 1em 0 0;
+    &:first-of-type {
+        margin: 0;
+    }
+}
+
+.job--field__content {
+    margin: 0 0 1em;
+    &:first-of-type {
+        margin: 0;
+    }
+}

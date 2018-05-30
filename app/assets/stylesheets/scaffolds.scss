@@ -42,7 +42,7 @@ div {
 .notice {
     color: transparent;
     margin: 0.7em 0 0.5em;
-    display: inline-block;
+    display: inherit;
     text-align: center;
     animation: notice-disappear 8s;
 }
@@ -109,8 +109,17 @@ label {
     }
 }
 
+.page--legend {
+    text-align: center;
+    color: $dc-blue;
+    font-weight: 400;
+    margin: 0;
+    border-bottom: 1px solid $dc-charcoal;
+}
+
 .page--title {
     color: #EC058C;
+    margin-bottom: 40px;
 }
 
 .page--title,
@@ -122,13 +131,11 @@ footer,
 .main--content {
     background: #fff;
     border: 1px solid black;
-    padding: 2.5%;
-    text-align: left;
+    padding: 5%;
 }
 
 @keyframes notice-disappear {
     0% {
-        // opacity: 100;
         color: green;
     }
     100% {

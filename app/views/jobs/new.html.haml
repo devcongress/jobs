@@ -1,7 +1,7 @@
 - content_for :title do
   = "#{t('app.name')} | Add New Job"
   
-%h2.page--title Add New Job
+%h1.page--title Add New Job
 - if user_signed_in?
   = render 'form', job: @job
   = link_to 'Back', jobs_path

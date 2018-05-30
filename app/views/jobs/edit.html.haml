@@ -1,7 +1,7 @@
 - content_for :title do
   = "#{t('app.name')} | Edit Job - #{@job.role} at #{@job.company}"
 
-%h2.page--title Editing Job
+%h1.page--title Editing Job
 .main--content
   = render 'form', job: @job
   = link_to 'Show', @job
