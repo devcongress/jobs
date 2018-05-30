@@ -41,8 +41,9 @@ div {
 
 .notice {
     color: transparent;
-    margin: 0.7em 0 0.5em;
+    margin: 0.5em 0 0;
     display: inherit;
+    min-height: 24px;
     text-align: center;
     animation: notice-disappear 8s;
 }
@@ -72,10 +73,6 @@ div {
         font-size: 12px;
         list-style: square;
     }
-}
-
-label {
-    display: block;
 }
 
 .main {
@@ -109,23 +106,22 @@ label {
     }
 }
 
-.page--legend {
-    text-align: center;
-    color: $dc-blue;
-    font-weight: 400;
-    margin: 0;
-    border-bottom: 1px solid $dc-charcoal;
-}
-
 .page--title {
     color: #EC058C;
-    margin-bottom: 40px;
+    margin: 0;
 }
 
 .page--title,
+.page--legend,
 footer,
 .text--center {
     text-align: center;
+}
+
+.page--legend {
+    text-align: center;
+    min-height: 24px;
+    margin: 0 0 40px;
 }
 
 .main--content {

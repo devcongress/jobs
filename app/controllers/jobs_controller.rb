@@ -12,7 +12,6 @@ class JobsController < ApplicationController
   def myjobs
     if user_signed_in?
       @jobs = current_user.jobs
-      # @jobs = Job.all(find)
     else
       redirect_to new_user_session_path, notice: 'Sign in see jobs you have posted'
     end
