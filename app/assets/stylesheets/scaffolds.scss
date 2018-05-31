@@ -165,3 +165,13 @@ footer,
 footer {
     margin-bottom: 100px;
 }
+
+@media (max-width: 640px) {
+    .navbar,
+    .main--content {
+        margin: 0 2.5%;
+    }
+    .navbar {
+        max-width: 95%;
+    }
+}
