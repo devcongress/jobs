@@ -1,6 +1,6 @@
 = form_with(model: job, local: true, :class => "pure-form pure-form-stacked") do |form|
   - if job.errors.any?
-    #error_explanation
+    .error_explanation
       %h2
         = pluralize(job.errors.count, "error")
         prohibited this job from being saved:

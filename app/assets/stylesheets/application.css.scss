@@ -20,6 +20,8 @@ $dc-fuschia: #EC058C;
 $dc-yellow: #FFF100;
 $dc-charcoal: #58595B;
 @import "purecss/all";
+@import "header";
+@import "navbar";
 @import "scaffolds";
 @import "pages";
 @import "jobs";

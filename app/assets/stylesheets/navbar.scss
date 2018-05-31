@@ -1,0 +1,24 @@
+.navbar {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.navbar--logo {
+    display: flex;
+}
+
+.navbar--menu {
+    display: flex;
+}
+
+.navbar--menu__item {
+    margin: 7px 5px;
+    padding: 5px 2.5px;
+    text-decoration: none;
+    transition: all 0.5s;
+    &:hover {
+        border-bottom: 2px solid #666;
+    }
+}
