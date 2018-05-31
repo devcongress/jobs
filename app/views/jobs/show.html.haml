@@ -4,7 +4,6 @@
 %h1.page--title= @job.role + " at " + @job.company
 %p.page--legend Listed by #{@job.poster_name} #{time_ago_in_words(@job.created_at)} ago
 
-
 .main--content
   %h2.job--field__title Role
   %p.job--field__content= @job.role
@@ -16,16 +15,16 @@
   %p.job--field__content= @job.salary
   
   %h2.job--field__title Requirements
-  %p.job--field__content= @job.requirements
+  = simple_format h(@job.requirements), :class => "job--field__content"
   
   %h2.job--field__title Qualification
-  %p.job--field__content= simple_format h(@job.qualification)
+  = simple_format h(@job.qualification), :class => "job--field__content"
   
   %h2.job--field__title Perks
-  %p.job--field__content= simple_format h(@job.perks)
+  = simple_format h(@job.perks), :class => "job--field__content"
   
   %h2.job--field__title Company
-  %p.job--field__content= simple_format h(@job.company)
+  %p.job--field__content= @job.company
   
   %h2.job--field__title Contact email
   %p.job--field__content= @job.contact_email
