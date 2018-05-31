@@ -2,7 +2,11 @@
   = "#{t('app.name')} | My Jobs"
 
 %h1.page--title All My Jobs
-%p.page--legend Here are jobs you have listed
+%p.page--legend Jobs you have listed will appear here
 .main--content
-  = render 'layouts/jobs-list'
+  - if @jobs.empty?
+    %p You have no jobs listed yet. 🤔
+    = link_to 'List your first Job', new_job_path
+  - else
+    = render 'jobs/my-jobs-list'
 %br/
