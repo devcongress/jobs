@@ -19,13 +19,13 @@
   %p.job--field__content= @job.requirements
   
   %h2.job--field__title Qualification
-  %p.job--field__content= @job.qualification
+  %p.job--field__content= simple_format h(@job.qualification)
   
   %h2.job--field__title Perks
-  %p.job--field__content= @job.perks
+  %p.job--field__content= simple_format h(@job.perks)
   
   %h2.job--field__title Company
-  %p.job--field__content= @job.company
+  %p.job--field__content= simple_format h(@job.company)
   
   %h2.job--field__title Contact email
   %p.job--field__content= @job.contact_email
