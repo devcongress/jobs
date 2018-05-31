@@ -33,4 +33,5 @@ en:
   hello: "Hello world"
   app:
     author: "DevCongress"
+    author_website: "http://devcongress.org"
     name: "DevCongress Jobs"
