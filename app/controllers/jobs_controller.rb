@@ -1,5 +1,5 @@
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :toggle_archive]
   before_action :require_permission, only: [:edit, :destroy]
 
   def index
@@ -26,6 +26,11 @@ class JobsController < ApplicationController
   end
 
   def edit
+  end
+
+  def toggle_archive
+    # @job = Job.find(params[:id]).archived
+    !@job.archived
   end
 
   def create

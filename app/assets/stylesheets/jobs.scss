@@ -13,6 +13,10 @@
     }
 }
 
+.job-list__action-group {
+    display: flex;
+}
+
 .job--list__item-link {
     display: flex;
     &:hover {
@@ -20,10 +24,9 @@
     }
 }
 
+.job--list__archive-link,
 .job--list__edit-link {
     color: #fff;
-    display: flex;
-    // border: 1px solid $dc-blue;
     border-radius: 3px;
     background: $dc-blue;
     padding: 1px 5px 1px 5px;

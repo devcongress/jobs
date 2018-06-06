@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   root to: "pages#index"
 
   get '/myjobs/',  to: 'jobs#myjobs', as: :user_jobs
+  patch '/toggle', to: 'jobs#toggle_archive', as: 'toggle_archive'
+
 
   devise_for :users, skip: [:sessions, :registrations, :passwords]
 
