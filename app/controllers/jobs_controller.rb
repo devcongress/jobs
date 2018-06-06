@@ -3,7 +3,7 @@ class JobsController < ApplicationController
   before_action :require_permission, only: [:edit, :destroy]
 
   def index
-    @jobs = Job.all
+    @jobs = Job.all.order('created_at DESC')
   end
 
   def show
@@ -11,7 +11,7 @@ class JobsController < ApplicationController
 
   def myjobs
     if user_signed_in?
-      @jobs = current_user.jobs
+      @jobs = current_user.jobs.order('created_at DESC')
     else
       redirect_to new_user_session_path, notice: 'Sign in see jobs you have posted'
     end
@@ -90,6 +90,6 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:role, :duration, :salary, :requirements, :qualification, :perks, :company, :contact_email, :poster_name, :poster_email, :phone, :user_id, :archived)
+      params.require(:job).permit(:role, :duration, :salary, :requirements, :qualification, :perks, :company, :contact_email, :poster_name, :poster_email, :phone, :user_id)
     end
 end

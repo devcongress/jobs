@@ -9,7 +9,6 @@ Devise.setup do |config|
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
   config.secret_key = ENV['DEVISE_KEY']
-  # config.secret_key = '86df02aff0566e2004c20e90a15a914a2205c91d3e213a2567a5ecc5168208d0d23450279f88567d61c7d0a28994e35c98ca02ca9d7400813e8a73ff71b12b5b'
   
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -281,19 +280,5 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
-
-
-  config.mailer_sender = "mail-to-send@from.com"
-  config/environments/production.rb :
-
-  config.action_mailer.default_url_options = { :host => 'jobs.devcongress.org' }
-  ActionMailer::Base.smtp_settings = {
-    :address        => "smtp.sendgrid.net",
-    :port           => "25",
-    :authentication => :plain,
-    :user_name      => ENV['SENDGRID_USERNAME'],
-    :password       => ENV['SENDGRID_PASSWORD'],
-    :domain         => ENV['SENDGRID_DOMAIN']
-  }
 
 end
