@@ -3,7 +3,7 @@ class JobsController < ApplicationController
   before_action :require_permission, only: [:edit, :destroy]
 
   def index
-    @jobs = Job.all
+    @jobs = Job.all.order('created_at DESC')
   end
 
   def show
@@ -11,7 +11,7 @@ class JobsController < ApplicationController
 
   def myjobs
     if user_signed_in?
-      @jobs = current_user.jobs
+      @jobs = current_user.jobs.order('created_at DESC')
     else
       redirect_to new_user_session_path, notice: 'Sign in see jobs you have posted'
     end
