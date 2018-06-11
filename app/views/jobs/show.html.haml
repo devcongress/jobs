@@ -27,18 +27,18 @@
   %p.job--field__content= @job.company
   
   %h2.job--field__title Contact email
-  %p.job--field__content= @job.contact_email
+  %p.job--field__content= mail_to(@job.contact_email, @job.contact_email)
   
   %h2.job--field__title Poster name
   %p.job--field__content= @job.poster_name
   
   %h2.job--field__title Poster email
-  %p.job--field__content= @job.user.email
+  %p.job--field__content= mail_to(@job.user.email, @job.user.email)
   
   %h2.job--field__title Phone
   %p.job--field__content= @job.phone
 
   - if user_signed_in? && @job.user_id == current_user.id
-    = link_to 'Edit', edit_job_path(@job)
-  |
+    = link_to 'Edit | ', edit_job_path(@job)
+
   = link_to 'View All Jobs', jobs_path
