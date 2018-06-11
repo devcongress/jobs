@@ -39,6 +39,6 @@
   %p.job--field__content= @job.phone
 
   - if user_signed_in? && @job.user_id == current_user.id
-    = link_to 'Edit', edit_job_path(@job)
-  |
+    = link_to 'Edit | ', edit_job_path(@job)
+
   = link_to 'View All Jobs', jobs_path
