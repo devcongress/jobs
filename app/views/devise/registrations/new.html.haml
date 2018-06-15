@@ -2,7 +2,8 @@
   = "#{t('app.name')} | Sign Up"
 
 %h1.page--title Sign up
-%p.page--legend Get ready to hire the best talent ever!
+.page--legend-buttons
+  %p.page--legend Get ready to hire the best talent ever!
 .main--content
   = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     = devise_error_messages!

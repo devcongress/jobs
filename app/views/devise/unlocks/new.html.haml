@@ -2,7 +2,8 @@
   = "#{t('app.name')} | Resend Unlock Instructions"
 
 %h1.page--title Resend unlock instructions
-%p.page--legend Be sure to enter the correct email
+.page--legend-buttons
+  %p.page--legend Be sure to enter the correct email
 
 .main--content
   = form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
