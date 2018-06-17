@@ -9,6 +9,7 @@
 
 .page--title {
     color: #EC058C;
+    line-height: 1.2;
     margin: 0;
 }
 
@@ -19,10 +20,45 @@ footer,
     text-align: center;
 }
 
+.page--legend-buttons {
+    margin: 0 0 40px;
+}
+
 .page--legend {
     text-align: center;
-    min-height: 24px;
-    margin: 0 0 40px;
+    line-height: 1.275;
+    min-height: 22px;
+    margin: 0;
+}
+
+.share--buttons {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.share--button {
+    color: #fff;
+    border-radius: 3px;
+    padding: 4px 6px 5px 6px;
+    -webkit-transition: all .25s ease;
+    -moz-transition: all .25s ease;
+    -ms-transition: all .25s ease;
+    -o-transition: all .25s ease;
+    transition: all .25s ease;
+    &:hover {
+        background-color: #333;
+    }
+    &:visited {
+        color: white;
+    }
+}
+
+.share--buttons__tweet {
+    background-color: #1DA1F2;
+}
+
+.share--buttons__fb {
+    background-color: #3B5998;
 }
 
 .main--content {

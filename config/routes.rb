@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   resources :jobs
   root to: "pages#index"
 
-  get '/myjobs/',  to: 'jobs#myjobs', as: :user_jobs
-  patch '/toggle', to: 'jobs#toggle_archive', as: 'toggle_archive'
+  get '/myjobs',  to: 'jobs#myjobs', as: :user_jobs
+  patch '/archivable/:job', to: 'jobs#archivable', as: :archive_job
 
 
   devise_for :users, skip: [:sessions, :registrations, :passwords]

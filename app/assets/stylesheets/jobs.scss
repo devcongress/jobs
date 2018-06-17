@@ -13,6 +13,10 @@
     }
 }
 
+.job--list__item-archived {
+    background: #fcffc9;
+}
+
 .job-list__action-group {
     display: flex;
 }
@@ -24,20 +28,35 @@
     }
 }
 
-.job--list__archive-link,
-.job--list__edit-link {
+.job--list__action {
+    font-size: 0.9em;
+    padding: 1px 5px 2px 5px;
     color: #fff;
     border-radius: 3px;
-    background: $dc-blue;
-    padding: 1px 5px 2px 5px;
-    font-size: 0.9em;
-    &:hover {
-        // color: #EC058C;
-        background: $dc-fuschia;
-    }
     &:visited {
         color: #fff;
         text-decoration: none;
+    }
+}
+
+.job--list__action-edit {
+    background: $dc-blue;
+    &:hover {
+        background: #056ceb;
+    }
+}
+
+.job--list__action-archive {
+    background: #eb8f05;
+    &:hover {
+        background: #eb4f05;
+    }
+}
+
+.job--list__action-unarchive {
+    background: #32b32a;
+    &:hover {
+        background: #287323;
     }
 }
 

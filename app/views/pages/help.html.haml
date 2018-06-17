@@ -2,7 +2,9 @@
   = "#{t('app.name')} | Help"
 
 %h1.page--title Help
-%p.page--legend Find help in times of need
+.page--legend-buttons
+  %p.page--legend Find help in times of need
 
 .main--content  
-  %p Find me in app/views/pages/help.html.erb
+  %p Any questions? Mail us at
+    %a{:href => "mailto:jobs@devcongress.org"} jobs@devcongress.org

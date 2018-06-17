@@ -19,6 +19,12 @@
     text-decoration: none;
     transition: all 0.5s;
     &:hover {
-        border-bottom: 2px solid #666;
+        border-bottom: 2px solid $dc-blue;
+        ;
+    }
+    &:visited {
+        &:hover {
+            border-bottom: 2px solid #3705ec;
+        }
     }
 }
