@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   def index
-    @jobs = Job.all.order('created_at DESC')
+    @jobs = Job.where(:archived => false).order('created_at DESC')    
   end
 
   def help

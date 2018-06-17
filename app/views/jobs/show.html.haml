@@ -2,7 +2,11 @@
   = "#{t('app.name')} | #{@job.role} at #{@job.company}"
 
 %h1.page--title= @job.role + " at " + @job.company
-%p.page--legend Listed by #{@job.poster_name} #{time_ago_in_words(@job.created_at)} ago
+.page--legend-buttons
+  %p.page--legend Listed by #{@job.poster_name} #{time_ago_in_words(@job.created_at)} ago
+  .share--buttons
+    = link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress")
+    = link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress")
 
 .main--content
   %h2.job--field__title Role

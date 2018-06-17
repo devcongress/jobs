@@ -1,19 +1,25 @@
+# require 'twitter'
+
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :toggle_archive]
-  before_action :require_permission, only: [:edit, :destroy]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :archivable]
+  before_action :require_permission, only: [:edit, :destroy, :archivable]
 
   def index
-    @jobs = Job.all.order('created_at DESC')
+    @jobs = Job.where(:archived => false).order('created_at DESC')
   end
 
   def show
+    job_url = job_url(@job)
+    if !user_signed_in? || !(current_user.is_owner?(@job))
+      redirect_to root_path, notice: 'That job post has been archived'
+    end
   end
 
   def myjobs
     if user_signed_in?
       @jobs = current_user.jobs.order('created_at DESC')
     else
-      redirect_to new_user_session_path, notice: 'Sign in see jobs you have posted'
+      redirect_to new_user_session_path, notice: 'Sign in to see jobs you have posted'
     end
   end
 
@@ -28,9 +34,11 @@ class JobsController < ApplicationController
   def edit
   end
 
-  def toggle_archive
-    # @job = Job.find(params[:id]).archived
-    !@job.archived
+  def archivable
+    # @job = Job.find(params[:id])
+    @job.toggle(:archived).save
+    # update archived: !archived
+    # once a job is archived, page should reload with a notice
   end
 
   def create
@@ -42,6 +50,8 @@ class JobsController < ApplicationController
       if @job.save
         format.html { redirect_to @job, notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
+        # send tweet
+        # client.update("New Job posted on DevCongress jobs.")
       else
         format.html { render :new }
         format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -90,6 +100,19 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:role, :duration, :salary, :requirements, :qualification, :perks, :company, :contact_email, :poster_name, :poster_email, :phone, :user_id)
+      params.require(:job).permit(
+      :role,
+      :duration,
+      :salary,
+      :requirements,
+      :qualification,
+      :perks,
+      :company,
+      :contact_email,
+      :poster_name,
+      :poster_email,
+      :phone,
+      :user_id,
+      :archived)
     end
 end

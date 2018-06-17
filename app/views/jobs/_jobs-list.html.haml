@@ -4,6 +4,9 @@
             = link_to job.role + " at " + job.company, job, :class => "job--list__item-link"
             .job--list__action-group
                 - if user_signed_in? && job.user_id == current_user.id
-                    -# = link_to '...', toggle_archive_path(job), :class => "job--list__archive-link", method: :patch
-                    = link_to 'Edit', edit_job_path(job), :class => "job--list__edit-link"
+                    - if job.is_archived?
+                        -# = link_to 'Unarchive', archive_path(job), :class => "job--list__action job--list__action-unarchive", method: :patch
+                    - else
+                        -# = link_to 'Archive', archive_path(job), :class => "job--list__action job--list__action-archive", method: :patch
+                    = link_to 'Edit', edit_job_path(job), :class => "job--list__action job--list__action-edit"
                 

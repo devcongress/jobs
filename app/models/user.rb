@@ -5,4 +5,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :jobs
+
+  def is_owner?(job)
+    if job.user_id == self.id
+      return true
+    end
+  end
 end
