@@ -8,5 +8,6 @@
                         -# = link_to 'Unarchive', archive_path(job), :class => "job--list__action job--list__action-unarchive", method: :patch
                     - else
                         -# = link_to 'Archive', archive_path(job), :class => "job--list__action job--list__action-archive", method: :patch
+                        = button_to 'Arch', archive_job_path, @job
                     = link_to 'Edit', edit_job_path(job), :class => "job--list__action job--list__action-edit"
                 
