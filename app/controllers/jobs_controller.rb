@@ -10,9 +10,9 @@ class JobsController < ApplicationController
 
   def show
     job_url = job_url(@job)
-    if !user_signed_in? || !(current_user.is_owner?(@job))
-      redirect_to root_path, notice: 'That job post has been archived'
-    end
+    # if !user_signed_in? || !(current_user.is_owner?(@job))
+      # redirect_to root_path, notice: 'That job post has been archived'
+    # end
   end
 
   def myjobs
