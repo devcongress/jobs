@@ -2,7 +2,8 @@
     - @jobs.each do |job|
         %li.job--list__item
             = link_to job.role + " at " + job.company, job, :class => "job--list__item-link"
-            -# = link_to 'Edit', edit_job_path(job), :class => "job--list__edit-link"
-            = link_to job.archived? ? :Unarchive : :Archive, archive_job_path(job), :class => "job--list__edit-link"
+            %span.jobs--list__actions
+                = link_to 'Edit', edit_job_path(job), :class => "job--list__edit-link"
+                = link_to job.archived? ? :Unarchive : :Archive, archive_job_path(job), :class => "job--list__edit-link"
 
             

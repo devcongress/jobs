@@ -1,5 +1,5 @@
 - content_for :title do
-  = "#{t('app.name')} | Edit Job - #{@job.role} at #{@job.company}"
+  = " Edit Job - #{@job.role} at #{@job.company} | #{t('app.name')}"
 
 %h1.page--title Editing Job
 %p.page--legend= @job.role + " at " + @job.company
