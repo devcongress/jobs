@@ -1,9 +1,12 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :toggle_archive]
   before_action :require_permission, only: [:edit, :destroy]
+  include Archivable::Controller
 
   def index
-    @jobs = Job.all.order('created_at DESC')
+    # @jobs = Job.all.order('created_at DESC')
+    # @jobs = Job.where(archived: false).order('created_at DESC')    
+    @jobs = Job.where(archived: false)
   end
 
   def show

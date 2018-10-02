@@ -17,6 +17,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'haml', '~> 5.0', '>= 5.0.4'
 gem 'devise', '~> 4.4', '>= 4.4.3'
 gem 'sendgrid', '~> 1.2', '>= 1.2.4'
+gem 'archivable'
 
 
 group :development, :test do
