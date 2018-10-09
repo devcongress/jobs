@@ -1,14 +1,9 @@
 %ul.job--list
     - @jobs.each do |job|
-        - if job.is_archived?
-            %li.job--list__item.job--list__item-archived
-                = link_to job.role + " at " + job.company, job, :class => "job--list__item-link"
-                .job--list__action-group
-                    -# = link_to 'Unarchive', archive_job_path(job), :class => "job--list__action job--list__action-unarchive"
-                    = link_to 'Edit', edit_job_path(job), :class => "job--list__action job--list__action-edit"
-        - else      
-            %li.job--list__item
-                = link_to job.role + " at " + job.company, job, :class => "job--list__item-link"
-                .job--list__action-group
-                    -# = link_to 'Archive', archive_job_path(job), :class => "job--list__action job--list__action-archive"
-                    = link_to 'Edit', edit_job_path(job), :class => "job--list__action job--list__action-edit"
+        %li.job--list__item
+            = link_to job.role + " at " + job.company, job, :class => "job--list__item-link"
+            %span.jobs--list__actions
+                = link_to 'Edit', edit_job_path(job), :class => "job--list__edit-link"
+                = link_to job.archived? ? :Unarchive : :Archive, archive_job_path(job), :class => "job--list__edit-link"
+
+            
