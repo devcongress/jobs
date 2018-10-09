@@ -20,6 +20,7 @@ gem 'devise', '~> 4.4', '>= 4.4.3'
 gem 'sendgrid', '~> 1.2', '>= 1.2.4'
 # gem 'twitter', '~> 6.2'
 
+gem 'pg'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -30,7 +31,6 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'sqlite3', '~> 1.3', '>= 1.3.13'  
 end
 
 group :test do
