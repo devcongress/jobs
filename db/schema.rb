@@ -12,8 +12,8 @@
 
 ActiveRecord::Schema.define(version: 2018_06_01_012900) do
 
-# Could not dump table "_jobs_old_20180528" because of following StandardError
-#   Unknown type 'User' for column 'user'
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "jobs", force: :cascade do |t|
     t.string "role"
