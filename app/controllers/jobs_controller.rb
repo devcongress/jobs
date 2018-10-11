@@ -5,15 +5,11 @@ class JobsController < ApplicationController
   before_action :require_permission, only: [:edit, :destroy]
 
   def index
-    # @jobs = Job.where(archived: false).order('created_at DESC')    
-    @jobs = Job.where(archived: false)
+    @jobs = Job.where(archived: false).order('created_at DESC')
   end
 
   def show
-    job_url = job_url(@job)
-    if !user_signed_in? || !(current_user.is_owner?(@job))
-      redirect_to root_path, notice: 'That job post has been archived'
-    end
+    raise_not_found if @job.archived?
   end
 
   def myjobs
@@ -108,5 +104,9 @@ class JobsController < ApplicationController
       :phone,
       :user_id,
       :archived)
+    end
+
+    def raise_not_found
+      raise ActionController::RoutingError.new("not found")
     end
 end
