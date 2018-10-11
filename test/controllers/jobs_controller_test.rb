@@ -2,47 +2,41 @@ require 'test_helper'
 
 class JobsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @job = jobs(:one)
+    @available_jobs = create_list(:job, 3)
+    @archived_job = create(:job, archived: true) # one archived job
   end
 
   test "should get index" do
     get jobs_url
-    assert_response :success
-  end
 
-  test "should get new" do
-    get new_job_url
     assert_response :success
-  end
 
-  test "should create job" do
-    assert_difference('Job.count') do
-      post jobs_url, params: { job: { company: @job.company, contact_email: @job.contact_email, duration: @job.duration, perks: @job.perks, phone: @job.phone, poster_email: @job.poster_email, poster_name: @job.poster_name, qualification: @job.qualification, requirements: @job.requirements, role: @job.role, salary: @job.salary } }
+    @available_jobs.each do |job|
+      job_title = "#{job.role} at #{job.company}"
+      assert_match job_title, @response.body
     end
 
-    assert_redirected_to job_url(Job.last)
+    # archived jobs are not displayed
+    archived_job_title = "#{@archived_job.role} at #{@archived_job.company}"
+    refute_match archived_job_title, @response.body
   end
 
-  test "should show job" do
-    get job_url(@job)
+  test "should show a job" do
+    job = @available_jobs.first
+
+    get job_url(job)
+
     assert_response :success
+    assert_match job.company,       @response.body
+    assert_match job.role,          @response.body
+    assert_match job.qualification, @response.body
+    assert_match job.salary,        @response.body
+    assert_match job.duration,      @response.body
   end
 
-  test "should get edit" do
-    get edit_job_url(@job)
-    assert_response :success
-  end
-
-  test "should update job" do
-    patch job_url(@job), params: { job: { company: @job.company, contact_email: @job.contact_email, duration: @job.duration, perks: @job.perks, phone: @job.phone, poster_email: @job.poster_email, poster_name: @job.poster_name, qualification: @job.qualification, requirements: @job.requirements, role: @job.role, salary: @job.salary } }
-    assert_redirected_to job_url(@job)
-  end
-
-  test "should destroy job" do
-    assert_difference('Job.count', -1) do
-      delete job_url(@job)
+  test "should not find archived job" do
+    assert_raise ActionController::RoutingError do
+      get job_url(@archived_job)
     end
-
-    assert_redirected_to jobs_url
   end
 end
