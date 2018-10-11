@@ -21,4 +21,18 @@
 require 'test_helper'
 
 class JobTest < ActiveSupport::TestCase
+
+  setup do
+    @subject = Job.new
+  end
+
+  test "validations" do
+    must validate_presence_of :company
+    must validate_presence_of :duration
+    must validate_presence_of :salary
+    must validate_presence_of :requirements
+    must validate_presence_of :qualification
+    must validate_presence_of :contact_email
+    must validate_presence_of :user_id
+  end
 end
