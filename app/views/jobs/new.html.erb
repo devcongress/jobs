@@ -1,0 +1,16 @@
+<% content_for :title do %>
+  <%= "Add New Job | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title">Add New Job</h1>
+<p class="page--legend">Provide candid, relevant information for best results</p>
+<div class="main--content">
+  <% if user_signed_in? %>
+    <%= render 'form', job: @job %>
+    <%= link_to 'Back', jobs_path %>
+  <% else %>
+    <p>Please sign in to create a job listing</p>
+    <%= link_to('Sign in', new_user_session_path) %>
+    <p>or</p>
+    <%= link_to('Sign up', new_user_registration_path) %>
+  <% end %>
+</div>
