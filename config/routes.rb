@@ -6,13 +6,9 @@ Rails.application.routes.draw do
   get '/about' => 'pages#about'
   get '/privacy' => 'pages#privacy'
   
-  resources :jobs do
-    get 'archive',  on: :member
-    get 'archived', on: :collection
-  end
+  resources :jobs
 
   get '/myjobs',  to: 'jobs#myjobs', as: :user_jobs
-  # patch '/archivable/:job', to: 'jobs#archivable', as: :archive_job
 
   devise_for :users, skip: [:sessions, :registrations, :passwords]
 
