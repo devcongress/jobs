@@ -22,6 +22,7 @@ gem 'pg'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -37,6 +38,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
   gem 'faker'
+  gem 'shoulda-matchers'
+  gem 'minitest-matchers_vaccine'
 end
 
 group :production do
