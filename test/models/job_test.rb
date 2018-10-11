@@ -34,5 +34,6 @@ class JobTest < ActiveSupport::TestCase
     must validate_presence_of :qualification
     must validate_presence_of :contact_email
     must validate_presence_of :user_id
+    must validate_presence_of :role
   end
 end

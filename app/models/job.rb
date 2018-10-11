@@ -29,4 +29,9 @@ class Job < ApplicationRecord
   validates :company,       presence: true
   validates :contact_email, presence: true
   validates :user_id,       presence: true
+  validates :role,          presence: true
+
+  def to_param
+    "#{id}-#{role}-#{company}".parameterize
+  end
 end
