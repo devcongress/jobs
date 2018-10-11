@@ -1,0 +1,12 @@
+<% content_for :title do %>
+  <%= "All Jobs | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title">All Jobs</h1>
+<div class="page--legend-buttons">
+  <p class="page--legend">All the DevCongress Job Board listing here</p>
+</div>
+<div class="main--content">
+  <%= render 'jobs/jobs-list' %>
+</div>
+<br/>
+<% # = link_to 'New Job', new_job_path %>

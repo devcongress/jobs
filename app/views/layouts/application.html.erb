@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <%= render 'layouts/meta_and_styles' %>
+  </head>
+  <body>
+    <noscript>
+      <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-KHKSCXW" style="display:none;visibility:hidden" width="0"></iframe>
+    </noscript>
+    <div class="main">
+      <%= render 'layouts/navbar'	%>
+      <span class="notice">
+        <%= notice	 %>
+      </span>
+      <%= yield	 %>
+      <%= render 'layouts/footer' %>
+    </div>
+  </body>
+</html>

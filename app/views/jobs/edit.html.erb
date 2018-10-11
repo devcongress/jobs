@@ -1,0 +1,15 @@
+<% content_for :title do %>
+  <%= " Edit Job - #{@job.role} at #{@job.company} | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title">Editing Job</h1>
+<div class="page--legend-buttons">
+  <p class="page--legend">
+    <%= @job.role + " at " + @job.company %>
+  </p>
+</div>
+<div class="main--content">
+  <%= render 'form', job: @job %>
+  <%= link_to 'Show', @job %>
+  |
+  <%= link_to 'Back', jobs_path %>
+</div>
