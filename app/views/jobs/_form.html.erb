@@ -20,6 +20,9 @@
     <span class="pure-form-message">What will be their title at the new role?</span>
   </div>
   <div class="field">
+    <%= form.check_box :remote_ok %> Remote OK
+  </div>
+  <div class="field">
     <%= form.label :duration %>
     <%= form.select(:duration, {"Full-time" => "Full-Time", "Contract" => "Contract", "Internship" => "Internship"}) %>
     <span class="pure-form-message">What is the duration for this project?</span>
@@ -51,18 +54,6 @@
   <div class="field">
     <%= form.label :contact_email %>
     <%= form.email_field :contact_email %>
-  </div>
-  <div class="field">
-    <%= form.label :poster_name %>
-    <%= form.text_field :poster_name %>
-  </div>
-  <div class="field">
-    <%= form.label :phone %>
-    <%= form.text_field :phone %>
-  </div>
-  <div class="field">
-    <%= form.label :archived %>
-    <%= form.check_box :archived %>
   </div>
   <div class="actions">
     <%= form.submit %>

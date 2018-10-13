@@ -16,6 +16,7 @@
 #  updated_at    :datetime         not null
 #  user_id       :integer
 #  archived      :boolean          default(FALSE)
+#  remote_ok     :boolean          default(TRUE), not null
 #
 
 require 'test_helper'
