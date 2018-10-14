@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  web:
+    build: .
+    command: bundle exec rails s webrick -b '0.0.0.0'
+    volumes:
+      - .:/rails-docker
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+volumes:
+  pgdata:

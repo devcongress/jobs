@@ -1,25 +1,37 @@
 default: &default
   adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
-  username: <%= ENV["JOBS_DB_USERNAME"] %>
-  password: <%= ENV["JOBS_DB_PASSWORD"] %>
+  # pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # timeout: 5000
+  # username: <%= ENV["JOBS_DB_USERNAME"] %>
+  # password: <%= ENV["JOBS_DB_PASSWORD"] %>
   host: localhost
-  port: 5432
+  # port: 5432
+
+# development:
+#   <<: *default
+#   database: jobs_development
+
+# # Warning: The database defined as "test" will be erased and
+# # re-generated from your development database when you run "rake".
+# # Do not set this db to the same as development or production.
+# test:
+#   <<: *default
+#   database: jobs_test
+
+# # We use Heroku's Postgres service in production.
+# # Easier to configure with the $DATABASE_URL env var
+# # they set than to build using username, etc.
+# production:
+#   url: <%= ENV["DATABASE_URL"] %>
+
 
 development:
   <<: *default
-  database: jobs_development
+  url: <%= ENV['DATABASE_URL']&.gsub('?', '_development?') %>
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: jobs_test
+  url: <%= ENV['DATABASE_URL']&.gsub('?', '_test?') %>
 
-# We use Heroku's Postgres service in production.
-# Easier to configure with the $DATABASE_URL env var
-# they set than to build using username, etc.
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV['DATABASE_URL']&.gsub('?', '_production?') %>
