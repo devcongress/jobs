@@ -23,6 +23,10 @@
   <p class="job--field__content">
     <%= @job.salary %>
   </p>
+  <h2 class="job--field__title">Remote OK</h2>
+  <p class="job--field__content">
+    <%= @job.remote_ok ? "Yes" : "No" %>
+  </p>
   <h2 class="job--field__title">Requirements</h2>
   <%= simple_format h(@job.requirements), :class => "job--field__content" %>
   <h2 class="job--field__title">Qualification</h2>
