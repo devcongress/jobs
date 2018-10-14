@@ -1,8 +1,9 @@
 # require 'twitter'
 
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :toggle_archive]
-  before_action :require_permission, only: [:edit, :destroy]
+  before_action :set_job,            only: [:show, :edit, :update, :destroy, :toggle_archive]
+  before_action :require_ownership,  only: [:edit, :destroy]
+  before_action :authenticate_user!, only: [:new, :create]
 
   def index
     @jobs = Job.where(archived: false).order('created_at DESC')
@@ -32,20 +33,11 @@ class JobsController < ApplicationController
   end
 
   def create
-    if current_user
-      @job = current_user.jobs.build(job_params)
-    end
-
-    respond_to do |format|
-      if @job.save
-        format.html { redirect_to @job, notice: 'Job was successfully created.' }
-        format.json { render :show, status: :created, location: @job }
-        # send tweet
-        # client.update("New Job posted on DevCongress jobs.")
-      else
-        format.html { render :new }
-        format.json { render json: @job.errors, status: :unprocessable_entity }
-      end
+    @job = current_user.jobs.build(job_params)
+    if @job.save
+      redirect_to @job, status: :created
+    else
+      render :new
     end
   end
 
@@ -73,16 +65,17 @@ class JobsController < ApplicationController
     end
   end
 
-  def require_permission
-    if current_user != @job.user
-      # redirect_to root_path
-      respond_to do |format|
-        format.html { redirect_to root_path, notice: 'You are not authorized to edit another users job post.' }
+  private
+
+    def require_ownership
+      if current_user != @job.user
+        # redirect_to root_path
+        respond_to do |format|
+          format.html { redirect_to root_path, notice: 'You are not authorized to edit another users job post.' }
+        end
       end
     end
-  end
 
-  private
     # Use callbacks to share common setup or constraints between actions.
     def set_job
       @job = Job.find(params[:id])
@@ -103,7 +96,8 @@ class JobsController < ApplicationController
       :poster_email,
       :phone,
       :user_id,
-      :archived)
+      :archived,
+      :remote_ok)
     end
 
     def raise_not_found

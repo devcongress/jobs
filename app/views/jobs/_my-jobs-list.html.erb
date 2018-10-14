@@ -4,7 +4,6 @@
       <%= link_to job.role + " at " + job.company, job, :class => "job--list__item-link" %>
       <span class="jobs--list__actions">
         <%= link_to 'Edit', edit_job_path(job), :class => "job--list__edit-link" %>
-        <%= link_to job.archived? ? :Unarchive : :Archive, archive_job_path(job), :class => "job--list__edit-link" %>
       </span>
     </li>
   <% end %>
