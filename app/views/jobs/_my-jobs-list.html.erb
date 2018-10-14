@@ -1,0 +1,10 @@
+<ul class="job--list">
+  <% @jobs.each do |job| %>
+    <li class="job--list__item">
+      <%= link_to job.role + " at " + job.company, job, :class => "job--list__item-link" %>
+      <span class="jobs--list__actions">
+        <%= link_to 'Edit', edit_job_path(job), :class => "job--list__edit-link" %>
+      </span>
+    </li>
+  <% end %>
+</ul>

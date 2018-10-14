@@ -17,7 +17,11 @@
 #  updated_at             :datetime         not null
 #
 
-require 'test_helper'
+FactoryBot.define do
+  sequence(:user_email) { |n| "user#{n}@example.org" }
 
-class UserTest < ActiveSupport::TestCase
+  factory :user do
+    email    { generate(:user_email) }
+    password { Faker::Internet.password }
+  end
 end

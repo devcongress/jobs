@@ -1,0 +1,21 @@
+<% content_for :title do %>
+  <%= "Forgot Your Password? | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title">Forgot your password?</h1>
+<div class="page--legend-buttons">
+  <p class="page--legend">Don't forget set a strong password</p>
+</div>
+<div class="main--content">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <%= devise_error_messages! %>
+    <div class="field">
+      <%= f.label :email %>
+      <br/>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Send me reset password instructions" %>
+    </div>
+  <% end %>
+  <%= render "devise/shared/links" %>
+</div>

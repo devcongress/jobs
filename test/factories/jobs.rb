@@ -19,20 +19,18 @@
 #  remote_ok     :boolean          default(TRUE), not null
 #
 
-class Job < ApplicationRecord
-  belongs_to :user
+FactoryBot.define do
+  sequence (:company_email) { |n| "company#{n}@example.org" }
 
-  validates :company,       presence: true
-  validates :duration,      presence: true
-  validates :salary,        presence: true
-  validates :requirements,  presence: true
-  validates :qualification, presence: true
-  validates :company,       presence: true
-  validates :contact_email, presence: true
-  validates :user_id,       presence: true
-  validates :role,          presence: true
-
-  def to_param
-    "#{id}-#{role}-#{company}".parameterize
+  factory :job do
+    user
+    company       { Faker::Company.name }
+    qualification { Faker::Job.key_skill }
+    requirements  { Faker::Lorem.paragraph(2) }
+    role          { Faker::Job.title }
+    contact_email { generate(:company_email) }
+    salary        { "USD #{rand(1..2)} - #{rand(3..5)}" }
+    duration      { "#{rand(3)} - #{rand(5..10)} months" }
+    archived      { false }
   end
 end

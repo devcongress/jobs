@@ -3,7 +3,7 @@
 
 %h1.page--title= @job.role + " at " + @job.company
 .page--legend-buttons
-  %p.page--legend Listed by #{@job.poster_name} #{time_ago_in_words(@job.created_at)} ago
+  %p.page--legend Listed by #{@job.company} #{time_ago_in_words(@job.created_at)} ago
   .share--buttons
     = link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress")
     = link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress")
@@ -33,15 +33,6 @@
   %h2.job--field__title Contact email
   %p.job--field__content= mail_to(@job.contact_email, @job.contact_email)
   
-  %h2.job--field__title Poster name
-  %p.job--field__content= @job.poster_name
-  
-  %h2.job--field__title Poster email
-  %p.job--field__content= mail_to(@job.user.email, @job.user.email)
-  
-  %h2.job--field__title Phone
-  %p.job--field__content= @job.phone
-
   - if user_signed_in? && @job.user_id == current_user.id
     = link_to 'Edit | ', edit_job_path(@job)
 
