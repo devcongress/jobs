@@ -25,7 +25,6 @@ class Company < ApplicationRecord
   # Validations
   validates :name,            presence: true
   validates :industry,        presence: true
-  validates :logo,            presence: true
   validates :website,         presence: true
   validates :description,     presence: true
   validates :email,           presence: true, uniqueness: true
