@@ -9,7 +9,7 @@
 #  requirements  :string
 #  qualification :string
 #  perks         :string
-#  company       :string
+#  company_name  :string
 #  contact_email :string
 #  phone         :string
 #  created_at    :datetime         not null
@@ -17,6 +17,7 @@
 #  user_id       :integer
 #  archived      :boolean          default(FALSE)
 #  remote_ok     :boolean          default(TRUE), not null
+#  company_id    :bigint(8)
 #
 
 require 'test_helper'
@@ -24,11 +25,15 @@ require 'test_helper'
 class JobTest < ActiveSupport::TestCase
 
   setup do
-    @subject = Job.new
+    @subject = FactoryBot.build(:job)
+  end
+
+  test "associations" do
+    must belong_to :company
   end
 
   test "validations" do
-    must validate_presence_of :company
+    must validate_presence_of :company_name
     must validate_presence_of :duration
     must validate_presence_of :salary
     must validate_presence_of :requirements

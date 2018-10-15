@@ -37,7 +37,7 @@ class JobsController < ApplicationController
     if @job.save
       redirect_to @job, status: :created
     else
-      render :new
+      render :new, status: :bad_request
     end
   end
 
@@ -87,7 +87,8 @@ class JobsController < ApplicationController
       :requirements,
       :qualification,
       :perks,
-      :company,
+      :company_name,
+      :company_id,
       :contact_email,
       :poster_name,
       :poster_email,

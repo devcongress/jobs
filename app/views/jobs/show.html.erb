@@ -1,8 +1,8 @@
 <% content_for :title do %>
-  <%= "#{@job.role} at #{@job.company} | #{t('app.name')}" %>
+  <%= "#{@job.role} at #{@job.company.name} | #{t('app.name')}" %>
 <% end %>
 <h1 class="page--title">
-  <%= @job.role + " at " + @job.company %>
+  <%= @job.role + " at " + @job.company.name %>
 </h1>
 <div class="page--legend-buttons">
   <div class="share--buttons">
@@ -35,7 +35,7 @@
   <%= simple_format h(@job.perks), :class => "job--field__content" %>
   <h2 class="job--field__title">Company</h2>
   <p class="job--field__content">
-    <%= @job.company %>
+    <%= @job.company.name %>
   </p>
   <h2 class="job--field__title">Contact email</h2>
   <p class="job--field__content">

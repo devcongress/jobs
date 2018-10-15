@@ -15,12 +15,12 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     @available_jobs.each do |job|
-      job_title = "#{job.role} at #{job.company}"
+      job_title = "#{job.role} at #{job.company.name}"
       assert_match job_title, @response.body
     end
 
     # archived jobs are not displayed
-    archived_job_title = "#{@archived_job.role} at #{@archived_job.company}"
+    archived_job_title = "#{@archived_job.role} at #{@archived_job.company.name}"
     refute_match archived_job_title, @response.body
   end
 
@@ -30,7 +30,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     get job_url(job)
 
     assert_response :success
-    assert_match job.company,       @response.body
+    assert_match job.company.name,  @response.body
     assert_match job.role,          @response.body
     assert_match job.qualification, @response.body
     assert_match job.salary,        @response.body
