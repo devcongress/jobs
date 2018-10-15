@@ -45,7 +45,6 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
 
   test "should fail for unauthenticated user" do
     job_params = attributes_for(:job)
-    puts job_params.inspect
     post jobs_url, params: {job: job_params}
     assert_redirected_to new_user_session_url
   end

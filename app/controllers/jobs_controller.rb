@@ -1,4 +1,4 @@
-# require 'twitter'
+# require "twitter"
 
 class JobsController < ApplicationController
   before_action :set_job,            only: [:show, :edit, :update, :destroy, :toggle_archive]
@@ -6,7 +6,7 @@ class JobsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @jobs = Job.where(archived: false).order('created_at DESC')
+    @jobs = Job.where(archived: false).order("created_at DESC")
   end
 
   def show
@@ -15,9 +15,9 @@ class JobsController < ApplicationController
 
   def myjobs
     if user_signed_in?
-      @jobs = current_user.jobs.order('created_at DESC')
+      @jobs = current_user.jobs.order("created_at DESC")
     else
-      redirect_to new_user_session_path, notice: 'Sign in to see jobs you have posted'
+      redirect_to new_user_session_path, notice: "Sign in to see jobs you have posted"
     end
   end
 
@@ -25,7 +25,7 @@ class JobsController < ApplicationController
     if user_signed_in?
       @job = current_user.jobs.build
     else
-      redirect_to new_user_session_path, notice: 'Sign in to create a job post'
+      redirect_to new_user_session_path, notice: "Sign in to create a job post"
     end
   end
 
@@ -46,7 +46,7 @@ class JobsController < ApplicationController
   def update
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to @job, notice: 'Job was successfully updated.' }
+        format.html { redirect_to @job, notice: "Job was successfully updated." }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }
@@ -60,7 +60,7 @@ class JobsController < ApplicationController
   def destroy
     @job.destroy
     respond_to do |format|
-      format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
+      format.html { redirect_to jobs_url, notice: "Job was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -68,17 +68,14 @@ class JobsController < ApplicationController
   private
 
     def require_ownership
-      if current_user != @job.user
-        # redirect_to root_path
-        respond_to do |format|
-          format.html { redirect_to root_path, notice: 'You are not authorized to edit another users job post.' }
-        end
+      unless current_user == @job.user
+        redirect_to root_path, notice: "You are not authorized to edit this job post."
       end
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_job
-      @job = Job.find(params[:id])
+      @job = Job.find_by(id: params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
