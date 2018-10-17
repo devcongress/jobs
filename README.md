@@ -6,7 +6,7 @@ This is the code which runs the DevCongress Jobs website, which lives at [jobs.d
 
 ### Requirements
 
-Install Docker and Docker Compose (Docker Compose comes with Docker on Windows ans MacOS)
+Install Docker and Docker Compose (Docker Compose comes with Docker on Windows and MacOS)
 
 ### Init projet
 
