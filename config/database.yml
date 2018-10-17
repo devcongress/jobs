@@ -2,21 +2,21 @@ default: &default
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-  username: <%= ENV["JOBS_DB_USERNAME"] %>
-  password: <%= ENV["JOBS_DB_PASSWORD"] %>
-  host: localhost
+  username: <%= ENV["POSTGRES_USER"] || ENV["JOBS_DB_USERNAME"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] || ENV["JOBS_DB_PASSWORD"] %>
+  host: <%= ENV["POSTGRES_HOST"] || 'localhost' %>
   port: 5432
 
 development:
   <<: *default
-  database: jobs_development
+  database: <%= ENV["POSTGRES_DB"] || 'jobs_development' %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: jobs_test
+  database: <%= ENV["POSTGRES_DB"] || 'jobs_test' %>
 
 # We use Heroku's Postgres service in production.
 # Easier to configure with the $DATABASE_URL env var
