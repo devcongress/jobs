@@ -10,7 +10,7 @@ Install Docker and Docker Compose (Docker Compose comes with Docker on Windows a
 
 ### Init projet
 
-Init database with `docker-compose  run --rm web rails db:create db:migrate db:seed`
+Init database with `docker-compose  run --rm web rails db:setup`
 
 ### Start Project
 
