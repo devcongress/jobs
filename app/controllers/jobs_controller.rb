@@ -33,7 +33,10 @@ class JobsController < ApplicationController
   end
 
   def create
-    @job = current_user.jobs.build(job_params)
+    company = current_user.companies.find_by(id: job_params[:company_id])
+    raise_not_found unless company
+
+    @job = company.jobs.build(job_params)
     if @job.save
       redirect_to @job, status: :created
     else
@@ -73,12 +76,15 @@ class JobsController < ApplicationController
       end
     end
 
-    # Use callbacks to share common setup or constraints between actions.
+    def set_company
+      @company = current_user.companies.find_by(id: params[:job][:company_id])
+      raise_not_found unless @company
+    end
+
     def set_job
       @job = Job.find_by(id: params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(
       :role,
