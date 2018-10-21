@@ -2,11 +2,14 @@ require 'test_helper'
 
 class JobsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ERB::Util
 
   setup do
     @available_jobs = create_list(:job, 3)
     @archived_job = create(:job, archived: true) # one archived job
     @user = create(:user)
+    @company = create(:company)
+    @user.companies << @company
   end
 
   test "should get index" do
@@ -30,11 +33,11 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     get job_url(job)
 
     assert_response :success
-    assert_match job.company.name,  @response.body
     assert_match job.role,          @response.body
     assert_match job.qualification, @response.body
     assert_match job.salary,        @response.body
     assert_match job.duration,      @response.body
+    assert_match html_escape(job.company.name),  @response.body
   end
 
   test "should not find archived job" do

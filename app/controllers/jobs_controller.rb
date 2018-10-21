@@ -87,13 +87,7 @@ class JobsController < ApplicationController
       :requirements,
       :qualification,
       :perks,
-      :company_name,
       :company_id,
-      :contact_email,
-      :poster_name,
-      :poster_email,
-      :phone,
-      :user_id,
       :archived,
       :remote_ok)
     end
