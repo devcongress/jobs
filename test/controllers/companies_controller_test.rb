@@ -39,10 +39,10 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
     get company_url(@company)
 
     assert_response :ok
-    assert_match @company.name,        @response.body
-    assert_match @company.industry,    @response.body
-    assert_match @company.website,     @response.body
-    assert_match @company.description, @response.body
+    assert_match html_escape(@company.name),     @response.body
+    assert_match html_escape(@company.industry), @response.body
+    assert_match @company.website,               @response.body
+    assert_match @company.description,           @response.body
   end
 
 end
