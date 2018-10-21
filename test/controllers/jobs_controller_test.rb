@@ -19,7 +19,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
 
     @available_jobs.each do |job|
       job_title = "#{job.role} at #{job.company.name}"
-      assert_match job_title, @response.body
+      assert_match html_escape(job_title), @response.body
     end
 
     # archived jobs are not displayed
@@ -52,14 +52,24 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_url
   end
 
-  test "should create a new job post" do
+  test "should create a new job post for user's client" do
     sign_in @user
 
     assert_difference('Job.count') do
-      job_params = attributes_for(:job)
+      job_params = attributes_for(:job, company_id: @company.id)
       post jobs_url, params: {job: job_params}
 
       assert_response :created
+    end
+  end
+
+  test "should fail if company is not client of user" do
+    sign_in @user
+
+    job_params = attributes_for(:job, company_id: create(:company).id)
+
+    assert_raise ActionController::RoutingError do
+      post jobs_url, params: {job: job_params}
     end
   end
 end

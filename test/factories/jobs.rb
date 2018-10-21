@@ -20,7 +20,7 @@ FactoryBot.define do
   sequence (:contact_email) { |n| "company#{n}@example.org" }
 
   factory :job do
-    company { create(:company) }
+    company
 
     qualification { Faker::Job.key_skill }
     requirements  { Faker::Lorem.paragraph(2) }

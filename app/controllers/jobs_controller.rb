@@ -23,7 +23,11 @@ class JobsController < ApplicationController
 
   def new
     if user_signed_in?
-      @job = current_user.jobs.build
+      @companies = current_user.companies
+      unless @companies.count > 0
+        redirect_to new_company_path, notice: "Register company first"
+      end
+      @job = Job.new
     else
       redirect_to new_user_session_path, notice: "Sign in to create a job post"
     end

@@ -20,6 +20,10 @@
     <span class="pure-form-message">What will be their title at the new role?</span>
   </div>
   <div class="field">
+    <%= form.label :company_id, "Company Name" %>
+    <%= form.collection_select(:company_id, @companies, :id, :name) %>
+  </div>
+  <div class="field">
     <%= form.check_box :remote_ok %> Remote OK
   </div>
   <div class="field">
