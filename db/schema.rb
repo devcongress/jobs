@@ -10,27 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_12_163952) do
+ActiveRecord::Schema.define(version: 2018_10_21_095117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "jobs", force: :cascade do |t|
-    t.string "role"
-    t.string "duration"
-    t.string "salary"
-    t.string "requirements"
-    t.string "qualification"
-    t.string "perks"
-    t.string "company"
-    t.string "contact_email"
-    t.string "phone"
+  create_table "clients", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.index ["company_id"], name: "index_clients_on_company_id"
+    t.index ["user_id"], name: "index_clients_on_user_id"
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.text "name", null: false
+    t.text "industry", null: false
+    t.text "logo", default: "", null: false
+    t.text "website", default: "", null: false
+    t.text "description", null: false
+    t.text "email", null: false
+    t.text "phone", null: false
+    t.text "city", null: false
+    t.text "state_or_region", null: false
+    t.text "post_code", null: false
+    t.text "country", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_companies_on_email", unique: true
+  end
+
+  create_table "industries", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index "lower(name)", name: "lower_industry_name", unique: true
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.string "role", null: false
+    t.string "duration"
+    t.string "salary", null: false
+    t.string "requirements", null: false
+    t.string "qualification", null: false
+    t.string "perks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "archived", default: false
     t.boolean "remote_ok", default: true, null: false
-    t.index ["user_id"], name: "index_jobs_on_user_id"
+    t.bigint "company_id", null: false
+    t.index ["company_id"], name: "index_jobs_on_company_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,4 +80,7 @@ ActiveRecord::Schema.define(version: 2018_10_12_163952) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "clients", "companies"
+  add_foreign_key "clients", "users"
+  add_foreign_key "jobs", "companies"
 end

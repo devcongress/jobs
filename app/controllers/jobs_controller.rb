@@ -23,7 +23,11 @@ class JobsController < ApplicationController
 
   def new
     if user_signed_in?
-      @job = current_user.jobs.build
+      @companies = current_user.companies
+      unless @companies.count > 0
+        redirect_to new_company_path, notice: "Register company first"
+      end
+      @job = Job.new
     else
       redirect_to new_user_session_path, notice: "Sign in to create a job post"
     end
@@ -33,11 +37,14 @@ class JobsController < ApplicationController
   end
 
   def create
-    @job = current_user.jobs.build(job_params)
+    company = current_user.companies.find_by(id: job_params[:company_id])
+    raise_not_found unless company
+
+    @job = company.jobs.build(job_params)
     if @job.save
       redirect_to @job, status: :created
     else
-      render :new
+      render :new, status: :bad_request
     end
   end
 
@@ -73,12 +80,15 @@ class JobsController < ApplicationController
       end
     end
 
-    # Use callbacks to share common setup or constraints between actions.
+    def set_company
+      @company = current_user.companies.find_by(id: params[:job][:company_id])
+      raise_not_found unless @company
+    end
+
     def set_job
       @job = Job.find_by(id: params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
       params.require(:job).permit(
       :role,
@@ -87,12 +97,7 @@ class JobsController < ApplicationController
       :requirements,
       :qualification,
       :perks,
-      :company,
-      :contact_email,
-      :poster_name,
-      :poster_email,
-      :phone,
-      :user_id,
+      :company_id,
       :archived,
       :remote_ok)
     end

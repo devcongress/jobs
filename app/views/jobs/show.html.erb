@@ -1,15 +1,9 @@
 <% content_for :title do %>
-  <%= "#{@job.role} at #{@job.company} | #{t('app.name')}" %>
+  <%= "#{@job.role} at #{@job.company.name} | #{t('app.name')}" %>
 <% end %>
 <h1 class="page--title">
-  <%= @job.role + " at " + @job.company %>
+  <%= @job.title %>
 </h1>
-<div class="page--legend-buttons">
-  <div class="share--buttons">
-    <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>
-    <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>
-  </div>
-</div>
 <div class="main--content">
   <h2 class="job--field__title">Role</h2>
   <p class="job--field__content">
@@ -35,18 +29,11 @@
   <%= simple_format h(@job.perks), :class => "job--field__content" %>
   <h2 class="job--field__title">Company</h2>
   <p class="job--field__content">
-    <%= @job.company %>
+    <%= @job.company.name %>
   </p>
   <h2 class="job--field__title">Contact email</h2>
   <p class="job--field__content">
-    <%= mail_to(@job.contact_email, @job.contact_email) %>
+    <%= mail_to @job.company.email, @job.company.email %>
   </p>
-  <h2 class="job--field__title">Phone</h2>
-  <p class="job--field__content">
-    <%= @job.phone %>
-  </p>
-  <% if user_signed_in? && @job.user_id == current_user.id %>
-    <%= link_to 'Edit | ', edit_job_path(@job) %>
-  <% end %>
   <%= link_to 'View All Jobs', jobs_path %>
 </div>
