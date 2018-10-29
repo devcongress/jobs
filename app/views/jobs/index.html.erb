@@ -6,7 +6,12 @@
   <p class="page--legend">All the DevCongress Job Board listing here</p>
 </div>
 <div class="main--content">
-  <%= render 'jobs/jobs-list' %>
+  <ul class="job--list">
+    <% @jobs.each do |job| %>
+      <li class="job--list__item">
+        <%= link_to job.title, job, :class => "job--list__item-link" %>
+      </li>
+    <% end %>
+  </ul>
 </div>
 <br/>
-<% # = link_to 'New Job', new_job_path %>

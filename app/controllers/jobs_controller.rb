@@ -1,4 +1,4 @@
-# require 'twitter'
+# require "twitter"
 
 class JobsController < ApplicationController
   before_action :set_job,            only: [:show, :edit, :update, :destroy, :toggle_archive]
@@ -6,7 +6,7 @@ class JobsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @jobs = Job.where(archived: false).order('created_at DESC')
+    @jobs = Job.where(archived: false).order("created_at DESC")
   end
 
   def show
@@ -15,17 +15,21 @@ class JobsController < ApplicationController
 
   def myjobs
     if user_signed_in?
-      @jobs = current_user.jobs.order('created_at DESC')
+      @jobs = current_user.jobs.order("created_at DESC")
     else
-      redirect_to new_user_session_path, notice: 'Sign in to see jobs you have posted'
+      redirect_to new_user_session_path, notice: "Sign in to see jobs you have posted"
     end
   end
 
   def new
     if user_signed_in?
-      @job = current_user.jobs.build
+      @companies = current_user.companies
+      unless @companies.count > 0
+        redirect_to new_company_path, notice: "Register company first"
+      end
+      @job = Job.new
     else
-      redirect_to new_user_session_path, notice: 'Sign in to create a job post'
+      redirect_to new_user_session_path, notice: "Sign in to create a job post"
     end
   end
 
@@ -33,11 +37,14 @@ class JobsController < ApplicationController
   end
 
   def create
-    @job = current_user.jobs.build(job_params)
+    company = current_user.companies.find_by(id: job_params[:company_id])
+    raise_not_found unless company
+
+    @job = company.jobs.build(job_params)
     if @job.save
       redirect_to @job, status: :created
     else
-      render :new
+      render :new, status: :bad_request
     end
   end
 
@@ -46,7 +53,7 @@ class JobsController < ApplicationController
   def update
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to @job, notice: 'Job was successfully updated.' }
+        format.html { redirect_to @job, notice: "Job was successfully updated." }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }
@@ -60,7 +67,7 @@ class JobsController < ApplicationController
   def destroy
     @job.destroy
     respond_to do |format|
-      format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
+      format.html { redirect_to jobs_url, notice: "Job was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -68,20 +75,20 @@ class JobsController < ApplicationController
   private
 
     def require_ownership
-      if current_user != @job.user
-        # redirect_to root_path
-        respond_to do |format|
-          format.html { redirect_to root_path, notice: 'You are not authorized to edit another users job post.' }
-        end
+      unless current_user == @job.user
+        redirect_to root_path, notice: "You are not authorized to edit this job post."
       end
     end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_job
-      @job = Job.find(params[:id])
+    def set_company
+      @company = current_user.companies.find_by(id: params[:job][:company_id])
+      raise_not_found unless @company
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    def set_job
+      @job = Job.find_by(id: params[:id])
+    end
+
     def job_params
       params.require(:job).permit(
       :role,
@@ -90,12 +97,7 @@ class JobsController < ApplicationController
       :requirements,
       :qualification,
       :perks,
-      :company,
-      :contact_email,
-      :poster_name,
-      :poster_email,
-      :phone,
-      :user_id,
+      :company_id,
       :archived,
       :remote_ok)
     end

@@ -1,0 +1,40 @@
+version: '3.5'
+
+x-db_config: &db_config
+  POSTGRES_PASSWORD: password
+  POSTGRES_USER: interne
+  POSTGRES_DB: jobs_dev
+
+services:
+  postgres:
+    image: postgres:9.5
+    volumes:
+      - postgres:/var/lib/postgresql/data:cached
+    environment:
+      <<: *db_config
+    networks:
+      - jobs
+
+  web:
+    build: .
+    environment:
+      <<: *db_config
+      POSTGRES_HOST: postgres
+    volumes:
+      - ./:/app
+      - bundle:/bundle:cached
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    networks:
+      - jobs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres:
+  bundle:
+
+networks:
+  jobs:
+    driver: bridge

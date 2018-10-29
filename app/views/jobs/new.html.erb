@@ -5,7 +5,7 @@
 <p class="page--legend">Provide candid, relevant information for best results</p>
 <div class="main--content">
   <% if user_signed_in? %>
-    <%= render 'form', job: @job %>
+    <%= render 'form', job: @job, companies: @companies %>
     <%= link_to 'Back', jobs_path %>
   <% else %>
     <p>Please sign in to create a job listing</p>

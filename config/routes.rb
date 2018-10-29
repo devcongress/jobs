@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/privacy' => 'pages#privacy'
   
   resources :jobs
+  resources :companies
 
   get '/myjobs',  to: 'jobs#myjobs', as: :user_jobs
 

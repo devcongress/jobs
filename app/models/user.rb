@@ -24,6 +24,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :jobs
+  has_many :clients
+  has_many :companies, through: :clients
 
   def is_owner?(job)
     if job.user_id == self.id
