@@ -23,7 +23,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :jobs
+  has_many :jobs, through: :companies
   has_many :clients
   has_many :companies, through: :clients
 
