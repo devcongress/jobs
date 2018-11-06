@@ -3,17 +3,19 @@
 # Table name: jobs
 #
 #  id            :bigint(8)        not null, primary key
-#  role          :string
+#  role          :string           not null
 #  duration      :string
-#  salary        :string
-#  requirements  :string
-#  qualification :string
+#  salary        :string           not null
+#  requirements  :string           not null
+#  qualification :string           not null
 #  perks         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  archived      :boolean          default(FALSE)
 #  remote_ok     :boolean          default(TRUE), not null
-#  company_id    :bigint(8)
+#  company_id    :bigint(8)        not null
+#  city          :string           default(""), not null
+#  country       :string           default(""), not null
 #
 
 require 'test_helper'

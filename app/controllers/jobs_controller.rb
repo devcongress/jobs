@@ -91,15 +91,17 @@ class JobsController < ApplicationController
 
     def job_params
       params.require(:job).permit(
-      :role,
-      :duration,
-      :salary,
-      :requirements,
-      :qualification,
-      :perks,
-      :company_id,
-      :archived,
-      :remote_ok)
+        :role,
+        :duration,
+        :salary,
+        :requirements,
+        :qualification,
+        :perks,
+        :company_id,
+        :archived,
+        :remote_ok,
+        :city,
+        :country)
     end
 
     def raise_not_found
