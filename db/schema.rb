@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_21_095117) do
+ActiveRecord::Schema.define(version: 2018_11_06_011104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 2018_10_21_095117) do
     t.boolean "archived", default: false
     t.boolean "remote_ok", default: true, null: false
     t.bigint "company_id", null: false
+    t.string "city", default: "", null: false
+    t.string "country", default: "", null: false
     t.index ["company_id"], name: "index_jobs_on_company_id"
   end
 
