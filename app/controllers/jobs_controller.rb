@@ -101,7 +101,8 @@ class JobsController < ApplicationController
         :archived,
         :remote_ok,
         :city,
-        :country)
+        :country,
+        :apply_link)
     end
 
     def raise_not_found

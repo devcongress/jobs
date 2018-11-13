@@ -16,6 +16,7 @@
 #  company_id    :bigint(8)        not null
 #  city          :string           default(""), not null
 #  country       :string           default(""), not null
+#  apply_link    :text             default(""), not null
 #
 
 class Job < ApplicationRecord
