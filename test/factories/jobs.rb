@@ -16,6 +16,7 @@
 #  company_id    :bigint(8)        not null
 #  city          :string           default(""), not null
 #  country       :string           default(""), not null
+#  apply_link    :text             default(""), not null
 #
 
 FactoryBot.define do
@@ -33,5 +34,6 @@ FactoryBot.define do
     remote_ok     { true }
     city          { Faker::Address.city }
     country       { Faker::Address.country }
+    apply_link    { Faker::Internet.url }
   end
 end
