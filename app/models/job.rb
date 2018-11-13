@@ -39,19 +39,19 @@ class Job < ApplicationRecord
   # `Job.active` is a version of `all` that returns
   # jobs that haven't been archived and are still within
   # the validity period since they were posted.
-  def self.active
+  def self.all_active
     Job.find_by_sql <<-SQL
-    SELECT *
-    FROM jobs
-    WHERE NOT archived
-          AND tsrange(
-            created_at,
-            created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
-          ) @> now()::timestamp
+      SELECT *
+      FROM jobs
+      WHERE NOT archived
+            AND tsrange(
+              created_at,
+              created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
+            ) @> now()::timestamp
     SQL
   end
 
   def self.validity_period
-    ENV['JOB_VALIDITY_PERIOD'].to_i
+    (ENV['JOB_VALIDITY_PERIOD'] || 30).to_i.abs
   end
 end
