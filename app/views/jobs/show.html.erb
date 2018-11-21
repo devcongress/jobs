@@ -4,6 +4,12 @@
 <h1 class="page--title">
   <%= @job.title %>
 </h1>
+<div class="page--legend-buttons">	
+  <div class="share--buttons">	
+    <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
+    <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
+  </div>	
+</div>
 <div class="main--content">
   <h2 class="job--field__title">Role</h2>
   <p class="job--field__content">
