@@ -17,6 +17,7 @@
 #  city          :string           default(""), not null
 #  country       :string           default(""), not null
 #  apply_link    :text             default(""), not null
+#  filled_at     :datetime
 #
 
 require 'test_helper'
@@ -24,7 +25,7 @@ require 'test_helper'
 class JobTest < ActiveSupport::TestCase
 
   setup do
-    @subject = FactoryBot.create(:job, created_at: DateTime.now - 1.day)
+    @subject = FactoryBot.create(:job, created_at: 1.day.ago)
   end
 
   test "associations" do
@@ -48,10 +49,11 @@ class JobTest < ActiveSupport::TestCase
 
     # These jobs are not matched since they fall
     # outside of the range of active job post. One of
-    # them is archived.
+    # them is archived and another is already filled.
     FactoryBot.create(:job, archived: true)
     FactoryBot.create(:job, created_at: future_date)
     FactoryBot.create(:job, created_at: past_date)
+    FactoryBot.create(:job, created_at: 1.day.ago, filled_at: past_date)
 
     active_job_posts = Job.all_active
 

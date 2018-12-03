@@ -6,8 +6,13 @@ Rails.application.routes.draw do
   get '/about' => 'pages#about'
   get '/privacy' => 'pages#privacy'
   
-  resources :jobs
   resources :companies
+  resources :jobs do
+    member do
+      post "filled"
+      post "vacant"
+    end
+  end
 
   get '/myjobs',  to: 'jobs#myjobs', as: :user_jobs
 
