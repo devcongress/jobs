@@ -43,6 +43,8 @@ class JobsController < ApplicationController
     @job = company.jobs.build(job_params)
     if @job.save
       redirect_to @job, status: :created
+      # job_post_successful
+      $tweetBot.update("...")
     else
       render :new, status: :bad_request
     end
@@ -108,4 +110,11 @@ class JobsController < ApplicationController
     def raise_not_found
       raise ActionController::RoutingError.new("not found")
     end
+
+    def job_post_successful
+      # place mailer code here
+      # place twitter code here
+      $tweetBot.update("...")
+    end
+    
 end
