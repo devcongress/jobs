@@ -21,6 +21,8 @@
 class Company < ApplicationRecord
   # Associations
   has_many :jobs
+  has_many :clients
+  has_many :users, through: :clients
 
   # Validations
   validates :name,            presence: true

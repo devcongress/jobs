@@ -1,0 +1,13 @@
+<p>
+  A new job has been posted on <%= link_to "The Jobs Board", root_url %>
+  for your company. Please find the details below:
+</p>
+<!--
+  TO BE PROPERLY DONE.
+
+  The contents in this email only highlights what's the important
+  information to include. It currently has no design.
+-->
+<p>
+  Here's a link to the job post: <%= link_to @job.title, job_url(@job) %>.
+</p>

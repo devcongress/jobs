@@ -5,6 +5,7 @@ require 'rails/test_help'
 class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
   include FactoryBot::Syntax::Methods
+  include ActiveJob::TestHelper
 
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
