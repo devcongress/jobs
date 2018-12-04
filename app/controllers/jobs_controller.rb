@@ -24,10 +24,8 @@ class JobsController < ApplicationController
 
     @job = company.jobs.build(job_params)
     if @job.save
-      JobsMailer.with(job: @job).published.deliver_later
       redirect_to @job, status: :created
-      # job_post_successful
-      $tweetBot.update("...")
+      job_post_successful
     else
       render :new, status: :bad_request
     end
@@ -123,9 +121,8 @@ class JobsController < ApplicationController
     end
 
     def job_post_successful
-      # place mailer code here
-      # place twitter code here
-      $tweetBot.update("...")
+      JobsMailer.with(job: @job).published.deliver_later
+      # $tweetBot.update("New Job Vacancy: " + @job.title + ". Read more at " + job_url)
     end
     
 end
