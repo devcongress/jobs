@@ -17,6 +17,7 @@
 #  city          :string           default(""), not null
 #  country       :string           default(""), not null
 #  apply_link    :text             default(""), not null
+#  filled_at     :datetime
 #
 
 FactoryBot.define do
