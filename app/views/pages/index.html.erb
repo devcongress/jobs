@@ -5,12 +5,3 @@
 <div class="page--legend-buttons">
   <p class="page--legend">Welcome to the DevCongress Job Board. Hire great people here.</p>
 </div>
-<div class="main--content">	
-  <ul class="job--list">
-    <% @jobs.each do |job| %>
-      <li class="job--list__item">
-        <%= link_to job.title, job, :class => "job--list__item-link" %>
-      </li>
-    <% end %>
-  </ul>
-</div>
