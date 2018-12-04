@@ -16,5 +16,5 @@ class Client < ApplicationRecord
 
   # Validations
   validates :company, presence: true
-  validates :user,    presence: true
+  validates :user,   presence: true
 end
