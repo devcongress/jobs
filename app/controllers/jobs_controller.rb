@@ -1,39 +1,21 @@
 # require "twitter"
 
 class JobsController < ApplicationController
-  before_action :set_job,            only: [:show, :edit, :update, :destroy, :toggle_archive]
+  before_action :set_job,            except: [:new, :index, :myjobs]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :require_ownership,  only: [:edit, :destroy]
-  before_action :authenticate_user!, only: [:new, :create]
 
   def index
     @jobs = Job.all_active
   end
 
-  def show
-    raise_not_found if @job.archived?
-  end
-
-  def myjobs
-    if user_signed_in?
-      @jobs = current_user.jobs.order("created_at DESC")
-    else
-      redirect_to new_user_session_path, notice: "Sign in to see jobs you have posted"
-    end
-  end
-
   def new
-    if user_signed_in?
-      @companies = current_user.companies
-      unless @companies.count > 0
-        redirect_to new_company_path, notice: "Register company first"
-      end
-      @job = Job.new
-    else
-      redirect_to new_user_session_path, notice: "Sign in to create a job post"
+    @companies = current_user.companies
+    if @companies.empty?
+      redirect_to new_company_path, notice: "Register company first"
+      return
     end
-  end
-
-  def edit
+    @job = Job.new
   end
 
   def create
@@ -49,18 +31,33 @@ class JobsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /jobs/1
-  # PATCH/PUT /jobs/1.json
+  def show
+    raise_not_found if @job.archived?
+  end
+
+  def edit
+  end
+
   def update
-    respond_to do |format|
-      if @job.update(job_params)
-        format.html { redirect_to @job, notice: "Job was successfully updated." }
-        format.json { render :show, status: :ok, location: @job }
-      else
-        format.html { render :edit }
-        format.json { render json: @job.errors, status: :unprocessable_entity }
-      end
+    if @job.update(edit_job_params)
+      redirect_to @job, notice: "Job has been updated."
+    else
+      render :edit
     end
+  end
+
+  def myjobs
+    @jobs = current_user.jobs.order("created_at DESC")
+  end
+
+  def filled
+    @job.update_attribute(:filled_at, DateTime.now)
+    redirect_to @job
+  end
+
+  def vacant
+    @job.update_attribute(:filled_at, nil)
+    redirect_to @job
   end
 
   # DELETE /jobs/1
@@ -76,7 +73,7 @@ class JobsController < ApplicationController
   private
 
     def require_ownership
-      unless current_user == @job.user
+      unless current_user.companies.includes(@job.company)
         redirect_to root_path, notice: "You are not authorized to edit this job post."
       end
     end
@@ -99,7 +96,20 @@ class JobsController < ApplicationController
         :qualification,
         :perks,
         :company_id,
-        :archived,
+        :remote_ok,
+        :city,
+        :country,
+        :apply_link)
+    end
+
+    def edit_job_params
+      params.require(:job).permit(
+        :role,
+        :duration,
+        :salary,
+        :requirements,
+        :qualification,
+        :perks,
         :remote_ok,
         :city,
         :country,

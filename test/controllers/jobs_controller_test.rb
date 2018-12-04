@@ -74,4 +74,43 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
       post jobs_url, params: {job: job_params}
     end
   end
+
+  test "should be able to edit a job post" do
+    job = FactoryBot.create(:job, company: @company)
+    job_params = attributes_for(:job, company: FactoryBot.create(:company))
+
+    sign_in @user
+    put job_url(job), params: {job: job_params}
+
+    job.reload
+    assert_redirected_to job
+    assert_equal job.company, @company # Job's company cannot be changed.
+    assert_equal job.role, job_params[:role]
+
+    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id")
+    updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
+  end
+
+  test "should be able to mark a job post (position) as filled" do
+    job = FactoryBot.create(:job, company: @company)
+
+    sign_in @user
+    post filled_job_url(job)
+
+    job.reload
+    assert_redirected_to job
+    refute_nil job.filled_at
+    assert job.filled_at < DateTime.now
+  end
+
+  test "should be able to mark a filled job as vacant" do
+    job = FactoryBot.create(:job, company: @company, filled_at: DateTime.now)
+
+    sign_in @user
+    post vacant_job_url(job)
+
+    job.reload
+    assert_redirected_to job
+    assert_nil job.filled_at
+  end
 end

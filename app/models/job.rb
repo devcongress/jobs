@@ -17,6 +17,7 @@
 #  city          :string           default(""), not null
 #  country       :string           default(""), not null
 #  apply_link    :text             default(""), not null
+#  filled_at     :datetime
 #
 
 class Job < ApplicationRecord
@@ -45,6 +46,7 @@ class Job < ApplicationRecord
       SELECT *
       FROM jobs
       WHERE NOT archived
+            AND filled_at IS NULL
             AND tsrange(
               created_at,
               created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
