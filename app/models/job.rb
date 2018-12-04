@@ -31,7 +31,7 @@ class Job < ApplicationRecord
   validates :role,          presence: true
 
   def to_param
-    "#{id}-#{role}-at-#{company.name}".parameterize
+    "#{id}-#{role}-#{company.name}".parameterize
   end
 
   def title

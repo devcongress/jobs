@@ -55,11 +55,13 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
   test "should create a new job post for user's client" do
     sign_in @user
 
-    assert_difference('Job.count') do
-      job_params = attributes_for(:job, company_id: @company.id)
-      post jobs_url, params: {job: job_params}
+    assert_enqueued_jobs @company.users.count do
+      assert_difference('Job.count') do
+        job_params = attributes_for(:job, company_id: @company.id)
+        post jobs_url, params: {job: job_params}
 
-      assert_response :created
+        assert_response :created
+      end
     end
   end
 

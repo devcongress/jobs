@@ -24,6 +24,7 @@ class JobsController < ApplicationController
 
     @job = company.jobs.build(job_params)
     if @job.save
+      JobsMailer.with(job: @job).published.deliver_later
       redirect_to @job, status: :created
     else
       render :new, status: :bad_request
