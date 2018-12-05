@@ -52,12 +52,20 @@
     <span class="pure-form-message">Please remember that the best developers are motivated by a mission. Please *sell* the project succinctly.</span>
   </div>
   <div class="field">
-    <%= form.label :company %>
-    <%= form.text_field :company %>
-  </div>
-  <div class="field">
     <%= form.label :contact_email %>
     <%= form.email_field :contact_email %>
+  </div>
+  <div class="field">
+    <%= form.label :city %>
+    <%= form.text_field :city %>
+  </div>
+  <div class="field">
+    <%= form.label :country %>
+    <%= form.text_field :country %>
+  </div>
+  <div class="field">
+    <%= form.label :apply_link, "Link to Apply" %>
+    <%= form.url_field :apply_link %>
   </div>
   <div class="actions">
     <%= form.submit %>

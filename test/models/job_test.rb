@@ -3,17 +3,21 @@
 # Table name: jobs
 #
 #  id            :bigint(8)        not null, primary key
-#  role          :string
+#  role          :string           not null
 #  duration      :string
-#  salary        :string
-#  requirements  :string
-#  qualification :string
+#  salary        :string           not null
+#  requirements  :string           not null
+#  qualification :string           not null
 #  perks         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  archived      :boolean          default(FALSE)
 #  remote_ok     :boolean          default(TRUE), not null
-#  company_id    :bigint(8)
+#  company_id    :bigint(8)        not null
+#  city          :string           default(""), not null
+#  country       :string           default(""), not null
+#  apply_link    :text             default(""), not null
+#  filled_at     :datetime
 #
 
 require 'test_helper'
@@ -21,7 +25,7 @@ require 'test_helper'
 class JobTest < ActiveSupport::TestCase
 
   setup do
-    @subject = FactoryBot.build(:job)
+    @subject = FactoryBot.create(:job, created_at: 1.day.ago)
   end
 
   test "associations" do
@@ -34,5 +38,26 @@ class JobTest < ActiveSupport::TestCase
     must validate_presence_of :requirements
     must validate_presence_of :qualification
     must validate_presence_of :role
+  end
+
+  test "all_active" do
+    # Uses the default validity period. See the
+    # self.validity_period in model for what the
+    # current value is.
+    past_date   = DateTime.now - (Job.validity_period + 1).days
+    future_date = DateTime.now + (Job.validity_period + 1).days
+
+    # These jobs are not matched since they fall
+    # outside of the range of active job post. One of
+    # them is archived and another is already filled.
+    FactoryBot.create(:job, archived: true)
+    FactoryBot.create(:job, created_at: future_date)
+    FactoryBot.create(:job, created_at: past_date)
+    FactoryBot.create(:job, created_at: 1.day.ago, filled_at: past_date)
+
+    active_job_posts = Job.all_active
+
+    assert_equal 1, active_job_posts.length
+    assert_equal @subject.id, active_job_posts.first.id
   end
 end

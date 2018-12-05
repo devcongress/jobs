@@ -3,17 +3,21 @@
 # Table name: jobs
 #
 #  id            :bigint(8)        not null, primary key
-#  role          :string
+#  role          :string           not null
 #  duration      :string
-#  salary        :string
-#  requirements  :string
-#  qualification :string
+#  salary        :string           not null
+#  requirements  :string           not null
+#  qualification :string           not null
 #  perks         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  archived      :boolean          default(FALSE)
 #  remote_ok     :boolean          default(TRUE), not null
-#  company_id    :bigint(8)
+#  company_id    :bigint(8)        not null
+#  city          :string           default(""), not null
+#  country       :string           default(""), not null
+#  apply_link    :text             default(""), not null
+#  filled_at     :datetime
 #
 
 FactoryBot.define do
@@ -29,5 +33,8 @@ FactoryBot.define do
     duration      { "#{rand(3)} - #{rand(5..10)} months" }
     archived      { false }
     remote_ok     { true }
+    city          { Faker::Address.city }
+    country       { Faker::Address.country }
+    apply_link    { Faker::Internet.url }
   end
 end

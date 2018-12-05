@@ -16,7 +16,8 @@ gem 'bootsnap', '~> 1.3', require: false
 
 gem 'devise', '~> 4.4', '>= 4.4.3'
 gem 'sendgrid', '~> 1.2', '>= 1.2.4'
-# gem 'twitter', '~> 6.2'
+gem 'twitter', '~> 6.2'
+gem 'oauth'
 
 gem 'pg'
 
