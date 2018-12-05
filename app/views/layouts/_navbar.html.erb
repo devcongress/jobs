@@ -1,10 +1,10 @@
 <div class="navbar">
   <%= link_to image_tag( 'devcongress-jobs-logo.svg', alt: 'devcongress logo', height: '', width: '', class: 'dc-logo' ), root_path, :class => "navbar--logo" %>
   <div class="navbar--menu">
+    <%= link_to 'All Jobs', jobs_path, :class => 'navbar--menu__item' %>
     <%= link_to 'Add Job', new_job_path, :class => 'navbar--menu__item' %>
     <% if user_signed_in? %>
-      <%= link_to 'My Jobs', user_jobs_path, :class => 'navbar--menu__item' %>
-      <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => 'navbar--menu__item'             %>
+      <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => 'navbar--menu__item' %>
     <% else %>
       <%= link_to 'Sign In', new_user_session_path, :class => 'navbar--menu__item' %>
       <%= link_to 'Sign Up', new_user_registration_path, :class => 'navbar--menu__item' %>
