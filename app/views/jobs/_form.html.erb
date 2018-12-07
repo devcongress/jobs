@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     <%= form.label :company_id, "Company Name" %>
-    <%= form.collection_select(:company_id, @companies, :id, :name) %>
+    <%= form.collection_select(:company_id, @current_user.companies, :id, :name) %>
   </div>
   <div class="field">
     <%= form.check_box :remote_ok %> Remote OK
