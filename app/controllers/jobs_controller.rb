@@ -1,7 +1,7 @@
 # require "twitter"
 
 class JobsController < ApplicationController
-  before_action :set_job,            except: [:new, :index, :myjobs]
+  before_action :set_job,            except: [:new, :index]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_ownership,  only: [:edit, :destroy]
 
@@ -10,8 +10,8 @@ class JobsController < ApplicationController
   end
 
   def new
-    @companies = current_user.companies
-    if @companies.empty?
+    @current_user = current_user
+    if @current_user.companies.empty?
       redirect_to new_company_path, notice: "Register company first"
       return
     end
@@ -44,10 +44,6 @@ class JobsController < ApplicationController
     else
       render :edit
     end
-  end
-
-  def myjobs
-    @jobs = current_user.jobs.order("created_at DESC")
   end
 
   def filled
