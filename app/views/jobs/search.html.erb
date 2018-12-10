@@ -1,0 +1,20 @@
+<% if @matches.empty? %>
+<% else %>
+  <h3><%= pluralize(@matches.length, 'match') %> were found:</h3>
+  <ul>
+    <% @matches.each do |match| %>
+      <li>
+        <h4><%= link_to match.title, job_url(match) %></h4>
+        <p>
+        <!--
+          TODO: Right now we display the requirements of the job
+          but we should replace this with the part of the job post
+          that matched the user's query. And if possible highlight
+          the matched words or phrases.
+        -->
+          <%= match.requirements %>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

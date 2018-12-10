@@ -57,4 +57,18 @@ class Job < ApplicationRecord
   def self.validity_period
     (ENV['JOB_VALIDITY_PERIOD'] || 30).to_i.abs
   end
+
+  def self.search(query)
+    Job.find_by_sql [<<-SQL, query]
+SELECT *
+  FROM jobs
+ WHERE NOT archived
+       AND filled_at IS NULL
+       AND tsrange(
+        created_at,
+        created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
+       ) @> now()::timestamp
+       AND plainto_tsquery(?) @@ full_text_search
+    SQL
+  end
 end

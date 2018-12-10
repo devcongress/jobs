@@ -8,6 +8,10 @@ Rails.application.routes.draw do
   
   resources :companies
   resources :jobs do
+    collection do
+      get 'search'
+    end
+
     member do
       post "filled"
       post "vacant"
