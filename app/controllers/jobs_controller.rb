@@ -1,8 +1,8 @@
 # require "twitter"
 
 class JobsController < ApplicationController
-  before_action :set_job,            except: [:new, :index, :myjobs]
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_job,            except: [:new, :index]
+  before_action :authenticate_user!, except: [:index, :show, :search]
   before_action :require_ownership,  only: [:edit, :destroy]
 
   def index
@@ -10,8 +10,8 @@ class JobsController < ApplicationController
   end
 
   def new
-    @companies = current_user.companies
-    if @companies.empty?
+    @current_user = current_user
+    if @current_user.companies.empty?
       redirect_to new_company_path, notice: "Register company first"
       return
     end
@@ -46,10 +46,6 @@ class JobsController < ApplicationController
     end
   end
 
-  def myjobs
-    @jobs = current_user.jobs.order("created_at DESC")
-  end
-
   def filled
     @job.update_attribute(:filled_at, DateTime.now)
     redirect_to @job
@@ -58,6 +54,14 @@ class JobsController < ApplicationController
   def vacant
     @job.update_attribute(:filled_at, nil)
     redirect_to @job
+  end
+
+  def search
+    @matches = Job.search(params[:q])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # DELETE /jobs/1

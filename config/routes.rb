@@ -8,13 +8,15 @@ Rails.application.routes.draw do
   
   resources :companies
   resources :jobs do
+    collection do
+      get 'search'
+    end
+
     member do
       post "filled"
       post "vacant"
     end
   end
-
-  # get '/myjobs',  to: 'jobs#myjobs', as: :user_jobs
 
   devise_for :users, skip: [:sessions, :registrations, :passwords]
 

@@ -87,7 +87,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_equal job.company, @company # Job's company cannot be changed.
     assert_equal job.role, job_params[:role]
 
-    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id")
+    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id", "full_text_search")
     updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
   end
 
@@ -112,5 +112,19 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     job.reload
     assert_redirected_to job
     assert_nil job.filled_at
+  end
+
+  test "search" do
+    first = FactoryBot.create(:job, role: "Senior Ruby on Rails Developer")
+    second = FactoryBot.create(:job, role: "Senior JavaScript Developer")
+    FactoryBot.create(:job) # not found
+
+    get search_jobs_url(q: "senior developer")
+
+    assert_match /2 matches were found/i, @response.body
+    assert_match first.role,              @response.body
+    assert_match first.requirements,      @response.body
+    assert_match second.role,             @response.body
+    assert_match second.requirements,     @response.body
   end
 end
