@@ -122,9 +122,9 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     get search_jobs_url(q: "senior developer")
 
     assert_match /2 matches were found/i, @response.body
-    assert_match first.role, @response.body
-    assert_match first.requirements, @response.body
-    assert_match second.role, @response.body
-    assert_match second.requirements, @response.body
+    assert_match first.role,              @response.body
+    assert_match first.requirements,      @response.body
+    assert_match second.role,             @response.body
+    assert_match second.requirements,     @response.body
   end
 end
