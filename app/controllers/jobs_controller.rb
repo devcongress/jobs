@@ -2,7 +2,7 @@
 
 class JobsController < ApplicationController
   before_action :set_job,            except: [:new, :index]
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :search]
   before_action :require_ownership,  only: [:edit, :destroy]
 
   def index
@@ -54,6 +54,14 @@ class JobsController < ApplicationController
   def vacant
     @job.update_attribute(:filled_at, nil)
     redirect_to @job
+  end
+
+  def search
+    @matches = Job.search(params[:q])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # DELETE /jobs/1

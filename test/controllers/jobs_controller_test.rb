@@ -113,4 +113,18 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to job
     assert_nil job.filled_at
   end
+
+  test "search" do
+    first = FactoryBot.create(:job, role: "Senior Ruby on Rails Developer")
+    second = FactoryBot.create(:job, role: "Senior JavaScript Developer")
+    FactoryBot.create(:job) # not found
+
+    get search_jobs_url(q: "senior developer")
+
+    assert_match /2 matches were found/i, @response.body
+    assert_match first.role,              @response.body
+    assert_match first.requirements,      @response.body
+    assert_match second.role,             @response.body
+    assert_match second.requirements,     @response.body
+  end
 end

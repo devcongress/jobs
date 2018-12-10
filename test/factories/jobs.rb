@@ -36,5 +36,6 @@ FactoryBot.define do
     city          { Faker::Address.city }
     country       { Faker::Address.country }
     apply_link    { Faker::Internet.url }
+    created_at    { 1.day.ago }
   end
 end
