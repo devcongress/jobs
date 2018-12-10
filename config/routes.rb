@@ -14,8 +14,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # get '/myjobs',  to: 'jobs#myjobs', as: :user_jobs
-
   devise_for :users, skip: [:sessions, :registrations, :passwords]
 
   devise_scope :user do

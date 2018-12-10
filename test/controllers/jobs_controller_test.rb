@@ -87,7 +87,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_equal job.company, @company # Job's company cannot be changed.
     assert_equal job.role, job_params[:role]
 
-    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id")
+    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id", "full_text_search")
     updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
   end
 
