@@ -5,16 +5,30 @@
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
 <%= favicon_link_tag asset_path('devcongress-logo-32.ico'), :rel => "shortcut icon", :type => "image/x-icon"  %>
 <%= favicon_link_tag asset_path('devcongress-logo-57.ico'), :rel => "apple-touch-icon", :sizes => "57x57" %>
-<%= favicon_link_tag asset_path('devcongress-logo-114.ico'), :rel => "apple-touch-icon", :sizes => "114x114" %>
 <%= favicon_link_tag asset_path('devcongress-logo-72.ico'), :rel => "apple-touch-icon", :sizes => "72x72" %>
+<%= favicon_link_tag asset_path('devcongress-logo-114.ico'), :rel => "apple-touch-icon", :sizes => "114x114" %>
 <%= favicon_link_tag asset_path('devcongress-logo-144.ico'), :rel => "apple-touch-icon", :sizes => "144x144" %>
-<meta content="DevCongress Jobs makes it easier for companies to find technical talent across Africa." name="description"/>
-<meta content="devcongress, jobs, remote jobs, developer jobs, software, developer, engineer, devcongress jobs" name="keywords"/>
-<meta content="z9ECY2G8PZ46qx5_5dFZ_a1BHNz9_2v3lZ55QTegnLg" name="google-site-verification"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="always" name="referrer"/>
-<meta content="#e6f7fd" name="theme-color"/>
+<meta name="description" content="<%= t('app.description') -%>" />
+<meta name="keywords" content="devcongress, jobs, remote jobs, developer jobs, software, developer, engineer, devcongress jobs" />
+<meta name="google-site-verification" content="z9ECY2G8PZ46qx5_5dFZ_a1BHNz9_2v3lZ55QTegnLg" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="always" />
+<meta name="theme-color" content="#e6f7fd"/>
 <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+
+<%# Open Graph %>
+<meta name="title" content="<%# yield(:title) %>" />
+<meta property="og:type" content="website">
+<meta property="og:url" content="<%= request.original_url %>"/>
+<meta property="og:title" content="<%# yield(:title) %>" />
+<meta property="og:description" content="<%= t('app.description') -%>" />
+<meta property="og:image" content="<%= asset_path('devcongress-jobs-meta.jpg') %>" />
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="<%= request.original_url %>"/>
+<meta property="twitter:title" content="<%# yield(:title) %>" />
+<meta property="twitter:description" content="<%= t('app.description') -%>" />
+<meta property="twitter:image" content="<%= asset_path('devcongress-jobs-meta.jpg') %>" />
+
 <script>
   
   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
