@@ -51,6 +51,7 @@ class Job < ApplicationRecord
               created_at,
               created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
             ) @> now()::timestamp
+            ORDER BY created_at DESC
     SQL
   end
 
@@ -69,6 +70,7 @@ SELECT *
         created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
        ) @> now()::timestamp
        AND plainto_tsquery(?) @@ full_text_search
+       ORDER BY created_at DESC
     SQL
   end
 end

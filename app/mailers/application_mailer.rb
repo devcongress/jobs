@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'jobs@devcongress.org',
+  default from: 'DevCongress Jobs',
           reply_to: 'jobs@devcongress.org'
 
   layout 'mailer'
