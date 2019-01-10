@@ -15,10 +15,10 @@
 //= require turbolinks
 //= require_tree .
 
-var archiveSwitch = new Boolean(false);
+// var archiveSwitch = new Boolean(false);
 
-$(".job--list__archive-link").on("click", function() {
-    archiveSwitch = !archiveSwitch;
-    var temp_ = tempSwitch == true ? "Unarchive" : "Archive";
-    $(".job--list__archive-link").html(temp_);
-});
+// $(".job--list__archive-link").on("click", function() {
+//     archiveSwitch = !archiveSwitch;
+//     var temp_ = tempSwitch == true ? "Unarchive" : "Archive";
+//     $(".job--list__archive-link").html(temp_);
+// });
