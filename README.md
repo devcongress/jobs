@@ -10,10 +10,14 @@ This is the code which runs the DevCongress Jobs website, which lives at [jobs.d
 
 Install Docker and Docker Compose (Docker Compose comes with Docker on Windows and MacOS)
 
-### Init projet
-
-Init database with `docker-compose  run --rm web rails db:create db:migrate db:seed`
-
 ### Start Project
 
 Launch docker with `docker-compose up`
+
+### Manually running migrations
+
+This should not be necessary on project start, but during development you can use it to run newer migrations
+
+```sh
+docker-compose  run --rm web rake db:create db:migrate db:seed
+```
