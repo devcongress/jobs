@@ -78,7 +78,8 @@ class JobsController < ApplicationController
 
     def require_ownership
       unless current_user.companies.includes(@job.company)
-        redirect_to root_path, notice: "You are not authorized to edit this job post."
+        redirect_to @job, notice: "You are not authorized to edit this job post."
+        return
       end
     end
 
