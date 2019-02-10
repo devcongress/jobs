@@ -38,17 +38,20 @@
   </div>
   <div class="field">
     <%= form.label :requirements %>
-    <%= form.text_area :requirements %>
+    <%= form.hidden_field :requirements, id: "requirements" %>
+    <trix-editor input="requirements"></trix-editor>
     <span class="pure-form-message">What are the 1 to 3 main things you need your future developer to help with? Please feel free to keep this as simple as possible and use every day language. Please be as specific as possible. For example: "I need the developer to help us build a new iPhone app"</span>
   </div>
   <div class="field">
     <%= form.label :qualification %>
-    <%= form.text_area :qualification %>
+    <%= form.hidden_field :qualification, id: "qualification" %>
+    <trix-editor input="qualification"></trix-editor>
     <span class="pure-form-message">This could be anything from "I require the developer to be fluent in French" to something as technical as "I require the developer to have an expert-level familiarity with PHP"</span>
   </div>
   <div class="field">
     <%= form.label :perks %>
-    <%= form.text_area :perks %>
+    <%= form.hidden_field :perks, id: "perks" %>
+    <trix-editor input="perks"></trix-editor>
     <span class="pure-form-message">Please remember that the best developers are motivated by a mission. Please *sell* the project succinctly.</span>
   </div>
   <div class="field">
