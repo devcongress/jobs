@@ -4,16 +4,6 @@
 <h1 class="page--title">All Jobs</h1>
 <p class="page--legend">All the DevCongress Job Board listings here</p>
 <div class="main--content">
-  <ul class="job--list">
-    <% @jobs.each do |job| %>
-      <li class="job--list__item">
-        <%= link_to job, :class => "job--list__item-link" do %>
-          <span class="job--list__item-role"><%= job.role %></span>
-          <span class="job--list__item-company"><%= job.company.name %></span>
-          <span class="job--list__item-type"><%= job.duration %></span>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
+  <%= render 'list', job: @job %>
 </div>
 <br/>
