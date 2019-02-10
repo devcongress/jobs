@@ -14,6 +14,19 @@ Install Docker and Docker Compose (Docker Compose comes with Docker on Windows a
 
 Launch docker with `docker-compose up`
 
+## Run db:seed
+
+```sh
+docker-compose run --rm web rake db:seed
+```
+
+You can now log in with the default user that was created during the seeding
+
+```
+email: test@example.com
+password: password1
+```
+
 ### Manually running migrations
 
 This should not be necessary on project start, but during development you can use it to run newer migrations
