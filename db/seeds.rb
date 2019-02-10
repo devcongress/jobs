@@ -11,7 +11,7 @@
 
 open("https://gist.githubusercontent.com/claudey/679c682e4291d7b54059c7c19b1dfdf2/raw/3687da0264ca4fa6867d12b561c164a8b9c29af6/industries.txt", "r") do |content|
   content.each_line do |industry_name|
-    Industry.where(name: industry_name)
+    Industry.where(name: industry_name.chomp!)
       .first_or_create.update_attributes({name: industry_name})
   end
 end
