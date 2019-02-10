@@ -20,6 +20,7 @@ gem 'twitter', '~> 6.2'
 gem 'oauth'
 
 gem 'pg'
+gem 'trix'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
