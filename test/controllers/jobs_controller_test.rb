@@ -18,7 +18,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     @available_jobs.each do |job|
-      job_title = "#{job.role} at #{job.company.name}"
+      job_title = "#{job.role}"
       assert_match html_escape(job_title), @response.body
     end
 
