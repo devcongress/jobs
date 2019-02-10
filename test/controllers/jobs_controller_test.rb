@@ -91,7 +91,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
   end
 
-  test "only job owner can edit job" do
+  test "only job owner can update job" do
     job = FactoryBot.create(:job)
     job_params = attributes_for(:job)
 
@@ -99,7 +99,17 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
 
     put job_url(job), params: {job: job_params}
     assert_redirected_to job
-    assert_match "You are not authorized to edit this job post", @response.body
+  end
+
+  test "only job owner can view edit job page" do
+    company = FactoryBot.create(:company)
+    job = FactoryBot.create(:job, company: company)
+    user = FactoryBot.create(:user)
+
+    sign_in user
+
+    get edit_job_url(job)
+    assert_redirected_to job
   end
 
   test "should be able to mark a job post (position) as filled" do
