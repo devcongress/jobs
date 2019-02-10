@@ -13,6 +13,26 @@
     }
 }
 
+.job--list__item-role {
+    display: block;
+    font-size: 1.3em;
+}
+
+.job--list__item-company {
+    color: #333;
+}
+
+.job--list__item-type {
+    position: absolute;
+    font-size: 0.8em;
+    right: 0;
+    top: 2px;
+    padding: 4px 6px;
+    background-color: #eee;
+    color: #333;
+    text-decoration: none;
+}
+
 .job--list__item-archived {
     background: #fcffc9;
 }
@@ -22,7 +42,13 @@
 }
 
 .job--list__item-link {
-    display: flex;
+    color: #0097C6;
+    display: block;
+    width: 100%;
+    position: relative;
+    &:visited {
+        color: #0097C6;
+    }
     &:hover {
         color: #EC058C;
     }
