@@ -4,3 +4,6 @@
 <p><%= @company.description %></p>
 <p><%= @company.city %></p>
 <p><%= @company.country %></p>
+<% if current_user && current_user.companies.include?(@company) %>
+<p><%= link_to "Edit", edit_company_path(@company) %></p>
+<% end %>
