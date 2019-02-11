@@ -9,7 +9,7 @@ services:
   postgres:
     image: postgres:9.5
     volumes:
-      - postgres:/var/lib/postgresql/data:cached
+      - ./.volumes/postgres:/var/lib/postgresql/data:cached
     environment:
       <<: *db_config
     networks:
