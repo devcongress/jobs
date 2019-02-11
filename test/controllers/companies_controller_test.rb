@@ -43,6 +43,23 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
     assert_match html_escape(@company.industry), @response.body
     assert_match @company.website,               @response.body
     assert_match @company.description,           @response.body
+
+    # edit link should not be visible
+    refute_match edit_company_path(@company), @response.body
   end
 
+  test "should show edit link for company owner" do
+    sign_in @user
+
+    get company_url(@company)
+
+    assert_response :ok
+    assert_match html_escape(@company.name),     @response.body
+    assert_match html_escape(@company.industry), @response.body
+    assert_match @company.website,               @response.body
+    assert_match @company.description,           @response.body
+
+    # edit link should be visible
+    assert_match edit_company_path(@company), @response.body
+  end
 end
