@@ -1,5 +1,3 @@
-# require "twitter"
-
 class JobsController < ApplicationController
   before_action :set_job,            except: [:new, :index]
   before_action :authenticate_user!, except: [:index, :show, :search]
