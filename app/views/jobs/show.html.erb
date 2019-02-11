@@ -26,11 +26,11 @@
     <%= @job.remote_ok ? "Yes" : "No" %>
   </p>
   <h2 class="job--field__title">Requirements</h2>
-  <%= simple_format @job.requirements.html_safe, :class => "job--field__content" %>
+  <%= simple_format @job.requirements.to_s.html_safe, :class => "job--field__content" %>
   <h2 class="job--field__title">Qualification</h2>
-  <%= simple_format @job.qualification.html_safe, :class => "job--field__content" %>
+  <%= simple_format @job.qualification.to_s.html_safe, :class => "job--field__content" %>
   <h2 class="job--field__title">Perks</h2>
-  <%= simple_format @job.perks.html_safe, :class => "job--field__content" %>
+  <%= simple_format @job.perks.to_s.html_safe, :class => "job--field__content" %>
   <h2 class="job--field__title">Company</h2>
   <p class="job--field__content">
     <%= @job.company.name %>
