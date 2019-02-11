@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "creating containers"
+echo "~~~~~> creating containers"
 docker-compose up --build -d
 
-echo "waiting for containers to start"
+echo "~~~~~> waiting for containers to start"
 # inelegant but efficient. we wait a few seconds
 secs=5
 while [ $secs -gt 0 ]; do
@@ -12,7 +12,7 @@ while [ $secs -gt 0 ]; do
    : $((secs--))
 done
 
-echo "running migrations and seeding database"
+echo "~~~~~> applying migrations and seeding database"
 docker-compose run --rm web rake db:migrate db:seed
 
 echo "complete!!!"

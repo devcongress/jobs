@@ -10,15 +10,13 @@ This is the code which runs the DevCongress Jobs website, which lives at [jobs.d
 
 Install Docker and Docker Compose (Docker Compose comes with Docker on Windows and MacOS)
 
-### Start Project
+### Run Project
 
-Launch docker with `docker-compose up`
+Run `./scripts/create.sh` if on linux.
 
-## Run db:seed
-
-```sh
-docker-compose run --rm web rake db:seed
-```
+Otherwise,
+- run `docker-compose up --build -d` to start the containers
+- run `docker-compose run --rm web rake db:migrate db:seed` to apply migrations and seed the database
 
 You can now log in with the default user that was created during the seeding
 
@@ -27,10 +25,12 @@ email: test@example.com
 password: password1
 ```
 
-### Manually running migrations
+## Migrations
 
-This should not be necessary on project start, but during development you can use it to run newer migrations
+To apply new database changes, run 
+- `docker-compose run --rm web rake db:migrate`
 
-```sh
-docker-compose  run --rm web rake db:create db:migrate db:seed
-```
+## Seeding
+
+To seed the database, run 
+- `docker-compose run --rm web rake db:seed`
