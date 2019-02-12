@@ -35,4 +35,8 @@ class Company < ApplicationRecord
   validates :state_or_region, presence: true
   validates :post_code,       presence: true
   validates :country,         presence: true
+
+  def to_param
+    "#{id}-#{name.parameterize}"
+  end
 end

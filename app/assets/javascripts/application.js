@@ -13,6 +13,7 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
+//= require trix
 //= require_tree .
 
 // var archiveSwitch = new Boolean(false);

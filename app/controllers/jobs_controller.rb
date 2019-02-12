@@ -1,9 +1,7 @@
-# require "twitter"
-
 class JobsController < ApplicationController
   before_action :set_job,            except: [:new, :index]
   before_action :authenticate_user!, except: [:index, :show, :search]
-  before_action :require_ownership,  only: [:edit, :destroy]
+  before_action :require_ownership,  only: [:edit, :update, :destroy]
 
   def index
     @jobs = Job.all_active
@@ -77,8 +75,8 @@ class JobsController < ApplicationController
   private
 
     def require_ownership
-      unless current_user.companies.includes(@job.company)
-        redirect_to root_path, notice: "You are not authorized to edit this job post."
+      unless current_user.companies.include?(@job.company)
+        redirect_to @job, notice: "You are not authorized to edit this job post."
       end
     end
 

@@ -7,7 +7,11 @@
   <ul class="job--list">
     <% @jobs.each do |job| %>
       <li class="job--list__item">
-        <%= link_to job.title, job, :class => "job--list__item-link" %>
+        <%= link_to job, :class => "job--list__item-link" do %>
+          <span class="job--list__item-role"><%= job.role %></span>
+          <span class="job--list__item-company"><%= job.company.name %></span>
+          <span class="job--list__item-type"><%= job.duration %></span>
+        <% end %>
       </li>
     <% end %>
   </ul>

@@ -11,13 +11,14 @@
         <%= f.text_field :name, required: true, placeholder: "Acme Widgets Inc." %>
       </div>
       <div class="field">
-        <%= f.label :industry %>
+        <%= f.label :industry, "Industry" %>
         <%= f.collection_select :industry, Industry.all, :name, :name do %>
         <% end %>
       </div>
       <div class="field">
         <%= f.label :description, "About" %>
-        <%= f.text_area :description, required: true %>
+        <%= f.hidden_field :description, required: true, id: 'description' %>
+        <trix-editor input="description"></trix-editor>
       </div>
       <div class="field">
         <%= f.label :website, "Website" %>

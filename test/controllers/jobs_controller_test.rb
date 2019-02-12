@@ -18,7 +18,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     @available_jobs.each do |job|
-      job_title = "#{job.role} at #{job.company.name}"
+      job_title = "#{job.role}"
       assert_match html_escape(job_title), @response.body
     end
 
@@ -89,6 +89,27 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
 
     updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id", "full_text_search")
     updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
+  end
+
+  test "only job owner can update job" do
+    job = FactoryBot.create(:job)
+    job_params = attributes_for(:job)
+
+    sign_in @user
+
+    put job_url(job), params: {job: job_params}
+    assert_redirected_to job
+  end
+
+  test "only job owner can view edit job page" do
+    company = FactoryBot.create(:company)
+    job = FactoryBot.create(:job, company: company)
+    user = FactoryBot.create(:user)
+
+    sign_in user
+
+    get edit_job_url(job)
+    assert_redirected_to job
   end
 
   test "should be able to mark a job post (position) as filled" do
