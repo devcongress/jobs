@@ -15,15 +15,19 @@ Install Docker and Docker Compose (Docker Compose comes with Docker on Windows a
 Run `./scripts/create.sh` if on linux.
 
 Otherwise,
-- run `docker-compose up --build -d` to start the containers
-- run `docker-compose run --rm web rake db:migrate db:seed` to apply migrations and seed the database
+- `docker-compose up --build -d`: build app image and start the containers in detached mode
+- `docker-compose run --rm web rake db:migrate db:seed`: apply migrations and seed the database
 
-You can now log in with the default user that was created during the seeding
+> You can now log in with the default user that was created during the seeding
+> - email: test@example.com
+> - password: password1
 
-```
-email: test@example.com
-password: password1
-```
+Some helpful commands (all commands should be run from the project directory)
+- `docker-compose stop`: stop the running containers.
+- `docker-compose start`: start stopped containers.
+- `docker-compose down`: stop and remove containers and networks. you will need to recreate them using `up`
+
+> To remove any persisted data, delete the `.volumes` directory.
 
 ## Migrations
 
