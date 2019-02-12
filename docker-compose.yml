@@ -9,11 +9,13 @@ services:
   postgres:
     image: postgres:9.5
     volumes:
-      - postgres:/var/lib/postgresql/data:cached
+      - ./.volumes/postgres:/var/lib/postgresql/data:cached
     environment:
       <<: *db_config
     networks:
       - jobs
+    ports:
+      - "5433:5432"
 
   web:
     build: .
@@ -23,7 +25,6 @@ services:
     volumes:
       - ./:/app
       - bundle:/bundle:cached
-    command: bundle exec rails s -p 3000 -b 0.0.0.0
     networks:
       - jobs
     ports:

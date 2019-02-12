@@ -17,7 +17,8 @@
       </div>
       <div class="field">
         <%= f.label :description, "About" %>
-        <%= f.text_area :description, required: true %>
+        <%= f.hidden_field :description, required: true, id: 'description' %>
+        <trix-editor input="description"></trix-editor>
       </div>
       <div class="field">
         <%= f.label :website, "Website" %>

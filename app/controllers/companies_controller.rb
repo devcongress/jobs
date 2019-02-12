@@ -1,6 +1,7 @@
 class CompaniesController < ApplicationController
-  before_action :set_company,        only: [:show]
+  before_action :set_company,        only: [:show, :edit]
   before_action :authenticate_user!, only: [:new, :create, :edit]
+  before_action :require_ownership!, only: [:edit, :update]
 
   def new
     @company = current_user.companies.build
@@ -32,6 +33,12 @@ class CompaniesController < ApplicationController
 
     def raise_not_found
       raise ActionController::RoutingError.new("not found")
+    end
+
+    def require_ownership!
+      unless current_user.companies.include?(@company)
+        redirect_to @company, notice: "You're not authorized to edit this company"
+      end
     end
 
     def company_params
