@@ -67,7 +67,6 @@ user = User.find_by(email: "test@example.com")
 
 # Add some default companies and add relationship to test user
 companies.each do |company|
-  puts company[:email]
   Company.where(email: company[:email])
     .first_or_create.update_attributes(company)
   
