@@ -16,7 +16,7 @@ Run `./scripts/create.sh` if on linux.
 
 Otherwise,
 - `docker-compose up --build -d`: build app image and start the containers in detached mode
-- `docker-compose run --rm web rake db:migrate db:seed`: apply migrations and seed the database
+- `docker-compose run --rm web rails db:migrate db:seed`: apply migrations and seed the database
 
 > You can now log in with the default user that was created during the seeding
 > - email: test@example.com
@@ -32,9 +32,9 @@ Some helpful commands (all commands should be run from the project directory)
 ## Migrations
 
 To apply new database changes, run 
-- `docker-compose run --rm web rake db:migrate`
+- `docker-compose run --rm web rails db:migrate`
 
 ## Seeding
 
 To seed the database, run 
-- `docker-compose run --rm web rake db:seed`
+- `docker-compose run --rm web rails db:seed`
