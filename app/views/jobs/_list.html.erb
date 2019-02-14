@@ -1,5 +1,5 @@
 <ul class="job--list">
-    <% @jobs.each do |job| %>
+    <% collection.each do |job| %>
         <li class="job--list__item">
         <%= link_to job, :class => "job--list__item-link" do %>
             <span class="job--list__item-role"><%= job.role %></span>
