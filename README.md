@@ -12,7 +12,7 @@ Install Docker and Docker Compose (Docker Compose comes with Docker on Windows a
 
 ### Run Project
 
-Run `./scripts/create.sh` if on linux.
+Run `./bin/create.sh` if on linux.
 
 Otherwise,
 - `docker-compose up --build -d`: build app image and start the containers in detached mode
