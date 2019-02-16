@@ -38,3 +38,13 @@ To apply new database changes, run
 
 To seed the database, run 
 - `docker-compose run --rm web rails db:seed`
+
+## Troubleshooting
+
+For consistency sake, be using the latest stable versions of `docker-compose` and `docker`
+
+**Linux**
+
+Scenario: `ERROR: Couldn't connect to Docker daemon at http+docker://localhost - is it running?`
+
+Solution: Run `sudo usermod -aG docker ${USER}`. [More details](https://medium.com/@ibrahimgunduz34/if-you-faced-an-issue-like-couldnt-connect-to-docker-daemon-at-http-docker-localunixsocket-is-27b35f17d09d)
