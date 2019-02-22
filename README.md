@@ -12,11 +12,11 @@ Install Docker and Docker Compose (Docker Compose comes with Docker on Windows a
 
 ### Run Project
 
-Run `./scripts/create.sh` if on linux.
+Run `./bin/create.sh` if on linux.
 
 Otherwise,
 - `docker-compose up --build -d`: build app image and start the containers in detached mode
-- `docker-compose run --rm web rake db:migrate db:seed`: apply migrations and seed the database
+- `docker-compose run --rm web rails db:migrate db:seed`: apply migrations and seed the database
 
 > You can now log in with the default user that was created during the seeding
 > - email: test@example.com
@@ -32,9 +32,19 @@ Some helpful commands (all commands should be run from the project directory)
 ## Migrations
 
 To apply new database changes, run 
-- `docker-compose run --rm web rake db:migrate`
+- `docker-compose run --rm web rails db:migrate`
 
 ## Seeding
 
 To seed the database, run 
-- `docker-compose run --rm web rake db:seed`
+- `docker-compose run --rm web rails db:seed`
+
+## Troubleshooting
+
+For consistency sake, be using the latest stable versions of `docker-compose` and `docker`
+
+**Linux**
+
+Scenario: `ERROR: Couldn't connect to Docker daemon at http+docker://localhost - is it running?`
+
+Solution: Run `sudo usermod -aG docker ${USER}`. [More details](https://medium.com/@ibrahimgunduz34/if-you-faced-an-issue-like-couldnt-connect-to-docker-daemon-at-http-docker-localunixsocket-is-27b35f17d09d)
