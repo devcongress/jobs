@@ -101,3 +101,18 @@
         margin: 0;
     }
 }
+
+
+.job--list__item-time {
+    position: absolute;
+    font-size: 0.8em;
+    right: 0;
+    top: 32px;
+    padding: 4px 6px;
+    color: #333;
+    text-decoration: none;
+}
+
+p.text-center {
+    text-align: center;
+}

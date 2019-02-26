@@ -4,6 +4,8 @@
 <h1 class="page--title">
   <%= @job.title %>
 </h1>
+  <p class="text-center">Posted <%= time_ago_in_words(@job.created_at) %> ago</p>
+
 <div class="share--buttons">	
   <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
   <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
