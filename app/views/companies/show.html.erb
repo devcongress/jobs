@@ -1,5 +1,6 @@
 <h1><%= @company.name %></h1>
 <p><%= @company.industry %></p>
+<div class="main--content">
 <p><a href="<%= @company.website %>"><%= @company.website %></a></p>
 <p><%= @company.description %></p>
 <p><%= @company.city %></p>
@@ -7,3 +8,4 @@
 <% if current_user && current_user.companies.include?(@company) %>
 <p><%= link_to "Edit", edit_company_path(@company) %></p>
 <% end %>
+</div>
