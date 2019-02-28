@@ -38,8 +38,8 @@
     <span class="pure-form-message">What is the duration for this project?</span>
   </div>
   <div class="field">
-    <%= form.label :salary %>
-    <%= form.select(:salary, {"Up to USD 500" => "Up to USD 500", "USD 500 - 1k" => "USD 500 - 1k", "USD 1k - 2k" => "USD 1k - 2k", "USD 2k - 3k" => "USD 2k - 3k", "USD 3k+" => "USD 3k+"})  %>
+    <%= form.label "Salary per month/project" %>
+    <%= form.number_field(:salary, in: 50...12000) %>
     <span class="pure-form-message">Please note: there's a correlation between experience/expertise and compensation. Therefore, it's important to provide a figure to attract the right pool of candidates.</span>
   </div>
   <div class="field">
