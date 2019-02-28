@@ -93,7 +93,8 @@ class JobsController < ApplicationController
       params.require(:job).permit(
         :role,
         :duration,
-        :salary,
+        :salary_lower,
+        :salary_upper,
         :requirements,
         :qualification,
         :perks,
@@ -108,9 +109,10 @@ class JobsController < ApplicationController
       params.require(:job).permit(
         :role,
         :duration,
-        :salary,
         :requirements,
         :qualification,
+        :salary_lower,
+        :salary_upper,
         :perks,
         :remote_ok,
         :city,
