@@ -124,7 +124,7 @@ class JobsController < ApplicationController
 
     def job_post_successful
       JobsMailer.with(job: @job).published.deliver_later
-      # $tweetBot.update("New Job Vacancy: " + @job.title + ". Read more at " + job_url)
+      $tweetBot.update("New Job Vacancy: " + @job.title + ". Read more at " + job_url)
     end
     
 end
