@@ -1,9 +1,12 @@
 language: ruby
 rvm:
-  - 2.3.3
+  - 2.6.1
+before_install:
+  - gem update --system
+  - gem install bundler
 before_script:
-  - bundle exec rake db:create --all
-  - bundle exec rake db:migrate
+  - bin/bundle rake db:create --all
+  - bin/bundle rake db:migrate
 script:
   - bin/rails test
 services:

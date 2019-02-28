@@ -35,7 +35,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match job.role,          @response.body
     assert_match job.qualification, @response.body
-    assert_match job.salary,        @response.body
+    assert_match job.compensation,  @response.body
     assert_match job.duration,      @response.body
     assert_match html_escape(job.company.name),  @response.body
   end
@@ -85,9 +85,10 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     job.reload
     assert_redirected_to job
     assert_equal job.company, @company # Job's company cannot be changed.
-    assert_equal job.role, job_params[:role]
+    assert_equal job.salary,  Range.new(job_params[:salary_lower], job_params[:salary_upper])
+    assert_equal job.role,    job_params[:role]
 
-    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id", "full_text_search")
+    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id", "full_text_search", "salary")
     updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
   end
 
