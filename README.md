@@ -1,4 +1,8 @@
 [![Build Status](https://travis-ci.org/devcongress/jobs.svg?branch=master)](https://travis-ci.org/devcongress/jobs)
+[![View performance data on Skylight](https://badges.skylight.io/problem/H0Z1ot94WfYy.svg?token=aEuput--iL0JhxpDYjv25vjvdh3cZcO4gb5gPYZIDKg)](https://www.skylight.io/app/applications/H0Z1ot94WfYy)
+[![View performance data on Skylight](https://badges.skylight.io/typical/H0Z1ot94WfYy.svg?token=aEuput--iL0JhxpDYjv25vjvdh3cZcO4gb5gPYZIDKg)](https://www.skylight.io/app/applications/H0Z1ot94WfYy)
+[![View performance data on Skylight](https://badges.skylight.io/rpm/H0Z1ot94WfYy.svg?token=aEuput--iL0JhxpDYjv25vjvdh3cZcO4gb5gPYZIDKg)](https://www.skylight.io/app/applications/H0Z1ot94WfYy)
+[![View performance data on Skylight](https://badges.skylight.io/status/H0Z1ot94WfYy.svg?token=aEuput--iL0JhxpDYjv25vjvdh3cZcO4gb5gPYZIDKg)](https://www.skylight.io/app/applications/H0Z1ot94WfYy)
 
 # DevCongress Jobs
 
