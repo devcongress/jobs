@@ -35,7 +35,6 @@ class JobTest < ActiveSupport::TestCase
 
   test "validations" do
     must validate_presence_of :duration
-    must validate_presence_of :salary
     must validate_presence_of :requirements
     must validate_presence_of :qualification
     must validate_presence_of :role

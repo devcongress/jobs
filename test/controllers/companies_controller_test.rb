@@ -8,6 +8,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
     @company = FactoryBot.create(:company)
     @user = FactoryBot.create(:user)
     @user.companies << @company
+    FactoryBot.create_pair(:job, company: @company)
   end
 
   test "guest users should not be able to register a company" do
@@ -46,6 +47,11 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
 
     # edit link should not be visible
     refute_match edit_company_path(@company), @response.body
+
+    # it shows all jobs of the company
+    @company.jobs.each do |job|
+      assert_match job.role, @response.body
+    end
   end
 
   test "should show edit link for company owner" do

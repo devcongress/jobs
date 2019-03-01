@@ -2,6 +2,7 @@ require 'test_helper'
 
 class ProfileControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ERB::Util
 
   setup do
     @user = FactoryBot.create(:user)
@@ -27,7 +28,7 @@ class ProfileControllerTest < ActionDispatch::IntegrationTest
     @user.companies.each do |c|
       # the profile page includes a list of all companies
       # and the number of jobs posted for each.
-      assert_match "#{c.name} (#{c.jobs.count})", @response.body
+      assert_match "#{html_escape(c.name)} (#{c.jobs.count})", @response.body
     end
   end
 
