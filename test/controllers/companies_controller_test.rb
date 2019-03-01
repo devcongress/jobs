@@ -68,4 +68,46 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
     # edit link should be visible
     assert_match edit_company_path(@company), @response.body
   end
+
+  test "company owner should be able to update information" do
+    company_params = FactoryBot.attributes_for(:company)
+
+    sign_in @user
+
+    put company_url(@company, params: {company: company_params})
+
+    @company.reload
+
+    assert_redirected_to @company
+    company_params.each_entry do |k, v|
+      assert_equal @company.attributes[k.to_s], v
+    end
+  end
+
+  test "company update should fail for unauthorized user" do
+    previously_updated_at = @company.updated_at
+    company_params = FactoryBot.attributes_for(:company)
+
+    put company_url(@company, params: {company: company_params})
+
+    assert_redirected_to new_user_session_url
+    assert_equal previously_updated_at, @company.updated_at
+    company_params.each_entry do |k, v|
+      refute_equal @company.attributes[k.to_s], v
+    end
+  end
+
+  test "only company owner can update information" do
+    another_company = FactoryBot.create(:company)
+    company_params = FactoryBot.attributes_for(:company)
+
+    sign_in @user
+
+    put company_url(another_company, params: {company: company_params})
+
+    assert_response :forbidden
+    company_params.each_entry do |k, v|
+      refute_equal another_company.attributes[k.to_s], v
+    end
+  end
 end
