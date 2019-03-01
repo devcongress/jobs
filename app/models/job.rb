@@ -57,7 +57,7 @@ class Job < ApplicationRecord
   end
 
   def active?
-    created_at < 30.days.ago
+    !archived && (created_at + Job.validity_period.days) >= DateTime.now
   end
 
   # `Job.active` is a version of `all` that returns

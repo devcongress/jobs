@@ -18,10 +18,19 @@
     <h2>Jobs</h2>
     <ul>
       <% @company.jobs.each do |job| %>
-        <li>
-          <%= link_to job.role, job %>
-          <small>(posted <%= time_ago_in_words(job.created_at) %> ago)</small>
-        </li>
+        <% if job.active? %>
+          <li>
+            <%= link_to job.role, job %>
+            <small>(posted <%= time_ago_in_words(job.created_at) %> ago)</small>
+          </li>
+        <% else %>
+          <s>
+            <li>
+              <%= link_to job.role, job %>
+              <small>(posted <%= time_ago_in_words(job.created_at) %> ago)</small>
+            </li>
+          </s>
+        <% end %>
       <% end %>
     </ul>
   <% end %>
