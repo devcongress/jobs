@@ -2,10 +2,11 @@ Rails.application.routes.draw do
   
   root to: "pages#index"
   
-  get '/help' => 'pages#help'
-  get '/about' => 'pages#about'
-  get '/privacy' => 'pages#privacy'
-  
+  get 'help'    => 'pages#help'
+  get 'about'   => 'pages#about'
+  get 'privacy' => 'pages#privacy'
+  get 'profile' => 'profile#show'
+
   resources :companies
   resources :jobs do
     collection do

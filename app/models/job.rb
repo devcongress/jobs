@@ -56,6 +56,10 @@ class Job < ApplicationRecord
     "USD #{salary.min.to_i} - #{salary.max.to_i}"
   end
 
+  def active?
+    created_at < 30.days.ago
+  end
+
   # `Job.active` is a version of `all` that returns
   # jobs that haven't been archived and are still within
   # the validity period since they were posted.
