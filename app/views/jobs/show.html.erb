@@ -34,7 +34,7 @@
   <%= simple_format @job.perks.to_s.html_safe, :class => "job--field__content" %>
   <h2 class="job--field__title">Company</h2>
   <p class="job--field__content">
-    <%= @job.company.name %>
+    <%= link_to @job.company.name, @job.company %>
   </p>
   <h2 class="job--field__title">Contact email</h2>
   <p class="job--field__content">

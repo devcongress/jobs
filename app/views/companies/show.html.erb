@@ -1,14 +1,21 @@
-<h1><%= @company.name %></h1>
+<h1><%= link_to @company.name, @company.website %></h1>
 <h2><%= @company.industry %></h2>
 <div class="main--content">
   <p><%= link_to "Website", @company.website %></p>
-  <p><%= @company.description %></p>
-  <p><%= @company.city %></p>
-  <p><%= @company.country %></p>
+  <p><%= @company.description.html_safe %></p>
+  <section class="address">
+    <h2>Address</h2>
+    <p>
+      <%= @company.city %><br>
+      <%= @company.state_or_region %><br>
+      <%= @company.country %> <%= @company.post_code %>
+    </p>
+  </section>
   <% if @company.jobs.empty? %>
     <p>No jobs have been posted for <%= @company.name %> yet.</p>
     <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post</p>
   <% else %>
+    <h2>Jobs</h2>
     <ul>
       <% @company.jobs.each do |job| %>
         <li>
