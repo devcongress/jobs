@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo ":: creating containers"
 docker-compose up --build -d
 
