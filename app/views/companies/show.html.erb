@@ -1,3 +1,6 @@
+<% content_for :title do %>
+  <%= "#{@company.name} | #{t('app.name')}" %>
+<% end %>
 <h1><%= link_to @company.name, @company.website %></h1>
 <h2><%= @company.industry %></h2>
 <div class="main--content">
@@ -13,7 +16,7 @@
   </section>
   <% if @company.jobs.empty? %>
     <p>No jobs have been posted for <%= @company.name %> yet.</p>
-    <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post</p>
+    <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post.</p>
   <% else %>
     <h2>Jobs</h2>
     <ul>
