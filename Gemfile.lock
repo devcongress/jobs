@@ -209,6 +209,10 @@ GEM
     shoulda-matchers (4.0.1)
       activesupport (>= 4.2.0)
     simple_oauth (0.3.1)
+    skylight (3.1.4)
+      skylight-core (= 3.1.4)
+    skylight-core (3.1.4)
+      activesupport (>= 4.2.0)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -285,6 +289,7 @@ DEPENDENCIES
   selenium-webdriver
   sendgrid (~> 1.2, >= 1.2.4)
   shoulda-matchers
+  skylight
   spring
   spring-watcher-listen (~> 2.0.0)
   trix

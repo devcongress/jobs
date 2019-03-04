@@ -35,7 +35,6 @@ class JobTest < ActiveSupport::TestCase
 
   test "validations" do
     must validate_presence_of :duration
-    must validate_presence_of :salary
     must validate_presence_of :requirements
     must validate_presence_of :qualification
     must validate_presence_of :role
@@ -137,5 +136,13 @@ class JobTest < ActiveSupport::TestCase
         assert_equal v, found[k]
       end
     end
+  end
+
+  test "active?" do
+    active_job = FactoryBot.create(:job)
+    inactive_job = FactoryBot.create(:job, created_at: (Job.validity_period + 1).days.ago)
+
+    assert active_job.active?
+    refute inactive_job.active?
   end
 end

@@ -1,11 +1,40 @@
-<h1><%= @company.name %></h1>
-<p><%= @company.industry %></p>
+<h1><%= link_to @company.name, @company.website %></h1>
+<h2><%= @company.industry %></h2>
 <div class="main--content">
-<p><a href="<%= @company.website %>"><%= @company.website %></a></p>
-<p><%= @company.description %></p>
-<p><%= @company.city %></p>
-<p><%= @company.country %></p>
-<% if current_user && current_user.companies.include?(@company) %>
-<p><%= link_to "Edit", edit_company_path(@company) %></p>
-<% end %>
+  <p><%= link_to "Website", @company.website %></p>
+  <p><%= @company.description.html_safe %></p>
+  <section class="address">
+    <h2>Address</h2>
+    <p>
+      <%= @company.city %><br>
+      <%= @company.state_or_region %><br>
+      <%= @company.country %> <%= @company.post_code %>
+    </p>
+  </section>
+  <% if @company.jobs.empty? %>
+    <p>No jobs have been posted for <%= @company.name %> yet.</p>
+    <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post</p>
+  <% else %>
+    <h2>Jobs</h2>
+    <ul>
+      <% @company.jobs.each do |job| %>
+        <% if job.active? %>
+          <li>
+            <%= link_to job.role, job %>
+            <small>(posted <%= time_ago_in_words(job.created_at) %> ago)</small>
+          </li>
+        <% else %>
+          <s>
+            <li>
+              <%= link_to job.role, job %>
+              <small>(posted <%= time_ago_in_words(job.created_at) %> ago)</small>
+            </li>
+          </s>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if current_user && current_user.companies.include?(@company) %>
+  <p><%= link_to "Edit", edit_company_path(@company) %></p>
+  <% end %>
 </div>

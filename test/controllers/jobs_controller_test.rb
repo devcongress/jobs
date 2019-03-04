@@ -5,10 +5,10 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
   include ERB::Util
 
   setup do
-    @available_jobs = create_list(:job, 3, created_at: 1.day.ago)
-    @archived_job = create(:job, archived: true) # one archived job
-    @user = create(:user)
-    @company = create(:company)
+    @available_jobs = FactoryBot.create_list(:job, 3, created_at: 1.day.ago)
+    @archived_job   = FactoryBot.create(:job, archived: true)
+    @user           = FactoryBot.create(:user)
+    @company        = FactoryBot.create(:company)
     @user.companies << @company
   end
 

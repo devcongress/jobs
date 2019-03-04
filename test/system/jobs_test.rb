@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class JobsTest < ApplicationSystemTestCase
   setup do
-    @job = jobs(:one)
+    @job = FactoryBot.create(:job)
   end
 
   test "visiting the index" do

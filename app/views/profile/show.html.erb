@@ -1,0 +1,15 @@
+<h1>Your Profile</h1>
+<p>Joined <%= time_ago_in_words(current_user.created_at) %> ago</p>
+<p><%= current_user.email %></p>
+<h2>Companies Your Recruiting For</h2>
+<% if current_user.companies.empty? %>
+  <p>You're not recruiting for any company</p>
+  <p>In order to start posting job opportunities, you should <%= link_to "register the company", new_company_path %></p>
+<% else %>
+  <p>Remember that you can still <%= link_to "register new companies", new_company_path %> in order to post their jobs. You can link an unlimited number of companies to your account.</p>
+  <ul>
+    <% current_user.companies.each do |c| %>
+      <li><%= link_to "#{c.name} (#{c.jobs.count})", company_path(c) %></li>
+    <% end %>
+  </ul>
+<% end %>

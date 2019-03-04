@@ -56,6 +56,10 @@ class Job < ApplicationRecord
     "USD #{salary.min.to_i} - #{salary.max.to_i}"
   end
 
+  def active?
+    !archived && (created_at + Job.validity_period.days) >= DateTime.now
+  end
+
   # `Job.active` is a version of `all` that returns
   # jobs that haven't been archived and are still within
   # the validity period since they were posted.

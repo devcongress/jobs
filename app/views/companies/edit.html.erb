@@ -1,2 +1,58 @@
-<h1>Companies#edit</h1>
-<p>Find me in app/views/companies/edit.html.erb</p>
+<% content_for :title do %>
+  <%= "Update #{@company.name} | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title">Update <%= @company.name %></h1>
+<p class="page--legend">You're about to change information about your company.</p>
+<div class="main--content">
+  <section class="form">
+    <%= form_with(model: @company, :class => "pure-form pure-form-stacked") do |f| %>
+      <div class="field">
+        <%= f.label :name %>
+        <%= f.text_field :name, required: true, placeholder: "Acme Widgets Inc." %>
+      </div>
+      <div class="field">
+        <%= f.label :industry, "Industry" %>
+        <%= f.collection_select :industry, Industry.all, :name, :name do %>
+        <% end %>
+      </div>
+      <div class="field">
+        <%= f.label :description, "About" %>
+        <%= f.hidden_field :description, required: true, id: 'description' %>
+        <trix-editor input="description"></trix-editor>
+      </div>
+      <div class="field">
+        <%= f.label :website, "Website" %>
+        <%= f.url_field :website %>
+      </div>
+      <div class="field">
+        <%= f.label :email, "Contact Email" %>
+        <%= f.email_field :email, required: true %>
+      </div>
+      <div class="field">
+        <%= f.label :phone, "Contact Phone" %>
+        <%= f.telephone_field :phone, required: true %>
+      </div>
+      <div class="field">
+        <%= f.label :city, "City" %>
+        <%= f.text_field :city, require: true %>
+      </div>
+      <div class="field">
+        <%= f.label :state_or_region, "State/Region" %>
+        <%= f.text_field :state_or_region, require: true %>
+      </div>
+      <div class="field">
+        <%= f.label :post_code, "Post/Zip Code" %>
+        <%= f.text_field :post_code, require: true %>
+      </div>
+      <div class="field">
+        <%= f.label :country, "Country" %>
+        <%= f.text_field :country, require: true %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Save" %>
+        <%= link_to "Cancel", @company %>
+      </div>
+    <% end %>
+  </section>
+</div>
+
