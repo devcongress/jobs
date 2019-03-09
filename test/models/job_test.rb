@@ -31,6 +31,7 @@ class JobTest < ActiveSupport::TestCase
 
   test "associations" do
     must belong_to :company
+    must have_many :renewals
   end
 
   test "validations" do

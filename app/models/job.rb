@@ -36,6 +36,7 @@ class Job < ApplicationRecord
   end
 
   belongs_to :company
+  has_many   :renewals
 
   validates :company,       presence: true
   validates :duration,      presence: true
@@ -58,6 +59,10 @@ class Job < ApplicationRecord
 
   def active?
     !archived && (created_at + Job.validity_period.days) >= DateTime.now
+  end
+
+  def created_at
+    renewals.order('renewed_on DESC').first.pluck(:renewed_on)
   end
 
   # `Job.active` is a version of `all` that returns

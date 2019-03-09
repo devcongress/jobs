@@ -215,6 +215,17 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
+-- Name: renewals; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.renewals (
+    job_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    renewed_on timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -383,6 +394,20 @@ CREATE INDEX index_jobs_on_company_id ON public.jobs USING btree (company_id);
 
 
 --
+-- Name: index_renewals_on_job_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_renewals_on_job_id ON public.renewals USING btree (job_id);
+
+
+--
+-- Name: index_renewals_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_renewals_on_user_id ON public.renewals USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -416,6 +441,22 @@ CREATE TRIGGER trg_prepare_full_text_search_document BEFORE INSERT OR UPDATE OF 
 
 ALTER TABLE ONLY public.clients
     ADD CONSTRAINT fk_rails_21c421fd41 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: renewals fk_rails_3d7487edde; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.renewals
+    ADD CONSTRAINT fk_rails_3d7487edde FOREIGN KEY (job_id) REFERENCES public.jobs(id);
+
+
+--
+-- Name: renewals fk_rails_4b60417463; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.renewals
+    ADD CONSTRAINT fk_rails_4b60417463 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -458,6 +499,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181113012450'),
 ('20181202105418'),
 ('20181205160427'),
-('20190228175757');
+('20190228175757'),
+('20190309124441');
 
 
