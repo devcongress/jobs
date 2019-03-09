@@ -146,4 +146,23 @@ class JobTest < ActiveSupport::TestCase
     assert active_job.active?
     refute inactive_job.active?
   end
+
+  test "expires_soon" do
+    created_at = (1 + Job.validity_period - Job.days_to_expiry).days.ago
+    job = FactoryBot.create(:job, created_at: created_at)
+    FactoryBot.create(:job)
+
+    expires_soon = Job.expires_soon
+    assert_equal 1,   expires_soon.length
+    assert_equal job, expires_soon.first
+  end
+
+  test "expires_today" do
+    job = FactoryBot.create(:job, created_at: (1 + Job.validity_period).days.ago)
+    FactoryBot.create(:job)
+
+    expired_today = Job.expired_today
+    assert_equal 1, expired_today.length
+    assert_equal job, expired_today.first
+  end
 end

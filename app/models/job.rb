@@ -89,9 +89,8 @@ ORDER BY published_on DESC
 
   end
 
-  def self.validity_period
-    (ENV['JOB_VALIDITY_PERIOD'] || 30).to_i.abs
-  end
+  def self.validity_period; (ENV['JOB_VALIDITY_PERIOD'] || 30).to_i.abs; end
+  def self.days_to_expiry;  (ENV['JOB_DAYS_TO_EXPIRY'] || 7).to_i.abs;   end
 
   def self.search(query)
     Job.find_by_sql [<<-SQL, query]
@@ -112,6 +111,40 @@ SELECT jobs.*
        ) @> now()::timestamp
        AND plainto_tsquery(?) @@ full_text_search
        ORDER BY created_at DESC
+    SQL
+  end
+
+  def self.expires_soon
+    Job.find_by_sql <<-SQL
+WITH latest_renewals AS (
+  SELECT job_id,
+         max(renewed_on) AS published_on
+    FROM renewals
+GROUP BY job_id
+)
+SELECT jobs.*
+  FROM jobs
+  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+ WHERE NOT archived
+       AND filled_at IS NULL
+       AND extract(days from now() - published_on) = #{self.validity_period - self.days_to_expiry}
+    SQL
+  end
+
+  def self.expired_today
+    Job.find_by_sql <<-SQL
+WITH latest_renewals AS (
+  SELECT job_id,
+         max(renewed_on) AS published_on
+    FROM renewals
+GROUP BY job_id
+)
+SELECT jobs.*
+  FROM jobs
+  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+WHERE NOT archived
+      AND filled_at IS NULL
+      AND extract(days from now() - published_on) = #{self.validity_period}
     SQL
   end
 end
