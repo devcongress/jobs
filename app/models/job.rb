@@ -77,14 +77,14 @@ GROUP BY job_id
 )
 SELECT jobs.*
   FROM jobs
-LEFT JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
  WHERE NOT archived
        AND filled_at IS NULL
        AND tsrange(
          published_on,
          published_on + INTERVAL '#{self.validity_period}' DAY, '[]'
        ) @> now()::timestamp
-ORDER BY created_at DESC
+ORDER BY published_on DESC
     SQL
 
   end
@@ -103,7 +103,7 @@ GROUP BY job_id
 )
 SELECT jobs.*
   FROM jobs
-LEFT JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
  WHERE NOT archived
        AND filled_at IS NULL
        AND tsrange(
