@@ -22,8 +22,6 @@
 #
 
 FactoryBot.define do
-  sequence (:contact_email) { |n| "company#{n}@example.org" }
-
   factory :job do
     company
 
@@ -39,5 +37,13 @@ FactoryBot.define do
     country       { Faker::Address.country }
     apply_link    { Faker::Internet.url }
     created_at    { 1.day.ago }
+
+    after(:create) do |job, evaluator|
+      create(:renewal, job: job, renewed_on: evaluator.created_at)
+    end
+
+    factory :expired_job do
+      created_at { (Job.validity_period + 1).days.ago }
+    end
   end
 end

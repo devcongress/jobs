@@ -57,12 +57,12 @@ class Job < ApplicationRecord
     "USD #{salary.min.to_i} - #{salary.max.to_i}"
   end
 
-  def active?
-    !archived && (created_at + Job.validity_period.days) >= DateTime.now
+  def published_on
+    renewals.order('renewed_on DESC').first.renewed_on
   end
 
-  def created_at
-    renewals.order('renewed_on DESC').first.pluck(:renewed_on)
+  def active?
+    !archived && (published_on + Job.validity_period.days) >= DateTime.now
   end
 
   # `Job.active` is a version of `all` that returns

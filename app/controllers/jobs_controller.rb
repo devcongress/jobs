@@ -1,7 +1,7 @@
 class JobsController < ApplicationController
   before_action :set_job,            except: [:new, :index]
-  before_action :authenticate_user!, except: [:index, :show, :search]
-  before_action :require_ownership,  only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show, :search, :renew]
+  before_action :require_ownership,    only: [:edit, :update, :destroy, :renew]
 
   def index
     @jobs = Job.all_active
@@ -22,6 +22,7 @@ class JobsController < ApplicationController
 
     @job = company.jobs.build(job_params)
     if @job.save
+      @job.renewals.create(job: @job, renewed_on: @job.created_at)
       redirect_to @job, status: :created
       job_post_successful
     else
@@ -51,6 +52,20 @@ class JobsController < ApplicationController
 
   def vacant
     @job.update_attribute(:filled_at, nil)
+    redirect_to @job
+  end
+
+  def renew
+    # only expired jobs can be renewed. if a job hasn't
+    # expired, any attempt to renew should be ignored.
+    unless @job.active?
+      @job.renewals.create(renewed_on: DateTime.now)
+
+      # TODO(yawza): Email recruiter that the job has been successfully
+      # renewed. Tell them it has been posted on social media outlets,
+      # and is available on the site at the same endpoint.
+    end
+
     redirect_to @job
   end
 

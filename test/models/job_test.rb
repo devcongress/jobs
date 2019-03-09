@@ -141,7 +141,7 @@ class JobTest < ActiveSupport::TestCase
 
   test "active?" do
     active_job = FactoryBot.create(:job)
-    inactive_job = FactoryBot.create(:job, created_at: (Job.validity_period + 1).days.ago)
+    inactive_job = FactoryBot.create(:expired_job)
 
     assert active_job.active?
     refute inactive_job.active?

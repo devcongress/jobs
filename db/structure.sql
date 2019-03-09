@@ -220,7 +220,6 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 CREATE TABLE public.renewals (
     job_id bigint NOT NULL,
-    user_id bigint NOT NULL,
     renewed_on timestamp without time zone DEFAULT now() NOT NULL
 );
 
@@ -401,13 +400,6 @@ CREATE INDEX index_renewals_on_job_id ON public.renewals USING btree (job_id);
 
 
 --
--- Name: index_renewals_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_renewals_on_user_id ON public.renewals USING btree (user_id);
-
-
---
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -449,14 +441,6 @@ ALTER TABLE ONLY public.clients
 
 ALTER TABLE ONLY public.renewals
     ADD CONSTRAINT fk_rails_3d7487edde FOREIGN KEY (job_id) REFERENCES public.jobs(id);
-
-
---
--- Name: renewals fk_rails_4b60417463; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.renewals
-    ADD CONSTRAINT fk_rails_4b60417463 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --

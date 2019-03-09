@@ -92,9 +92,6 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to new_user_session_url
     assert_equal previously_updated_at, @company.updated_at
-    company_params.each_entry do |k, v|
-      refute_equal @company.attributes[k.to_s], v
-    end
   end
 
   test "only company owner can update information" do
