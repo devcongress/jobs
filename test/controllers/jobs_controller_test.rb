@@ -157,12 +157,14 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
   test "should renew an expired job" do
     expired = FactoryBot.create(:expired_job, company: @company)
 
-    sign_in @user
-    post renew_job_url(expired)
+    assert_enqueued_jobs @company.users.count do
+      sign_in @user
+      post renew_job_url(expired)
 
-    expired.reload
-    assert expired.active?
-    assert expired[:created_at] < expired.published_on # Now I see the stupidity in choosing bad names.
-    assert_equal expired.renewals.size, 2
+      expired.reload
+      assert expired.active?
+      assert expired[:created_at] < expired.published_on # Now I see the stupidity in choosing bad names.
+      assert_equal expired.renewals.size, 2
+    end
   end
 end

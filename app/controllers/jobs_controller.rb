@@ -60,10 +60,7 @@ class JobsController < ApplicationController
     # expired, any attempt to renew should be ignored.
     unless @job.active?
       @job.renewals.create(renewed_on: DateTime.now)
-
-      # TODO(yawza): Email recruiter that the job has been successfully
-      # renewed. Tell them it has been posted on social media outlets,
-      # and is available on the site at the same endpoint.
+      JobsMailer.with(job: @job).renewed.deliver_later
     end
 
     redirect_to @job
