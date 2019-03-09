@@ -5,7 +5,7 @@
             <span class="job--list__item-role"><%= job.role %></span>
             <span class="job--list__item-company"><%= job.company.name %></span>
             <span class="job--list__item-type"><%= job.duration %></span>
-            <span class="job--list__item-time"><%= time_ago_in_words(job.created_at) %> ago</span>
+            <span class="job--list__item-time"><%= time_ago_in_words(job.published_on) %> ago</span>
         <% end %>
         </li>
     <% end %>

@@ -70,16 +70,23 @@ class Job < ApplicationRecord
   # the validity period since they were posted.
   def self.all_active
     Job.find_by_sql <<-SQL
-      SELECT *
-      FROM jobs
-      WHERE NOT archived
-            AND filled_at IS NULL
-            AND tsrange(
-              created_at,
-              created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
-            ) @> now()::timestamp
-            ORDER BY created_at DESC
+WITH latest_renewals AS (
+  SELECT job_id, max(renewed_on) AS published_on
+    FROM renewals
+GROUP BY job_id
+)
+SELECT jobs.*
+  FROM jobs
+LEFT JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+ WHERE NOT archived
+       AND filled_at IS NULL
+       AND tsrange(
+         published_on,
+         published_on + INTERVAL '#{self.validity_period}' DAY, '[]'
+       ) @> now()::timestamp
+ORDER BY created_at DESC
     SQL
+
   end
 
   def self.validity_period
@@ -88,13 +95,20 @@ class Job < ApplicationRecord
 
   def self.search(query)
     Job.find_by_sql [<<-SQL, query]
-SELECT *
+WITH latest_renewals AS (
+  SELECT job_id,
+         max(renewed_on) AS published_on
+    FROM renewals
+GROUP BY job_id
+)
+SELECT jobs.*
   FROM jobs
+LEFT JOIN latest_renewals ON latest_renewals.job_id = jobs.id
  WHERE NOT archived
        AND filled_at IS NULL
        AND tsrange(
-        created_at,
-        created_at + INTERVAL '#{self.validity_period}' DAY, '[]'
+        published_on,
+        published_on + INTERVAL '#{self.validity_period}' DAY, '[]'
        ) @> now()::timestamp
        AND plainto_tsquery(?) @@ full_text_search
        ORDER BY created_at DESC
