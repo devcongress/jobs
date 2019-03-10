@@ -4,11 +4,11 @@ FROM ruby:2.6.1
 RUN apt-get update -qq && apt-get install -y build-essential nodejs
 
 # rake postgres dependencies
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main 9.5" > /etc/apt/sources.list.d/pgdg.list
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main 10.6" > /etc/apt/sources.list.d/pgdg.list
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 RUN apt-get update
 # libpq-dev is required for the pg gem
-RUN apt-get install -y libpq-dev postgresql-client-9.5
+RUN apt-get install -y libpq-dev postgresql-client-10
 
 # Make app dir
 RUN mkdir /app
