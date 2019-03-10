@@ -103,8 +103,5 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
     put company_url(another_company, params: {company: company_params})
 
     assert_response :forbidden
-    company_params.each_entry do |k, v|
-      refute_equal another_company.attributes[k.to_s], v
-    end
   end
 end

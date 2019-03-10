@@ -21,15 +21,16 @@
         <% if job.active? %>
           <li>
             <%= link_to job.role, job %>
-            <small>(posted <%= time_ago_in_words(job.created_at) %> ago)</small>
+            <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
           </li>
         <% else %>
-          <s>
             <li>
-              <%= link_to job.role, job %>
-              <small>(posted <%= time_ago_in_words(job.created_at) %> ago)</small>
+              <s>
+                <%= link_to job.role, job %>
+                <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
+              </s>
+              <%= link_to "Renew", renew_job_path(job), method: :post %>
             </li>
-          </s>
         <% end %>
       <% end %>
     </ul>
