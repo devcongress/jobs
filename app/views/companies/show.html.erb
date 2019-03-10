@@ -20,16 +20,26 @@
       <% @company.jobs.each do |job| %>
         <% if job.active? %>
           <li>
-            <%= link_to job.role, job %>
-            <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
+            <div style="width: 50%; float: left">
+              <%= link_to job.role, job %>
+              <small>(posted <%= time_ago_in_words(job.published_on) %> ago, <%= "filled" if job.filled_at? %>)</small>
+            </div>
+            <div class="active-job-actions">
+              <%= button_to "Mark as Filled", filled_job_path(job) unless job.filled_at? %>
+              <%= button_to "Mark as Vacant", vacant_job_path(job) if job.filled_at? %>
+            </div>
           </li>
         <% else %>
             <li>
-              <s>
-                <%= link_to job.role, job %>
-                <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
-              </s>
-              <%= link_to "Renew", renew_job_path(job), method: :post %>
+              <div style="width: 50%; float: left">
+                <s>
+                  <%= link_to job.role, job %>
+                  <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
+                </s>
+              </div>
+              <div class="expired-job-actions">
+                <%= button_to "Renew", renew_job_path(job) %>
+              </div>
             </li>
         <% end %>
       <% end %>
