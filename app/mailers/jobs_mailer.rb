@@ -10,7 +10,7 @@ class JobsMailer < ApplicationMailer
     @company = @job.company
 
     to = @company.users.pluck(:email)
-    subject = "New job published: #{@job.role} @ #{@company.name}"
+    subject = "🎊 [Jobs] Your new job, #{@job.title}, has been published"
 
     mail(to: to, subject: subject)
   end
@@ -18,9 +18,28 @@ class JobsMailer < ApplicationMailer
   def renewed
     @job = params[:job]
     @company = @job.company
-    @company_people = @company.users.pluck(:email)
 
-    subject = "🎉#{@job.title} has been renewed for another #{Job.validity_period} days"
+    subject = "🎉 [Jobs] #{@job.title} has been renewed for another #{Job.validity_period} days"
+    to = @company.users.pluck(:email)
+
+    mail(to: to, subject: subject)
+  end
+
+  def expires_soon
+    @job = params[:job]
+    @company = @job.company
+
+    subject = "📯 [Jobs] #{@job.title} expires in #{Job.days_to_expiry} days"
+    to = @company.users.pluck(:email)
+
+    mail(to: to, subject: subject)
+  end
+
+  def expired
+    @job = params[:job]
+    @company = @job.company
+
+    subject = "[Jobs] #{@job.title} has expired today!"
     to = @company.users.pluck(:email)
 
     mail(to: to, subject: subject)
