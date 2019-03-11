@@ -7,7 +7,7 @@ task :remind_job_owners_of_upcoming_expiration => :environment do
   Rails.logger.info "done"
 end
 
-desc "Inform job posts that their job post has expired."
+desc "Inform job posters that their job post has expired."
 task :inform_job_owners_of_expired_job_posts => :environment do
   Rails.logger.info "informing (via email) recruiters of their jobs that expired today"
   Job.expired_today.each do |expired_job|

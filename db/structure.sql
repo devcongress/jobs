@@ -463,7 +463,7 @@ ALTER TABLE ONLY public.clients
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user",public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20180524143248'),
@@ -483,6 +483,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181113012450'),
 ('20181202105418'),
 ('20181205160427'),
+('20190228155634'),
 ('20190228175757'),
 ('20190309124441');
 

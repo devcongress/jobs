@@ -3,6 +3,7 @@
   <div class="navbar--menu">
     <%= link_to 'Add Job', new_job_path, :class => 'navbar--menu__item' %>
     <% if user_signed_in? %>
+      <%= link_to 'Your Profile', profile_path, :class => 'navbar--menu__item' %>
       <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => 'navbar--menu__item' %>
     <% else %>
       <%= link_to 'Sign In', new_user_session_path, :class => 'navbar--menu__item' %>

@@ -39,7 +39,7 @@
   </div>
   <div class="field">
     <%= form.label "Salary per month/project" %>
-    <%= form.number_field(:salary, in: 50...12000) %>
+    Between <%= form.number_field :salary_lower, min: 0 %> and <%= form.number_field :salary_upper, min: 0 %>
     <span class="pure-form-message">Please note: there's a correlation between experience/expertise and compensation. Therefore, it's important to provide a figure to attract the right pool of candidates.</span>
   </div>
   <div class="field">

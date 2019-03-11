@@ -87,7 +87,7 @@ class JobsController < ApplicationController
   private
 
     def require_ownership
-      unless current_user.companies.include?(@job.company)
+      unless current_user && current_user.companies.include?(@job.company)
         redirect_to @job, notice: "You are not authorized to edit this job post."
       end
     end
@@ -138,7 +138,7 @@ class JobsController < ApplicationController
 
     def job_post_successful
       JobsMailer.with(job: @job).published.deliver_later
-      # $tweetBot.update("New Job Vacancy: " + @job.title + ". Read more at " + job_url)
+      $tweetJob.update("New Job Vacancy: #{@job.title}. Read more at #{url_for(@job)}")
     end
     
 end
