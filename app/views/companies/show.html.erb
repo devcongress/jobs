@@ -1,11 +1,11 @@
 <% content_for :title do %>
   <%= "#{@company.name} | #{t('app.name')}" %>
 <% end %>
-<h1><%= link_to @company.name, @company.website %></h1>
-<h2><%= @company.industry %></h2>
+<h1 class="page--title"><%= link_to @company.name, @company.website %></h1>
+<h2 class="page--legend"><%= @company.industry %></h2>
 <div class="main--content">
-  <p><%= link_to "Website", @company.website %></p>
   <p><%= @company.description.html_safe %></p>
+  <p><%= link_to "Website", @company.website %></p>
   <section class="address">
     <h2>Address</h2>
     <p>
@@ -16,41 +16,12 @@
   </section>
   <% if @company.jobs.empty? %>
     <p>No jobs have been posted for <%= @company.name %> yet.</p>
-    <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post.</p>
+    <% if current_user && current_user.companies.include?(@company)%>
+      <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post.</p>
+    <% end %>
   <% else %>
     <h2>Jobs</h2>
-    <ul>
-      <% @company.jobs.each do |job| %>
-        <% if job.active? %>
-          <li>
-            <div style="width: 50%; float: left">
-              <%= link_to job.role, job %>
-              <small>(posted <%= time_ago_in_words(job.published_on) %> ago, <%= "filled" if job.filled_at? %>)</small>
-            </div>
-            <div class="active-job-actions">
-                <% if current_user && current_user.companies.include?(@company) %>
-                  <%= button_to "Mark as Filled", filled_job_path(job) unless job.filled_at? %>
-                  <%= button_to "Mark as Vacant", vacant_job_path(job) if job.filled_at? %>
-                <% end %>
-            </div>
-          </li>
-        <% else %>
-            <li>
-              <div style="width: 50%; float: left">
-                <s>
-                  <%= link_to job.role, job %>
-                  <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
-                </s>
-              </div>
-              <div class="expired-job-actions">
-                  <% if current_user && current_user.companies.include?(@company) %>
-                    <%= button_to "Renew", renew_job_path(job) %>
-                  <% end %>
-              </div>
-            </li>
-        <% end %>
-      <% end %>
-    </ul>
+    <%= render 'company_jobs_list', company: @company %>
   <% end %>
   <% if current_user && current_user.companies.include?(@company) %>
     <p><%= link_to "Edit", edit_company_path(@company) %></p>
