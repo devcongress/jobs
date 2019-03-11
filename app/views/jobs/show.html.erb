@@ -4,7 +4,7 @@
 <h1 class="page--title">
   <%= @job.title %> <%= "(Inactive)" unless @job.active? %>
 </h1>
-  <p class="page--legend text-center">Posted <%= time_ago_in_words(@job.created_at) %> ago</p>
+  <p class="page--legend text-center">Posted <%= time_ago_in_words(@job.published_on) %> ago</p>
 <div class="share--buttons">	
   <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
   <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	

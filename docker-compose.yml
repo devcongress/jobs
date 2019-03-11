@@ -1,13 +1,13 @@
 version: '3.5'
 
 x-db_config: &db_config
-  POSTGRES_PASSWORD: password
-  POSTGRES_USER: interne
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
   POSTGRES_DB: jobs_dev
 
 services:
   postgres:
-    image: postgres:9.5
+    image: bitnami/postgresql:10
     volumes:
       - ./.volumes/postgres:/var/lib/postgresql/data:cached
     environment:

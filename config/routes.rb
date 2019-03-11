@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     member do
       post "filled"
       post "vacant"
+      post "renew"
     end
   end
 
