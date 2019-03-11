@@ -178,7 +178,7 @@ CREATE TABLE public.jobs (
     id bigint NOT NULL,
     role character varying NOT NULL,
     duration character varying,
-    salary integer NOT NULL,
+    salary numrange NOT NULL,
     requirements character varying NOT NULL,
     qualification character varying NOT NULL,
     perks character varying,
