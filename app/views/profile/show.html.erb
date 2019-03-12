@@ -4,7 +4,7 @@
 <p>Joined <%= time_ago_in_words(current_user.created_at) %> ago</p>
 <p><%= current_user.email %></p>
 <div class="main--content">
-  <h2>Companies Your Recruiting For</h2>
+  <h2>Companies You're Recruiting For</h2>
   <% if current_user.companies.empty? %>
     <p>You're not recruiting for any company</p>
     <p>In order to start posting job opportunities, you should <%= link_to "register the company", new_company_path %></p>
