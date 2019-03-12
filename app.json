@@ -1,0 +1,61 @@
+{
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "description": "",
+  "env": {
+    "DEVISE_KEY": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RAILS_LOG_TO_STDOUT": {
+      "required": true
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    },
+    "SENDGRID_PASSWORD": {
+      "required": true
+    },
+    "SENDGRID_USERNAME": {
+      "required": true
+    },
+    "TWITTER_ACCESS_SECRET": {
+      "required": true
+    },
+    "TWITTER_ACCESS_TOKEN": {
+      "required": true
+    },
+    "TWITTER_CONSUMER_KEY": {
+      "required": true
+    },
+    "TWITTER_CONSUMER_SECRET": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "jobs",
+  "scripts": {
+  },
+  "stack": "heroku-16"
+}
