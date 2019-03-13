@@ -20,7 +20,7 @@
 @import "container.scss";
 @import "grid.scss";
 @import "tile.scss";
-@import "card.scss";
+// @import "card.scss";
 
 // Common
 // @import "close.scss"; // After: Icon
@@ -29,7 +29,7 @@
 // @import "marker.scss"; // After: Icon
 // @import "alert.scss"; // After: Close
 // @import "badge.scss";
-// @import "label.scss";
+@import "label.scss";
 // @import "overlay.scss"; // After: Icon
 // @import "article.scss"; // After: Subnav
 // @import "comment.scss"; // After: Subnav
@@ -75,11 +75,11 @@
 // @import "animation.scss";
 @import "width.scss";
 @import "height.scss";
-// @import "text.scss";
-// @import "column.scss";
-// @import "cover.scss";
-// @import "background.scss";
-// @import "align.scss";
+@import "text.scss";
+@import "column.scss";
+@import "cover.scss";
+@import "background.scss";
+@import "align.scss";
 @import "svg.scss";
 @import "utility.scss";
 @import "flex.scss"; // After: Utility
