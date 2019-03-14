@@ -4,8 +4,9 @@ Rails.application.routes.draw do
   get 'pages/updates'
   root to: "pages#index"
   
-  get 'help'    => 'pages#help'
   get 'about'   => 'pages#about'
+  get 'help'    => 'pages#help'
+  get 'pricing' => 'pages#pricing'
   get 'privacy' => 'pages#privacy'
   get 'terms'   => 'pages#terms'
   get 'updates' => 'pages#updates'
