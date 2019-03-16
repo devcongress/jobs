@@ -1,13 +1,17 @@
-<div class="navbar">
-  <%= link_to image_tag( 'devcongress-jobs-logo.svg', alt: 'devcongress logo', height: '', width: '', class: 'dc-logo' ), root_path, :class => "navbar--logo" %>
-  <div class="navbar--menu">
-    <%= link_to 'Add Job', new_job_path, :class => 'navbar--menu__item' %>
-    <% if user_signed_in? %>
-      <%= link_to 'Your Profile', profile_path, :class => 'navbar--menu__item' %>
-      <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => 'navbar--menu__item' %>
-    <% else %>
-      <%= link_to 'Sign In', new_user_session_path, :class => 'navbar--menu__item' %>
-      <%= link_to 'Sign Up', new_user_registration_path, :class => 'navbar--menu__item' %>
-    <% end %>
-  </div>
-</div>
+<nav class="uk-navbar-container uk-navbar uk-navbar-transparent">
+    <div class="uk-navbar-left">
+      <%= link_to image_tag( 'devcongress-jobs-logo.svg', alt: 'devcongress logo', height: '', width: '', class: 'dc-logo' ), root_path, :class => "" %>
+    </div>
+    <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav">
+            <li><%= link_to 'Add Job', new_job_path %></li>
+            <% if user_signed_in? %>
+              <li><%= link_to 'Your Profile', profile_path %></li>
+              <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
+            <% else %>
+              <li><%= link_to 'Sign In', new_user_session_path %></li>
+              <li><%= link_to 'Sign Up', new_user_registration_path %></li>
+            <% end %>
+        </ul>
+    </div>
+</nav>

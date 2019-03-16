@@ -1,4 +1,48 @@
 <footer>
-  <p>&copy; <%= Date.today.year %> All rights reserved</p>
-  <%= link_to image_tag('devcongress.svg'), t('app.author_website')   %>
+	<!-- <div class="newsletter-sub">
+		<h3>Can't find the jobs you're looking for?</h3>
+		<p>Sign up below and we'll send you regular job updates from here.</p>
+		<div id="mc_embed_signup">
+			<form action="https://devcongress.us19.list-manage.com/subscribe/post?u=e5a8df0953f6615394de1220d&amp;id=04270df5d6" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+			    <div id="mc_embed_signup_scroll">
+				<h2></h2>
+			<div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+			<div class="mc-field-group">
+				<label for="mce-EMAIL">Email Address  <span class="asterisk">*</span>
+			</label>
+				<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+			</div>
+				<div id="mce-responses" class="clear">
+					<div class="response" id="mce-error-response" style="display:none"></div>
+					<div class="response" id="mce-success-response" style="display:none"></div>
+				</div>
+			    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_e5a8df0953f6615394de1220d_04270df5d6" tabindex="-1" value=""></div>
+			    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+			    </div>
+			</form>
+		</div>
+	</div> -->
+	<div class="uk-container main">
+		<div class="uk-grid">
+			<div class="uk-width-1-3">
+				<%= link_to image_tag('devcongress.svg'), t('app.author_website')   %>
+				<p>&copy; <%= Date.today.year %> All rights reserved</p>
+			</div>
+			<div class="uk-width-1-3">
+				<ul class="uk-list">
+				<li><%= link_to 'About', about_path %></li>
+				<li><%= link_to 'Pricing', pricing_path %></li>
+				<li><%= link_to 'Help', help_path %></li>
+				</ul>
+			</div>
+			<div class="uk-width-1-3">
+				<ul class="uk-list">
+				<li><%= link_to 'Updates', updates_path %></li>
+				<li><%= link_to 'Privacy', privacy_path %></li>
+				<li><%= link_to 'Terms', terms_path %></li>
+				</ul>
+			</div>
+		</div>
+		<p><%= link_to 'jobs@devcongress.org', 'mailto:jobs@devcongress.org' %></p>
+	</div>
 </footer>

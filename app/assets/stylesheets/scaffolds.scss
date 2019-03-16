@@ -37,13 +37,6 @@ h1 {
     margin: 0.4em 0 0;
 }
 
-div {
-    &.field,
-    &.actions {
-        margin-bottom: 10px;
-    }
-}
-
 .error_explanation {
     width: 450px;
     border: 2px solid red;
@@ -69,10 +62,6 @@ div {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-}
-
-footer {
-    margin-bottom: 100px;
 }
 
 @media (max-width: 640px) {
