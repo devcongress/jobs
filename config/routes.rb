@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   
   get 'pages/terms'
+  get 'pages/pricing'
   get 'pages/updates'
   root to: "pages#index"
   
