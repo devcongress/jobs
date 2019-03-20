@@ -23,7 +23,7 @@ class JobsController < ApplicationController
     @job = company.jobs.build(job_params)
     if @job.save
       @job.renewals.create(job: @job, renewed_on: @job.created_at)
-      redirect_to @job, status: :created
+      redirect_to @job
       job_post_successful
     else
       render :new, status: :bad_request
