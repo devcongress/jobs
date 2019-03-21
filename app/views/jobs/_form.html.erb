@@ -64,7 +64,7 @@
   </div>
   <div class="field">
     <%= form.label :country %>
-    <%= form.text_field :country %>
+    <%= form.select :country, @countries, include_blank: true %>
   </div>
   <div class="field">
     <%= form.label :apply_link, "Link to Apply" %>
