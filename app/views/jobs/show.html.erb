@@ -43,5 +43,8 @@
   <p class="job--field__content">
     <%= mail_to @job.company.email, @job.company.email %>
   </p>
+  <% if current_user && current_user.companies.include?(@job.company) %>
+    <%= link_to 'Edit Job', edit_job_path %> | 
+  <% end %>
   <%= link_to 'View All Jobs', jobs_path %>
 </div>
