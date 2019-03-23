@@ -9,6 +9,12 @@ class JobsController < ApplicationController
 
   def new
     @current_user = current_user
+    @countries = []
+    File.open("db/countries.csv" , "r") do |f|
+     f.each_line do |line|
+       @countries << [line.split(',')[0], line.split(',')[0]]
+     end
+    end
     if @current_user.companies.empty?
       redirect_to new_company_path, notice: "Register company first"
       return
