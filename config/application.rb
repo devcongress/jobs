@@ -19,5 +19,11 @@ module Dcjobs
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
     config.active_record.schema_format = :sql
+
+    config.filter_parameters << :password
+    
+    Raven.configure do |config|
+      config.dsn = 'https://f3bcfcf98aac4331b3df9af207507b4f:fc1a39e637804bf18c583f0dfa3bcbfd@sentry.io/1422368'
+    end
   end
 end
