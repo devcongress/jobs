@@ -1,17 +1,21 @@
-# require "twitter"
-
 class JobsController < ApplicationController
-  before_action :set_job,            except: [:new, :index, :myjobs]
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :require_ownership,  only: [:edit, :destroy]
+  before_action :set_job,            except: [:new, :index]
+  before_action :authenticate_user!, except: [:index, :show, :search, :renew]
+  before_action :require_ownership,    only: [:edit, :update, :destroy, :renew]
 
   def index
     @jobs = Job.all_active
   end
 
   def new
-    @companies = current_user.companies
-    if @companies.empty?
+    @current_user = current_user
+    @countries = []
+    File.open("db/countries.csv" , "r") do |f|
+     f.each_line do |line|
+       @countries << [line.split(',')[0], line.split(',')[0]]
+     end
+    end
+    if @current_user.companies.empty?
       redirect_to new_company_path, notice: "Register company first"
       return
     end
@@ -24,7 +28,8 @@ class JobsController < ApplicationController
 
     @job = company.jobs.build(job_params)
     if @job.save
-      redirect_to @job, status: :created
+      @job.renewals.create(job: @job, renewed_on: @job.created_at)
+      redirect_to @job
       job_post_successful
     else
       render :new, status: :bad_request
@@ -46,10 +51,6 @@ class JobsController < ApplicationController
     end
   end
 
-  def myjobs
-    @jobs = current_user.jobs.order("created_at DESC")
-  end
-
   def filled
     @job.update_attribute(:filled_at, DateTime.now)
     redirect_to @job
@@ -58,6 +59,25 @@ class JobsController < ApplicationController
   def vacant
     @job.update_attribute(:filled_at, nil)
     redirect_to @job
+  end
+
+  def renew
+    # only expired jobs can be renewed. if a job hasn't
+    # expired, any attempt to renew should be ignored.
+    unless @job.active?
+      @job.renewals.create(renewed_on: DateTime.now)
+      JobsMailer.with(job: @job).renewed.deliver_later
+    end
+
+    redirect_to @job
+  end
+
+  def search
+    @matches = Job.search(params[:q])
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # DELETE /jobs/1
@@ -73,8 +93,8 @@ class JobsController < ApplicationController
   private
 
     def require_ownership
-      unless current_user.companies.includes(@job.company)
-        redirect_to root_path, notice: "You are not authorized to edit this job post."
+      unless current_user && current_user.companies.include?(@job.company)
+        redirect_to @job, notice: "You are not authorized to edit this job post."
       end
     end
 
@@ -91,7 +111,8 @@ class JobsController < ApplicationController
       params.require(:job).permit(
         :role,
         :duration,
-        :salary,
+        :salary_lower,
+        :salary_upper,
         :requirements,
         :qualification,
         :perks,
@@ -106,9 +127,10 @@ class JobsController < ApplicationController
       params.require(:job).permit(
         :role,
         :duration,
-        :salary,
         :requirements,
         :qualification,
+        :salary_lower,
+        :salary_upper,
         :perks,
         :remote_ok,
         :city,
@@ -122,7 +144,7 @@ class JobsController < ApplicationController
 
     def job_post_successful
       JobsMailer.with(job: @job).published.deliver_later
-      # $tweetBot.update("New Job Vacancy: " + @job.title + ". Read more at " + job_url)
+      $tweetJob.update("New Job Vacancy: #{@job.title}. Read more at #{url_for(@job)}")
     end
     
 end

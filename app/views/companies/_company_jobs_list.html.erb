@@ -1,0 +1,31 @@
+<ul class="job--list">
+  <% @company.jobs.each do |job| %>
+    <% if job.active? %>
+      <li class="job--list__item <%= job.filled_at? ? "filled" : "vacant" %>">
+        <span>
+          <%= link_to job.role, job, :class => "job--list__item-link" %>
+          <small>(posted <%= time_ago_in_words(job.published_on) %> ago<%= ", filled" if job.filled_at? %>)</small>
+        </span>
+        <div class="job--list__action-group">
+          <% if current_user && current_user.companies.include?(@company) %>
+            <%= button_to "Mark as Filled", filled_job_path(job) unless job.filled_at? %>
+            <%= button_to "Mark as Vacant", vacant_job_path(job) if job.filled_at? %>
+          <% end %>
+        </div>
+      </li>
+    <% else %>
+      <li class="job--list__item">
+        <s>
+          <%= link_to job.role, job, :class => "job--list__item-link" %>
+          <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
+        </s>
+        <div class="job--list__action-group">
+          <% if current_user && current_user.companies.include?(@company) %>
+            <%= button_to "Renew", renew_job_path(job), :class => "job--list__action job--list__action-edit" %>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+

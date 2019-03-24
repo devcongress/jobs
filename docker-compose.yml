@@ -1,19 +1,21 @@
 version: '3.5'
 
 x-db_config: &db_config
-  POSTGRES_PASSWORD: password
-  POSTGRES_USER: interne
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
   POSTGRES_DB: jobs_dev
 
 services:
   postgres:
-    image: postgres:9.5
+    image: bitnami/postgresql:10
     volumes:
-      - postgres:/var/lib/postgresql/data:cached
+      - ./.volumes/postgres:/var/lib/postgresql/data:cached
     environment:
       <<: *db_config
     networks:
       - jobs
+    ports:
+      - "5433:5432"
 
   web:
     build: .
@@ -23,7 +25,6 @@ services:
     volumes:
       - ./:/app
       - bundle:/bundle:cached
-    command: bundle exec rails s -p 3000 -b 0.0.0.0
     networks:
       - jobs
     ports:

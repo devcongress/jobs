@@ -1,11 +1,15 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.3.3'
+ruby '2.6.1'
 
-gem 'rails', '~> 5.2.0'
-gem 'puma', '~> 3.11'
+gem 'puma'
+
+gem 'rails', '~> 5.2.2'
 gem 'sass-rails', '~> 5.0'
+# gem 'sass', '~> 3.4', '>= 3.4.22'
+# gem 'sassc', '~> 2.0', '>= 2.0.1'
+gem 'sprockets', '~> 3.7', '>= 3.7.2'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'coffee-rails', '~> 4.2'
@@ -20,6 +24,7 @@ gem 'twitter', '~> 6.2'
 gem 'oauth'
 
 gem 'pg'
+gem 'trix'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -45,6 +50,8 @@ end
 
 group :production do
   gem 'rails_12factor'
+  gem 'skylight'
+  gem "sentry-raven"
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

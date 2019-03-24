@@ -5,10 +5,10 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
   include ERB::Util
 
   setup do
-    @available_jobs = create_list(:job, 3, created_at: 1.day.ago)
-    @archived_job = create(:job, archived: true) # one archived job
-    @user = create(:user)
-    @company = create(:company)
+    @available_jobs = FactoryBot.create_list(:job, 3, created_at: 1.day.ago)
+    @archived_job   = FactoryBot.create(:job, archived: true)
+    @user           = FactoryBot.create(:user)
+    @company        = FactoryBot.create(:company)
     @user.companies << @company
   end
 
@@ -18,7 +18,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     @available_jobs.each do |job|
-      job_title = "#{job.role} at #{job.company.name}"
+      job_title = "#{job.role}"
       assert_match html_escape(job_title), @response.body
     end
 
@@ -35,7 +35,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match job.role,          @response.body
     assert_match job.qualification, @response.body
-    assert_match job.salary,        @response.body
+    assert_match job.compensation,  @response.body
     assert_match job.duration,      @response.body
     assert_match html_escape(job.company.name),  @response.body
   end
@@ -61,6 +61,10 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
         post jobs_url, params: {job: job_params}
 
         assert_response :created
+
+        job = Job.last
+        assert_equal job.created_at,    job.published_on
+        assert_equal job.renewals.size, 1
       end
     end
   end
@@ -85,10 +89,32 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     job.reload
     assert_redirected_to job
     assert_equal job.company, @company # Job's company cannot be changed.
-    assert_equal job.role, job_params[:role]
+    assert_equal job.salary,  Range.new(job_params[:salary_lower], job_params[:salary_upper])
+    assert_equal job.role,    job_params[:role]
 
-    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id")
+    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id", "full_text_search", "salary")
     updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
+  end
+
+  test "only job owner can update job" do
+    job = FactoryBot.create(:job)
+    job_params = attributes_for(:job)
+
+    sign_in @user
+
+    put job_url(job), params: {job: job_params}
+    assert_redirected_to job
+  end
+
+  test "only job owner can view edit job page" do
+    company = FactoryBot.create(:company)
+    job = FactoryBot.create(:job, company: company)
+    user = FactoryBot.create(:user)
+
+    sign_in user
+
+    get edit_job_url(job)
+    assert_redirected_to job
   end
 
   test "should be able to mark a job post (position) as filled" do
@@ -112,5 +138,33 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     job.reload
     assert_redirected_to job
     assert_nil job.filled_at
+  end
+
+  test "search" do
+    first = FactoryBot.create(:job, role: "Senior Ruby on Rails Developer")
+    second = FactoryBot.create(:job, role: "Senior JavaScript Developer")
+    FactoryBot.create(:job) # not found
+
+    get search_jobs_url(q: "senior developer")
+
+    assert_match /2 matches were found/i, @response.body
+    assert_match first.role,              @response.body
+    assert_match first.requirements,      @response.body
+    assert_match second.role,             @response.body
+    assert_match second.requirements,     @response.body
+  end
+
+  test "should renew an expired job" do
+    expired = FactoryBot.create(:expired_job, company: @company)
+
+    assert_enqueued_jobs @company.users.count do
+      sign_in @user
+      post renew_job_url(expired)
+
+      expired.reload
+      assert expired.active?
+      assert expired[:created_at] < expired.published_on # Now I see the stupidity in choosing bad names.
+      assert_equal expired.renewals.size, 2
+    end
   end
 end

@@ -1,0 +1,12 @@
+<ul class="job--list">
+    <% @jobs.each do |job| %>
+        <li class="job--list__item">
+        <%= link_to job, :class => "job--list__item-link" do %>
+            <span class="job--list__item-role"><%= job.role %></span>
+            <span class="job--list__item-company"><%= job.company.name %></span>
+            <span class="job--list__item-type"><%= job.duration %></span>
+            <span class="job--list__item-time"><%= time_ago_in_words(job.published_on) %> ago</span>
+        <% end %>
+        </li>
+    <% end %>
+</ul>

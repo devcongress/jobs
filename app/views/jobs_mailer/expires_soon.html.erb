@@ -1,0 +1,7 @@
+<p>
+  We want to inform you that your job post, <strong><%= link_to @job.title, @job %></strong> expires in <%= Job.days_to_expiry %> days. It will continue to be visible on the Jobs Board. Please note that you can renew it only after it has expired.
+</p>
+<p>
+  If the role has already been filled, click <%= link_to "here", filled_job_url(@job) %> to mark it as such. If it's not filled but you're no longer hiring for the role, you can <%= link_to "archive", edit_job_url(@job) %> it instead.
+</p>
+<p>Enjoy the rest of your day!</p>

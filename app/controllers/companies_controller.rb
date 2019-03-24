@@ -1,6 +1,7 @@
 class CompaniesController < ApplicationController
-  before_action :set_company,        only: [:show]
-  before_action :authenticate_user!, only: [:new, :create, :edit]
+  before_action :set_company,          only: [:show, :edit, :update]
+  before_action :authenticate_user!, except: [:show]
+  before_action :require_ownership!,   only: [:edit, :update]
 
   def new
     @company = current_user.companies.build
@@ -12,7 +13,6 @@ class CompaniesController < ApplicationController
       current_user.companies << @company
       redirect_to @company
     else
-      puts @company.errors.full_messages.inspect
       render :new
     end
   end
@@ -21,6 +21,14 @@ class CompaniesController < ApplicationController
   end
 
   def show
+  end
+
+  def update
+    if @company.update_attributes(company_params)
+      redirect_to @company
+    else
+      render :edit
+    end
   end
 
   private
@@ -34,6 +42,10 @@ class CompaniesController < ApplicationController
       raise ActionController::RoutingError.new("not found")
     end
 
+    def require_ownership!
+      head(:forbidden) unless current_user.companies.include?(@company)
+    end
+
     def company_params
       params.require(:company).permit(
         :name,
@@ -45,7 +57,8 @@ class CompaniesController < ApplicationController
         :city,
         :state_or_region,
         :post_code,
-        :country
+        :country,
+        :logo
       )
     end
 end

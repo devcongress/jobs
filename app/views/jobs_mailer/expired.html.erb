@@ -1,0 +1,7 @@
+<p>
+  Every good thing comes to an end, and starting today, we'll no longer show your job post, <%= link_to @job.title, @job %> on the Jobs Board. It has been up for <%= Job.validity_period %> days and we hope you found someone to fill the role.
+</p>
+<p>
+  If the role is still empty, you can <%= link_to "renew", renew_job_url(@job) %> and give the job post another <%= Job.validity_period %> days of life. If it had been filled but you forgot to mark it as such, we'd appreciate if you do that now using this <%= link_to "link", filled_job_url(@job) %>. That way, we know we're helping you.
+</p>
+<p>Enjoy the rest of your day!</p>

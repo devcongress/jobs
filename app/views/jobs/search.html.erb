@@ -1,0 +1,26 @@
+<% content_for :title do %>
+  <%= "Search Results | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title">Search Results</h1>
+<% if @matches.empty? %>
+  <h3>No results for the search term you entered.</h3>
+  <p>Return to <%= link_to('all Jobs', jobs_path)%> or <%= link_to('create a new job', new_job_path)%></p>
+<% else %>
+  <h3><%= pluralize(@matches.length, 'match') %> were found:</h3>
+  <ul>
+    <% @matches.each do |match| %>
+      <li>
+        <h4><%= link_to match.title, job_url(match) %></h4>
+        <p>
+        <!--
+          TODO: Right now we display the requirements of the job
+          but we should replace this with the part of the job post
+          that matched the user's query. And if possible highlight
+          the matched words or phrases.
+        -->
+          <%= match.requirements %>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

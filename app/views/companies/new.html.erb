@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1>Register Your Company</h1>
 <h4>
   In order to post jobs, you should register your company. You're allowed to register more than one companies which means recruiters can register as many clients as they want
@@ -50,3 +51,61 @@
     </div>
   <% end %>
 </section>
+=======
+<% content_for :title do %>
+  <%= "Register Your Company | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title">Register Your Company</h1>
+<p class="page--legend">In order to post jobs, you should register your company. You're allowed to register more than one company which means recruiters can register as many clients as they want.</p>
+<div class="main--content">
+  <section class="form">
+    <%= form_with(model: @company, :class => "pure-form pure-form-stacked") do |f| %>
+      <div class="field">
+        <%= f.label :name %>
+        <%= f.text_field :name, required: true, placeholder: "Acme Widgets Inc." %>
+      </div>
+      <div class="field">
+        <%= f.label :industry, "Industry" %>
+        <%= f.collection_select :industry, Industry.all, :name, :name do %>
+        <% end %>
+      </div>
+      <div class="field">
+        <%= f.label :description, "About" %>
+        <%= f.hidden_field :description, required: true, id: 'description' %>
+        <trix-editor input="description"></trix-editor>
+      </div>
+      <div class="field">
+        <%= f.label :website, "Website" %>
+        <%= f.url_field :website %>
+      </div>
+      <div class="field">
+        <%= f.label :email, "Contact Email (An email will be sent for verification)" %>
+        <%= f.email_field :email, required: true %>
+      </div>
+      <div class="field">
+        <%= f.label :phone, "Contact Phone" %>
+        <%= f.telephone_field :phone, required: true %>
+      </div>
+      <div class="field">
+        <%= f.label :city, "City" %>
+        <%= f.text_field :city, require: true %>
+      </div>
+      <div class="field">
+        <%= f.label :state_or_region, "State/Region" %>
+        <%= f.text_field :state_or_region, require: true %>
+      </div>
+      <div class="field">
+        <%= f.label :post_code, "Post/Zip Code" %>
+        <%= f.text_field :post_code, require: true %>
+      </div>
+      <div class="field">
+        <%= f.label :country, "Country" %>
+        <%= f.text_field :country, require: true %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Register" %>
+      </div>
+    <% end %>
+  </section>
+</div>
+>>>>>>> 4cb9d546a7eaf81a9517be3da53be1540c64f43c

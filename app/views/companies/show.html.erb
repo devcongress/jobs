@@ -1,4 +1,29 @@
-<h1><%= @company.name %></h1>
-<p><%= @company.industry %></p>
-<p><%= @company.website %></p>
-<p><%= @company.description %></p>
+<% content_for :title do %>
+  <%= "#{@company.name} | #{t('app.name')}" %>
+<% end %>
+<h1 class="page--title"><%= link_to @company.name, @company.website %></h1>
+<h2 class="page--legend"><%= @company.industry %></h2>
+<div class="main--content">
+  <p><%= @company.description.html_safe %></p>
+  <p><%= link_to "Website", @company.website %></p>
+  <section class="address">
+    <h2>Address</h2>
+    <p>
+      <%= @company.city %><br>
+      <%= @company.state_or_region %><br>
+      <%= @company.country %> <%= @company.post_code %>
+    </p>
+  </section>
+  <% if @company.jobs.empty? %>
+    <p>No jobs have been posted for <%= @company.name %> yet.</p>
+    <% if current_user && current_user.companies.include?(@company)%>
+      <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post.</p>
+    <% end %>
+  <% else %>
+    <h2>Jobs</h2>
+    <%= render 'company_jobs_list', company: @company %>
+  <% end %>
+  <% if current_user && current_user.companies.include?(@company) %>
+    <p><%= link_to "Edit", edit_company_path(@company) %></p>
+  <% end %>
+</div>

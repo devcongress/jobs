@@ -2,15 +2,17 @@
   <%= "#{@job.role} at #{@job.company.name} | #{t('app.name')}" %>
 <% end %>
 <h1 class="page--title">
-  <%= @job.title %>
+  <%= @job.title %> <%= "(Inactive)" unless @job.active? %>
 </h1>
-<div class="page--legend-buttons">	
-  <div class="share--buttons">	
-    <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
-    <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
-  </div>	
-</div>
+  <p class="page--legend text-center">Posted <%= time_ago_in_words(@job.published_on) %> ago</p>
+<div class="share--buttons">	
+  <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
+  <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
+</div>	
 <div class="main--content">
+  <% unless @job.active? %>
+    <h3 style="color: red">This job is no longer active!</h3>
+  <% end %>
   <h2 class="job--field__title">Role</h2>
   <p class="job--field__content">
     <%= @job.role %>
@@ -21,25 +23,28 @@
   </p>
   <h2 class="job--field__title">Salary</h2>
   <p class="job--field__content">
-    <%= @job.salary %>
+    <%= @job.compensation %>
   </p>
   <h2 class="job--field__title">Remote OK</h2>
   <p class="job--field__content">
     <%= @job.remote_ok ? "Yes" : "No" %>
   </p>
   <h2 class="job--field__title">Requirements</h2>
-  <%= simple_format h(@job.requirements), :class => "job--field__content" %>
+  <%= simple_format @job.requirements.to_s.html_safe, :class => "job--field__content" %>
   <h2 class="job--field__title">Qualification</h2>
-  <%= simple_format h(@job.qualification), :class => "job--field__content" %>
+  <%= simple_format @job.qualification.to_s.html_safe, :class => "job--field__content" %>
   <h2 class="job--field__title">Perks</h2>
-  <%= simple_format h(@job.perks), :class => "job--field__content" %>
+  <%= simple_format @job.perks.to_s.html_safe, :class => "job--field__content" %>
   <h2 class="job--field__title">Company</h2>
   <p class="job--field__content">
-    <%= @job.company.name %>
+    <%= link_to @job.company.name, @job.company %>
   </p>
   <h2 class="job--field__title">Contact email</h2>
   <p class="job--field__content">
     <%= mail_to @job.company.email, @job.company.email %>
   </p>
+  <% if current_user && current_user.companies.include?(@job.company) %>
+    <%= link_to 'Edit Job', edit_job_path %> | 
+  <% end %>
   <%= link_to 'View All Jobs', jobs_path %>
 </div>

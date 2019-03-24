@@ -21,34 +21,37 @@
   </div>
   <div class="field">
     <%= form.label :company_id, "Company Name" %>
-    <%= form.collection_select(:company_id, @companies, :id, :name) %>
+    <%= form.collection_select(:company_id, @current_user.companies, :id, :name) %>
   </div>
   <div class="field">
     <%= form.check_box :remote_ok %> Remote OK
   </div>
   <div class="field">
     <%= form.label :duration %>
-    <%= form.select(:duration, {"Full-time" => "Full-Time", "Contract" => "Contract", "Internship" => "Internship"}) %>
+    <%= form.select(:duration, {"Full-time" => "Full-Time", "Part-time" => "Part-Time", "Contract" => "Contract", "Internship" => "Internship"}) %>
     <span class="pure-form-message">What is the duration for this project?</span>
   </div>
   <div class="field">
-    <%= form.label :salary %>
-    <%= form.select(:salary, {"Up to USD 500" => "Up to USD 500", "USD 500 - 1k" => "USD 500 - 1k", "USD 1k - 2k" => "USD 1k - 2k", "USD 2k - 3k" => "USD 2k - 3k", "USD 3k+" => "USD 3k+"})  %>
+    <%= form.label "Salary per month/project" %>
+    Between <%= form.number_field :salary_lower, min: 0 %> and <%= form.number_field :salary_upper, min: 0 %>
     <span class="pure-form-message">Please note: there's a correlation between experience/expertise and compensation. Therefore, it's important to provide a figure to attract the right pool of candidates.</span>
   </div>
   <div class="field">
     <%= form.label :requirements %>
-    <%= form.text_area :requirements %>
+    <%= form.hidden_field :requirements, id: 'requirements' %>
+    <trix-editor input="requirements"></trix-editor>
     <span class="pure-form-message">What are the 1 to 3 main things you need your future developer to help with? Please feel free to keep this as simple as possible and use every day language. Please be as specific as possible. For example: "I need the developer to help us build a new iPhone app"</span>
   </div>
   <div class="field">
     <%= form.label :qualification %>
-    <%= form.text_area :qualification %>
+    <%= form.hidden_field :qualification, id: 'qualification' %>
+    <trix-editor input="qualification"></trix-editor>
     <span class="pure-form-message">This could be anything from "I require the developer to be fluent in French" to something as technical as "I require the developer to have an expert-level familiarity with PHP"</span>
   </div>
   <div class="field">
     <%= form.label :perks %>
-    <%= form.text_area :perks %>
+    <%= form.hidden_field :perks, id: 'perks' %>
+    <trix-editor input="perks"></trix-editor>
     <span class="pure-form-message">Please remember that the best developers are motivated by a mission. Please *sell* the project succinctly.</span>
   </div>
   <div class="field">
@@ -61,7 +64,7 @@
   </div>
   <div class="field">
     <%= form.label :country %>
-    <%= form.text_field :country %>
+    <%= form.select :country, @countries, include_blank: true %>
   </div>
   <div class="field">
     <%= form.label :apply_link, "Link to Apply" %>

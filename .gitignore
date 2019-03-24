@@ -31,3 +31,5 @@
 
 # IDE folders
 .idea/
+.volumes/
+.vscode/
