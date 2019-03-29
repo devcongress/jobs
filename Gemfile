@@ -42,7 +42,7 @@ end
 group :test do
   gem 'capybara', '>= 2.15', '< 4.0'
   gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
+  gem 'webdrivers'
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'minitest-matchers_vaccine'
