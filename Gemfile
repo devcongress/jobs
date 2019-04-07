@@ -27,6 +27,8 @@ gem 'omniauth-google-oauth2'
 
 gem 'pg'
 gem 'trix'
+gem "sentry-raven"
+
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -56,8 +58,5 @@ group :production do
   gem 'skylight'
 end
 
-group :production, :development do
-    gem "sentry-raven"
-end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
