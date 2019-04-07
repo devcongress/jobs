@@ -20,7 +20,7 @@ Devise.setup do |config|
   # with default "from" parameter.
   config.mailer_sender = 'jobs@devcongress.org'
 
-  config.omniauth :google_oauth2, '202023475415-rntfjksolklblit7f4ti9t01pdc6hh5b.apps.googleusercontent.com', 'qwHwt4uj7LZXEtinSjx0EYlb', {}
+  config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'] , {}
 
 
   # Configure the class responsible to send e-mails.
