@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
-  
+
   get 'pages/pricing'
   get 'pages/updates'
   root to: "pages#index"
-  
+
   get 'about'   => 'pages#about'
   get 'help'    => 'pages#help'
   get 'pricing' => 'pages#pricing'
   get 'privacy' => 'pages#privacy'
   get 'updates' => 'pages#updates'
-  
+
   get 'profile' => 'profile#show'
 
   resources :companies
@@ -25,7 +25,8 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users, skip: [:sessions, :registrations, :passwords]
+  devise_for :users, skip: [:sessions, :registrations, :passwords], controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+
 
   devise_scope :user do
     # sessions
@@ -48,5 +49,8 @@ Rails.application.routes.draw do
     patch 'edit-pass', to: 'devise/passwords#update', as: :update_user_password
     post  'new-pass',  to: 'devise/passwords#create', as: :user_password
   end
+
+
+
 
 end
