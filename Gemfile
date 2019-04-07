@@ -22,9 +22,13 @@ gem 'devise', '~> 4.4', '>= 4.4.3'
 gem 'sendgrid', '~> 1.2', '>= 1.2.4'
 gem 'twitter', '~> 6.2'
 gem 'oauth'
+gem 'omniauth-google-oauth2'
+
 
 gem 'pg'
 gem 'trix'
+gem "sentry-raven"
+
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -37,6 +41,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'annotate'
+  gem "figaro"
 end
 
 group :test do
@@ -51,7 +56,7 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'skylight'
-  gem "sentry-raven"
 end
+
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
