@@ -51,7 +51,10 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'skylight'
-  gem "sentry-raven"
+end
+
+group :production, :development do
+    gem "sentry-raven"
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
