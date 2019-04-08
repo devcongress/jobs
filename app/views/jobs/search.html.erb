@@ -1,7 +1,7 @@
 <% content_for :title do %>
   <%= "Search Results | #{t('app.name')} " %>
 <% end %>
-<h1 class="page--title">Search Results for <%= query %></h1>
+<h1 class="page--title">Search Results for <%= params[:q] %></h1>
 <% if @matches.empty? %>
   <h3>No results for the search term you entered.</h3>
   <p>Return to <%= link_to('all Jobs', jobs_path)%> or <%= link_to('create a new job', new_job_path)%></p>
