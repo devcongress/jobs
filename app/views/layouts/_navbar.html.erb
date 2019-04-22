@@ -3,8 +3,7 @@
       <%= link_to image_tag( 'devcongress-jobs-logo.svg', alt: 'devcongress logo', height: '', width: '', class: 'dc-logo' ), root_path, :class => "" %>
     </div>
     <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-            <li><%= link_to 'Add Job', new_job_path %></li>
+        <ul class="uk-navbar-nav"> 
             <% if user_signed_in? %>
               <li><%= link_to 'Your Profile', profile_path %></li>
               <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
@@ -12,6 +11,7 @@
               <li><%= link_to 'Sign In', new_user_session_path %></li>
               <li><%= link_to 'Sign Up', new_user_registration_path %></li>
             <% end %>
+            <li><%= button_to '+ Post a Job', new_job_path, class: "uk-button uk-button-primary", method: :get, style: "margin-top: 20px;" %></li>
         </ul>
     </div>
 </nav>
