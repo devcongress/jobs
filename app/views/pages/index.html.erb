@@ -1,15 +1,24 @@
+ <%# Meta description for the page title tag %>
 <% content_for :title do %>
   <%= "Home | #{t('app.name')}" %>
 <% end %>
-<h1 class="page--title text--center">DevCongress Jobs</h1>
-<div class="page--legend-buttons">
-  <p class="page--legend">Welcome to the DevCongress Job Board. Hire great people here.</p>
-</div>
 
-<div class="main--content">
-  <% if @jobs.empty? %>
-    <p>No jobs are currently available</p>
-  <% else %>
-    <%= render 'jobs/list' %>
-  <% end %>
-</div>
+<main class="dc-home">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <h1 class="page--title">All Jobs</h1>
+      </div>
+    </section>
+
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <% if @jobs.empty? %>
+          <p>No jobs are currently available</p>
+        <% else %>
+          <%= render 'jobs/list' %>
+        <% end %>
+      </div>
+    </section>
+  </article>
+</main>

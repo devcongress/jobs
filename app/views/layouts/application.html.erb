@@ -6,11 +6,13 @@
     <noscript>
       <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-KHKSCXW" style="display:none;visibility:hidden" width="0"></iframe>
     </noscript>
-    <div class="main">
-    <%= render 'layouts/navbar'	%>
-      <span class="notice">
-        <%= notice	 %>
-      </span>
+    <div class="dc-jobs">
+      <%= render 'layouts/header'	%>
+      <% if notice %>
+        <span class="notice">
+          <%= notice %>
+        </span>
+      <% end %>
       <%= yield	 %>
     </div>
     <%= render 'layouts/footer' %>
