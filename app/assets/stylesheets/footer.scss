@@ -1,9 +1,31 @@
-// #mc_embed_signup{
-// 	clear:left;
-// 	font:14px;
-// }
-footer {
-    margin-top: 200px;
-    padding: 100px 0;
-    background-color: #ccf2ff;
+.dc-network {
+    background-color: #fff;
+    border-bottom: 1px solid $dc-lightgray;
+    border-top: 1px solid $dc-lightgray;
+    padding: 16px 0;
+}
+.dc-network--header {
+    color: #57585A;
+    font-size: 20px;
+}
+.dc-network--nav a {
+    color: #57585A;
+    font-size: 20px;
+    padding: 5px 30px;
+}
+.dc-footer {
+    background-color: #F4F8F9;
+    padding: 36px 0;
+}
+.dc-footer--nav a {
+    color: $dc-linkblue;
+    font-size: 14px;
+    padding: 0 10px;
+    margin: 0 5px;
+    &:visited {
+        color: $dc-linkblue;
+    }
+    &:hover {
+        color: $dc-linkblueHover;
+    }
 }

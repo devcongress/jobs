@@ -1,3 +1,17 @@
 // Place all the styles related to the Pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+    background-color: #F4F8F9;
+}
+.dc-jobs {
+    background-color: $dc-aqua;
+}
+.dc-main--content {
+    padding: 33px 0 80px;
+}
+.dc-page--header {
+    background: $dc-darkaqua url(/assets/page-header-bg.png) repeat-x center;
+    padding: 54px 0 20px;
+    border-bottom: 1px solid $dc-lightgray;
+}
