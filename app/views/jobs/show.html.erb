@@ -1,47 +1,64 @@
 <% content_for :title do %>
   <%= "#{@job.role} at #{@job.company.name} | #{t('app.name')}" %>
 <% end %>
-<h1 class="page--title">
-  <%= @job.title %> <%= "(Inactive)" unless @job.active? %>
-</h1>
-  <p class="page--legend text-center">Posted <%= time_ago_in_words(@job.published_on) %> ago</p>
-  <%= @job.duration %>
 
-<div class="uk-grid" >
-    <div class="uk-width-expand@m">
-        <div class="uk-card uk-card-default uk-card-body">
-          <% unless @job.active? %>
-            <h3 style="color: red">This job is no longer active!</h3>
-          <% end %>
-          <h3>About role</h3>
-
-          <%= simple_format @job.requirements.to_s.html_safe %>
-
-          <h3>Qualifications</h3>
-
-          <%= simple_format @job.qualification.to_s.html_safe %>
-
-          <h3>Perks</h3>
-
-          <%= simple_format @job.perks.to_s.html_safe %>
+<main class="dc-home">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <div class="uk-grid">
+          <div class="uk-width-2-3@l">
+            <h1 class="page--title"><%= @job.title %> <%= "(Inactive)" unless @job.active? %></h1>
+          </div>
+          <div class="uk-width-1-3@l">
+            <p class="dc-job-meta uk-text-right uk-text-middle">
+              <span class="dc-job-type uk-margin-right"><%= @job.duration %></span>
+              Posted <%= time_ago_in_words(@job.published_on) %> ago
+            </p>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <div class="uk-text-center uk-width-1-3@m">
-        <div class="uk-card uk-card-default uk-card-body">
-          <h2><%= link_to @job.company.name.capitalize, @job.company %></h2>
-          <hr>
-          <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
-          <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <% unless @job.active? %>
+                <h3 style="color: red">This job is no longer active!</h3>
+              <% end %>
+              <h3>About role</h3>
+              <%= simple_format @job.requirements.to_s.html_safe %>
 
-          <hr>
+              <h3>Qualifications</h3>
+              <%= simple_format @job.qualification.to_s.html_safe %>
 
-          <%= mail_to @job.company.email, @job.company.email, class: "uk-button uk-button-primary", style: "width: 100%" %>
+              <h3>Perks</h3>
+              <%= simple_format @job.perks.to_s.html_safe %>
+            </div>
+          </div>
+
+          <div class="uk-text-center uk-width-1-3@m">
+            <div class="uk-card uk-card-default uk-card-body uk-margin-bottom dc-content-container">
+              <h2><%= link_to @job.company.name.capitalize, @job.company %></h2>
+              <hr>
+              <%= link_to('Tweet', tweetButtonText, :target => "_blank", :class => "share--button share--buttons__tweet", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
+              <%= link_to('Share', fbButtonText, :target => "_blank", :class => "share--button share--buttons__fb", "data-hashtags" => "devcongressjobs", "data-related" => "DevCongress") %>	
+
+              <hr>
+
+              <%= mail_to @job.company.email, @job.company.email, class: "uk-button uk-button-primary", style: "width: 100%" %>
+            </div>
+
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <p><strong>Salary</strong> <%= @job.compensation %> <strong><%= @job.remote_ok ? "Remote OK" : "No Remote" %></strong></p>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
+  </article>
+</main>
 
-        <div class="uk-card uk-card-default uk-card-body">
-          <h4><strong>Salary</strong> <%= @job.compensation %> <strong><%= @job.remote_ok ? "Remote OK" : "No Remote" %></strong></h4>
-        </div>
-    </div>
-</div>
 
