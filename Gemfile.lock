@@ -224,7 +224,7 @@ GEM
       json
     sentry-raven (2.9.0)
       faraday (>= 0.7.6, < 1.0)
-    shoulda-matchers (4.0.1)
+    shoulda-matchers (4.1.0)
       activesupport (>= 4.2.0)
     simple_oauth (0.3.1)
     skylight (4.1.0)
