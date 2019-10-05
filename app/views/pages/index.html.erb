@@ -14,7 +14,9 @@
     <section class="dc-main--content">
       <div class="uk-container">
         <% if @jobs.empty? %>
-          <p>No jobs are currently available</p>
+        <ul class="job--list dc-content-container">
+          <li class="job--list__item">No jobs are currently available</li>
+        </ul>
         <% else %>
           <%= render 'jobs/list' %>
         <% end %>
