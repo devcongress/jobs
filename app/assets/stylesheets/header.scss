@@ -1,3 +1,34 @@
+.dc-header {
+    background-color: #fff;
+    padding: 20px 0;
+}
+.dc-header--nav-link {
+    color: #57585A;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 15px 30px;
+    &:visited {
+        color: #57585A;
+    }
+    &:hover {
+        color: $dc-linkblueHover;
+    }
+}
+.dc-header--nav-button {
+    background-color: $dc-linkblue;
+    color: #fff;
+    margin-left: 20px;
+    &:visited {
+        color: #fff;
+    }
+}
+.dc-job-meta {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+.dc-job-type {
+    color: $dc-linkblue;
+}
 .notice {
     color: transparent;
     margin: 0.5em 0 0;
@@ -8,12 +39,13 @@
 }
 
 .page--title {
-    color: #EC058C;
+    color: #333333;
     line-height: 1.2;
     margin: 0;
+    font-family: AvenirNext-Medium;
+    font-size: 24px;
 }
 
-.page--title,
 .page--legend,
 .text--center {
     text-align: center;

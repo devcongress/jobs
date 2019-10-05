@@ -1,58 +1,118 @@
 <% content_for :title do %>
   <%= "Update #{@company.name} | #{t('app.name')}" %>
 <% end %>
-<h1 class="page--title">Update <%= @company.name %></h1>
-<p class="page--legend">You're about to change information about your company.</p>
-<div class="main--content">
-  <section class="form">
-    <%= form_with(model: @company, :class => "pure-form pure-form-stacked") do |f| %>
-      <div class="field">
-        <%= f.label :name %>
-        <%= f.text_field :name, required: true, placeholder: "Acme Widgets Inc." %>
+<main class="dc-companies-new">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <div class="uk-grid">
+          <div class="uk-width-2-3@l">
+            <h1 class="page--title">Update <%= @company.name %></h1>
+          </div>
+          <div class="uk-width-1-3@l">
+            <p class="dc-job-meta uk-text-right uk-text-middle"></p>
+          </div>
+        </div>
       </div>
-      <div class="field">
-        <%= f.label :industry, "Industry" %>
-        <%= f.collection_select :industry, Industry.all, :name, :name do %>
-        <% end %>
-      </div>
-      <div class="field">
-        <%= f.label :description, "About" %>
-        <%= f.hidden_field :description, required: true, id: 'description' %>
-        <trix-editor input="description"></trix-editor>
-      </div>
-      <div class="field">
-        <%= f.label :website, "Website" %>
-        <%= f.url_field :website %>
-      </div>
-      <div class="field">
-        <%= f.label :email, "Contact Email" %>
-        <%= f.email_field :email, required: true %>
-      </div>
-      <div class="field">
-        <%= f.label :phone, "Contact Phone" %>
-        <%= f.telephone_field :phone, required: true %>
-      </div>
-      <div class="field">
-        <%= f.label :city, "City" %>
-        <%= f.text_field :city, require: true %>
-      </div>
-      <div class="field">
-        <%= f.label :state_or_region, "State/Region" %>
-        <%= f.text_field :state_or_region, require: true %>
-      </div>
-      <div class="field">
-        <%= f.label :post_code, "Post/Zip Code" %>
-        <%= f.text_field :post_code, require: true %>
-      </div>
-      <div class="field">
-        <%= f.label :country, "Country" %>
-        <%= f.text_field :country, require: true %>
-      </div>
-      <div class="actions">
-        <%= f.submit "Save" %>
-        <%= link_to "Cancel", @company %>
-      </div>
-    <% end %>
-  </section>
-</div>
+    </section>
 
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+
+              <%= form_with(model: @company, :class => "uk-form-horizontal") do |f| %>
+                <div class="uk-margin">
+                  <%= f.label :name, :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.text_field :name, required: true, placeholder: "Acme Widgets Inc.", :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :industry, "Industry" %>
+                  <div class="uk-form-controls">
+                    <%= f.collection_select :industry, Industry.all, :name, :name, {}, { class: "uk-select" } %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :description, "About", :class => "uk-form-label" %>
+                  <%= f.hidden_field :description, required: true, id: 'description' %>
+                  <div class="uk-form-controls">
+                    <trix-editor input="description"></trix-editor>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :website, "Website", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.url_field :website, :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :email, "Contact Email", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.email_field :email, required: true, :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :phone, "Contact Phone", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.telephone_field :phone, required: true, :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :city, "City", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.text_field :city, require: true, :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :state_or_region, "State/Region", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.text_field :state_or_region, require: true, :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :post_code, "Post/Zip Code", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.text_field :post_code, require: true, :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-margin">
+                  <%= f.label :country, "Country", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.text_field :country, require: true, :class => "uk-input" %>
+                  </div>
+                </div>
+
+                <div class="uk-form-controls uk-padding-small uk-padding-remove-left">
+                  <div class="uk-margin">
+                    <%= f.submit "Save", :class => "uk-button uk-button-primary" %>
+                    <%= link_to "Cancel", @company, :class => "uk-margin-left uk-padding-small" %>
+                  </div>
+                </div>
+              <% end %>
+            
+            </div>
+          </div>
+
+          <div class="uk-text-left uk-width-1-4@m">
+            <div class="uk-card uk-card-default uk-card-body uk-margin-bottom dc-content-container">
+              <h3>Instructions</h3>
+              <p>You're about to change information about your company.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>

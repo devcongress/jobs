@@ -17,9 +17,6 @@ a {
     -ms-transition: all .25s ease;
     -o-transition: all .25s ease;
     transition: all .25s ease;
-    &:visited {
-        color: #3705ec;
-    }
 }
 .error_explanation {
     width: 450px;

@@ -1,29 +1,63 @@
 <% content_for :title do %>
   <%= "#{@company.name} | #{t('app.name')}" %>
 <% end %>
-<h1 class="page--title"><%= link_to @company.name, @company.website %></h1>
-<h2 class="page--legend"><%= @company.industry %></h2>
-<div class="main--content">
-  <p><%= @company.description.html_safe %></p>
-  <p><%= link_to "Website", @company.website %></p>
-  <section class="address">
-    <h2>Address</h2>
-    <p>
-      <%= @company.city %><br>
-      <%= @company.state_or_region %><br>
-      <%= @company.country %> <%= @company.post_code %>
-    </p>
-  </section>
-  <% if @company.jobs.empty? %>
-    <p>No jobs have been posted for <%= @company.name %> yet.</p>
-    <% if current_user && current_user.companies.include?(@company)%>
-      <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post.</p>
-    <% end %>
-  <% else %>
-    <h2>Jobs</h2>
-    <%= render 'company_jobs_list', company: @company %>
-  <% end %>
-  <% if current_user && current_user.companies.include?(@company) %>
-    <p><%= link_to "Edit", edit_company_path(@company) %></p>
-  <% end %>
-</div>
+<main class="dc-home">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <div class="uk-grid">
+          <div class="uk-width-2-3@l">
+            <h1 class="page--title"><%= link_to @company.name, @company.website %></h1>
+          </div>
+          <div class="uk-width-1-3@l">
+            <p class="dc-job-meta uk-text-right uk-text-middle">
+              <span class="dc-job-type uk-margin-right"><%= @company.industry %></span>
+              <%= link_to "Visit Company Website", @company.website %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <% if @company.jobs.empty? %>
+                <p>No jobs have been posted for <%= @company.name %> yet.</p>
+                <% if current_user && current_user.companies.include?(@company)%>
+                  <p>Are you hiring for any role? Use this <%= link_to "link", new_job_path %> to create the job post.</p>
+                <% end %>
+              <% else %>
+                <h3>Jobs</h3>
+                <%= render 'company_jobs_list', company: @company %>
+              <% end %>
+            </div>
+
+
+          </div>
+
+          <div class="uk-text-left uk-width-1-3@m">
+            <div class="uk-card uk-card-default uk-card-body uk-margin-bottom dc-content-container">
+              <h2>About Company</h2>
+              <p><%= @company.description.html_safe %></p>
+              <section class="address">
+                <h3>Address</h3>
+                <p>
+                  <%= @company.city %><br>
+                  <%= @company.state_or_region %><br>
+                  <%= @company.country %> <%= @company.post_code %>
+                </p>
+              </section>
+
+              <% if current_user && current_user.companies.include?(@company) %>
+                <%= link_to "Edit", edit_company_path(@company), :class => "uk-button uk-button-default", style: "width: 100%" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>
