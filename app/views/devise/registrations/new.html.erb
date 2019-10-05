@@ -1,40 +1,65 @@
 <% content_for :title do %>
   <%= "Sign Up | #{t('app.name')}" %>
 <% end %>
+<main class="dc-home">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <h1 class="page--title">Sign up</h1>
+      </div>
+    </section>
+  </article>
 
-<h1 class="page--title">Sign up</h1>
-<div class="page--legend-buttons">
-  <p class="page--legend">Get ready to hire the best talent ever!</p>
-</div>
+  <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <% if alert %>
+                <span class="alert">
+                  <%= alert %>
+                </span>
+              <% end %>
+              <%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html => {:class => 'uk-form-horizontal'}) do |f| %>
+                <span class="alert">
+                  <%= devise_error_messages! %>
+                </span>
+                <div class="uk-margin">
+                  <%= f.label :email, :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.email_field :email, autofocus: true, autocomplete: "email", :class => "uk-input" %>
+                  </div>      
+                </div>
 
-<div class="main--content">
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html => {:class => 'uk-form-stacked'}) do |f| %>
-    <%= devise_error_messages! %>
-    <div class="uk-margin">
-      <%= f.label :email, :class => "uk-form-label" %>
-      <div class="form-controls">
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", :class => "uk-input uk-width-1-2" %>
-      </div>      
-    </div>
+                <div class="uk-margin">
+                  <%= f.label "Password", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.password_field :password, autocomplete: "off", :class => "uk-input" %>
+                    <span class="uk-text-meta uk-display-inline-block uk-margin-small uk-margin-remove-bottom"><%= @minimum_password_length %> characters minimum</span>
+                  </div>      
+                </div>
 
-    <div class="uk-margin">
-      <%= f.label "Password  (#{@minimum_password_length} characters minimum)", :class => "uk-form-label" %>
-      <div class="form-controls">
-        <%= f.password_field :password, autocomplete: "off", :class => "uk-input uk-width-1-2" %>
-      </div>      
-    </div>
+                <div class="uk-margin">
+                  <%= f.label :password_confirmation, :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= f.password_field :password_confirmation, autocomplete: "off", :class => "uk-input" %>
+                  </div>
+                </div>
 
-    <div class="uk-margin">
-      <%= f.label :password_confirmation, :class => "uk-form-label" %>
-      <div class="form-controls">
-        <%= f.password_field :password_confirmation, autocomplete: "off", :class => "uk-input uk-width-1-2" %>
+                <div class="uk-form-controls uk-padding-small uk-padding-remove-left uk-padding-remove-vertical">
+                  <div class="uk-margin">
+                    <%= f.submit "Sign up", :class => "uk-button uk-button-primary" %>
+                  </div>
+                </div>
+
+              <% end %>
+              <div class="uk-form-horizontal">
+                <div class="uk-form-controls uk-padding-small uk-padding-remove-left uk-padding-remove-vertical">
+                  <%= render "devise/shared/links" %>
+                </div>
+              </div>
+          </div>
       </div>
     </div>
-
-    <div class="uk-margin">
-      <%= f.submit "Sign up", :class => "uk-button uk-button-primary" %>
-    </div>
-
-  <% end %>
-  <%= render "devise/shared/links" %>
-</div>
+  </div>
+</main>
