@@ -1,16 +1,15 @@
 <% content_for :title do %>
   <%= "Sign Up | #{t('app.name')}" %>
 <% end %>
-<main class="dc-home">
+<main class="dc-signup">
   <article>
     <section class="dc-page--header">
       <div class="uk-container">
         <h1 class="page--title">Sign up</h1>
       </div>
     </section>
-  </article>
 
-  <section class="dc-main--content">
+    <section class="dc-main--content">
       <div class="uk-container">
         <div class="uk-grid" >
           <div class="uk-width-expand@m">
@@ -58,8 +57,10 @@
                   <%= render "devise/shared/links" %>
                 </div>
               </div>
+            </div>
           </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
+  </article>
 </main>
