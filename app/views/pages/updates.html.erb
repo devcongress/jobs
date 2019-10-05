@@ -1,11 +1,29 @@
 <% content_for :title do %>
   <%= "Product Updates | #{t('app.name')}" %>
 <% end %>
+<main class="dc-updates">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <div class="uk-grid">
+          <div class="uk-width-2-3@l">
+            <h1 class="page--title">Updates</h1>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<h1 class="page--title">Updates</h1>
-<div class="page--legend-buttons">
-  <p class="page--legend">Here you'll find product updates of enhancements, bug fixes, feature annoucements, etc.</p>
-</div>
-<div class="main--content">
-  <p>Want to suggest product features? Make a suggestion and check our roadmap <a href="https://e6ab2265.nolt.io/">on this page.</a></p>
-</div>
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <h3>Here you'll find product updates of enhancements, bug fixes, feature annoucements, etc.</h3>
+              <p>Want to suggest product features? Make a suggestion and check our roadmap <a href="https://e6ab2265.nolt.io/">on this page.</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>

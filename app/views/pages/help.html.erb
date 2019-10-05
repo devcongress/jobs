@@ -1,10 +1,29 @@
 <% content_for :title do %>
   <%= "Help | #{t('app.name')}" %>
 <% end %>
-<h1 class="page--title">Help</h1>
-<div class="page--legend-buttons">
-  <p class="page--legend">Find help in times of need</p>
-</div>
-<div class="main--content">
-  <p>Any questions? Mail us at jobs@devcongress.org</p>
-</div>
+<main class="dc-help">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <div class="uk-grid">
+          <div class="uk-width-2-3@l">
+            <h1 class="page--title">Help</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <h3>Find help in times of need.</h3>
+              <p>Any questions? Mail us at jobs@devcongress.org</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>
