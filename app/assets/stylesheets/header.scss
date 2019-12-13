@@ -1,6 +1,6 @@
 .dc-header {
     background-color: #fff;
-    padding: 20px 0;
+    padding: 20px 0 0;
 }
 .dc-header--nav-link {
     color: #57585A;
@@ -30,12 +30,20 @@
     color: $dc-linkblue;
 }
 .notice {
-    color: transparent;
+    color: green;
+    -moz-animation: notice-disappear 0s ease-in 5s forwards;
+    /* Firefox */
+    -webkit-animation: notice-disappear 0s ease-in 5s forwards;
+    /* Safari and Chrome */
+    -o-animation: notice-disappear 0s ease-in 5s forwards;
+    /* Opera */
+    animation: notice-disappear 0s ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
     margin: 0.5em 0 0;
     display: inherit;
     min-height: 24px;
     text-align: center;
-    animation: notice-disappear 8s;
 }
 
 .page--title {
@@ -101,33 +109,34 @@
 }
 
 @keyframes notice-disappear {
-    0% {
-        color: green;
-    }
-    100% {
-        opacity: 0;
-        color: transparent;
+    to {
+        width:0;
+        height:0;
+        margin: 0;
+        min-height: 0;
+        padding: 0;
+        overflow: hidden;
     }
 }
 
 @-webkit-keyframes notice-disappear {
-    0% {
-        opacity: 100;
-        color: green;
-    }
-    100% {
-        opacity: 0;
-        color: transparent;
+    to {
+        width: 0;
+        height: 0;
+        margin: 0;
+        min-height: 0;
+        padding: 0;
+        visibility: hidden;
     }
 }
 
 @-moz-keyframes notice-disappear {
-    0% {
-        opacity: 100;
-        color: green;
-    }
-    100% {
-        opacity: 0;
-        color: transparent;
+    to {
+        width: 0;
+        height: 0;
+        margin: 0;
+        min-height: 0;
+        padding: 0;
+        visibility: hidden;
     }
 }

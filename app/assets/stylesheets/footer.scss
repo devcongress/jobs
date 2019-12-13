@@ -8,10 +8,22 @@
     color: #57585A;
     font-size: 20px;
 }
+.dc-network--nav {
+    margin-top: 20px;
+    @media (min-width: $breakpoint-medium) {
+        margin-top: 0;
+    }
+}
 .dc-network--nav a {
+    display: inline-block;
     color: #57585A;
     font-size: 20px;
     padding: 5px 30px;
+    width: 33%;
+    @media (min-width: $breakpoint-medium) {
+        display: inline;
+        width: auto;
+    }
 }
 .dc-footer {
     background-color: #F4F8F9;
