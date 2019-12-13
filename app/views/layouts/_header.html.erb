@@ -1,5 +1,5 @@
 <header class="dc-header">
-  <div class="uk-container uk-navbar-container uk-navbar uk-navbar-transparent">
+  <div class="uk-container uk-navbar-container uk-navbar uk-navbar-transparent uk-padding-small uk-padding-remove-top uk-padding-remove-horizontal">
     <div class="uk-navbar-left">
       <%= link_to image_tag( 'devcongress-logo.png', alt: 'devcongress logo', height: '', width: '', class: 'dc-logo' ), root_path, :class => "" %>
     </div>
@@ -16,4 +16,5 @@
         </nav>
     </div>
   </div>
+  <%= render 'layouts/notice'	%>
 </header>

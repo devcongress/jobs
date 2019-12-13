@@ -8,11 +8,6 @@
     </noscript>
     <div class="dc-jobs">
       <%= render 'layouts/header'	%>
-      <% if notice %>
-        <span class="notice">
-          <%= notice %>
-        </span>
-      <% end %>
       <%= yield	 %>
     </div>
     <%= render 'layouts/footer' %>
