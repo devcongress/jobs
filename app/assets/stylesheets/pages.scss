@@ -11,9 +11,12 @@ body {
   padding: 33px 0 80px;
 }
 .dc-page--header {
-  background: $dc-darkaqua url(/assets/page-header-bg.png) repeat-x center;
-  padding: 54px 0 20px;
+  background: $dc-darkaqua url(/assets/page-header-bg.png) repeat-x top center;
   border-bottom: 1px solid $dc-lightgray;
+  padding: 34px 0 40px;
+  @media (min-width: $breakpoint-medium) {
+    padding: 54px 0 20px;
+  }
 }
 .dc-content-container {
   background-color: #fff;

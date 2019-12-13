@@ -19,7 +19,7 @@
     <section class="dc-main--content">
       <div class="uk-container">
         <div class="uk-grid" >
-          <div class="uk-width-expand@m">
+          <div class="uk-flex-last uk-flex-first@m uk-width-expand@m">
             <div class="uk-card uk-card-default uk-card-body dc-content-container">
               <%= form_with(model: @company, :class => "uk-form-horizontal") do |form| %>
                 <div class="uk-margin">
@@ -102,7 +102,7 @@
             </div>
           </div>
 
-          <div class="uk-text-left uk-width-1-4@m">
+          <div class="uk-flex-first uk-flex-last@m uk-text-left@m uk-width-1-4@m">
             <div class="uk-card uk-card-default uk-card-body uk-margin-bottom dc-content-container">
               <h3>Instructions</h3>
               <p>In order to post jobs, you should register your company. You're allowed to register more than one company which means recruiters can register as many clients as they want.</p>
