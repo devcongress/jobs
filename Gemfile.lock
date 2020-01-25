@@ -247,7 +247,7 @@ GEM
     tilt (2.0.9)
     trix (0.10.1)
       rails
-    turbolinks (5.2.0)
+    turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
     twitter (6.2.0)
