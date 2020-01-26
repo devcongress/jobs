@@ -12,7 +12,7 @@ This is the code which runs the DevCongress Jobs website, which lives at [jobs.d
 
 ### Requirements
 
-Install Docker and Docker Compose (Docker Compose comes with Docker on Windows and MacOS)
+[Install Docker and Docker Compose](https://docs.docker.com/v17.09/engine/installation/#supported-platforms) (Docker Compose comes with Docker on Windows and MacOS)
 
 ### Run Project
 

@@ -10,8 +10,7 @@ RUN apt-get update
 # libpq-dev is required for the pg gem
 RUN apt-get install -y libpq-dev postgresql-client-10
 
-# Make app dir
-RUN mkdir /app
+# Set working directory for project
 WORKDIR /app
 
 # Import Gemfile
