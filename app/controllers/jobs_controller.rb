@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class JobsController < ApplicationController
-  before_action :set_job,            except: [:new, :index]
-  before_action :authenticate_user!, except: [:index, :show, :search, :renew]
-  before_action :require_ownership,    only: [:edit, :update, :destroy, :renew]
+  before_action :set_job,            except: %i[new index]
+  before_action :authenticate_user!, except: %i[index show search renew]
+  before_action :require_ownership, only: %i[edit update destroy renew]
 
   def index
     @jobs = Job.all_active
@@ -10,13 +12,13 @@ class JobsController < ApplicationController
   def new
     @current_user = current_user
     @countries = []
-    File.open("db/countries.csv" , "r") do |f|
-     f.each_line do |line|
-       @countries << [line.split(',')[0], line.split(',')[0]]
-     end
+    File.open('db/countries.csv', 'r') do |f|
+      f.each_line do |line|
+        @countries << [line.split(',')[0], line.split(',')[0]]
+      end
     end
     if @current_user.companies.empty?
-      redirect_to new_company_path, notice: "Register company first"
+      redirect_to new_company_path, notice: 'Register company first'
       return
     end
     @job = Job.new
@@ -40,12 +42,11 @@ class JobsController < ApplicationController
     raise_not_found if @job.archived?
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @job.update(edit_job_params)
-      redirect_to @job, notice: "Job has been updated."
+      redirect_to @job, notice: 'Job has been updated.'
     else
       render :edit
     end
@@ -85,66 +86,68 @@ class JobsController < ApplicationController
   def destroy
     @job.destroy
     respond_to do |format|
-      format.html { redirect_to jobs_url, notice: "Job was successfully destroyed." }
+      format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
 
-    def require_ownership
-      unless current_user && current_user.companies.include?(@job.company)
-        redirect_to @job, notice: "You are not authorized to edit this job post."
-      end
+  def require_ownership
+    unless current_user&.companies&.include?(@job.company)
+      redirect_to @job, notice: 'You are not authorized to edit this job post.'
     end
+  end
 
-    def set_company
-      @company = current_user.companies.find_by(id: params[:job][:company_id])
-      raise_not_found unless @company
-    end
+  def set_company
+    @company = current_user.companies.find_by(id: params[:job][:company_id])
+    raise_not_found unless @company
+  end
 
-    def set_job
-      @job = Job.find_by(id: params[:id])
-    end
+  def set_job
+    @job = Job.find_by(id: params[:id])
+  end
 
-    def job_params
-      params.require(:job).permit(
-        :role,
-        :duration,
-        :salary_lower,
-        :salary_upper,
-        :requirements,
-        :qualification,
-        :perks,
-        :company_id,
-        :remote_ok,
-        :city,
-        :country,
-        :apply_link)
-    end
+  def job_params
+    params.require(:job).permit(
+      :role,
+      :duration,
+      :salary_lower,
+      :salary_upper,
+      :requirements,
+      :qualification,
+      :perks,
+      :company_id,
+      :remote_ok,
+      :city,
+      :country,
+      :apply_link
+    )
+  end
 
-    def edit_job_params
-      params.require(:job).permit(
-        :role,
-        :duration,
-        :requirements,
-        :qualification,
-        :salary_lower,
-        :salary_upper,
-        :perks,
-        :remote_ok,
-        :city,
-        :country,
-        :apply_link)
-    end
+  def edit_job_params
+    params.require(:job).permit(
+      :role,
+      :duration,
+      :requirements,
+      :qualification,
+      :salary_lower,
+      :salary_upper,
+      :perks,
+      :remote_ok,
+      :city,
+      :country,
+      :apply_link
+    )
+  end
 
-    def raise_not_found
-      raise ActionController::RoutingError.new("not found")
-    end
+  def raise_not_found
+    raise ActionController::RoutingError, 'not found'
+  end
 
-    def job_post_successful
-      JobsMailer.with(job: @job).published.deliver_later
-      $tweetJob.update("New Job Vacancy: #{@job.title}. Read more at #{url_for(@job)}")
-    end
-    
+  def job_post_successful
+    JobsMailer.with(job: @job).published.deliver_later
+    # FIXME: use a job for this
+    $tweetJob.update("New Job Vacancy: #{@job.title}. Read more at #{url_for(@job)}") unless Rails.env.test?
+  end
 end
