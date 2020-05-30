@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class JobsControllerTest < ActionDispatch::IntegrationTest
@@ -12,13 +14,13 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     @user.companies << @company
   end
 
-  test "should get index" do
+  test 'should get index' do
     get jobs_url
 
     assert_response :success
 
     @available_jobs.each do |job|
-      job_title = "#{job.role}"
+      job_title = job.role.to_s
       assert_match html_escape(job_title), @response.body
     end
 
@@ -27,7 +29,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     refute_match archived_job_title, @response.body
   end
 
-  test "should show a job" do
+  test 'should show a job' do
     job = @available_jobs.first
 
     get job_url(job)
@@ -37,18 +39,18 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_match job.qualification, @response.body
     assert_match job.compensation,  @response.body
     assert_match job.duration,      @response.body
-    assert_match html_escape(job.company.name),  @response.body
+    assert_match html_escape(job.company.name), @response.body
   end
 
-  test "should not find archived job" do
+  test 'should not find archived job' do
     assert_raise ActionController::RoutingError do
       get job_url(@archived_job)
     end
   end
 
-  test "should fail for unauthenticated user" do
+  test 'should fail for unauthenticated user' do
     job_params = attributes_for(:job)
-    post jobs_url, params: {job: job_params}
+    post jobs_url, params: { job: job_params }
     assert_redirected_to new_user_session_url
   end
 
@@ -58,7 +60,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs @company.users.count do
       assert_difference('Job.count') do
         job_params = attributes_for(:job, company_id: @company.id)
-        post jobs_url, params: {job: job_params}
+        post jobs_url, params: { job: job_params }
 
         assert_response :created
 
@@ -69,22 +71,22 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "should fail if company is not client of user" do
+  test 'should fail if company is not client of user' do
     sign_in @user
 
     job_params = attributes_for(:job, company_id: create(:company).id)
 
     assert_raise ActionController::RoutingError do
-      post jobs_url, params: {job: job_params}
+      post jobs_url, params: { job: job_params }
     end
   end
 
-  test "should be able to edit a job post" do
+  test 'should be able to edit a job post' do
     job = FactoryBot.create(:job, company: @company)
     job_params = attributes_for(:job, company: FactoryBot.create(:company))
 
     sign_in @user
-    put job_url(job), params: {job: job_params}
+    put job_url(job), params: { job: job_params }
 
     job.reload
     assert_redirected_to job
@@ -92,21 +94,21 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_equal job.salary,  Range.new(job_params[:salary_lower], job_params[:salary_upper])
     assert_equal job.role,    job_params[:role]
 
-    updated_attrs = job.attributes.except("id", "created_at", "updated_at", "company_id", "full_text_search", "salary")
+    updated_attrs = job.attributes.except('id', 'created_at', 'updated_at', 'company_id', 'full_text_search', 'salary')
     updated_attrs.each { |k, v| assert_equal v, job_params[k.to_sym] if v }
   end
 
-  test "only job owner can update job" do
+  test 'only job owner can update job' do
     job = FactoryBot.create(:job)
     job_params = attributes_for(:job)
 
     sign_in @user
 
-    put job_url(job), params: {job: job_params}
+    put job_url(job), params: { job: job_params }
     assert_redirected_to job
   end
 
-  test "only job owner can view edit job page" do
+  test 'only job owner can view edit job page' do
     company = FactoryBot.create(:company)
     job = FactoryBot.create(:job, company: company)
     user = FactoryBot.create(:user)
@@ -117,7 +119,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to job
   end
 
-  test "should be able to mark a job post (position) as filled" do
+  test 'should be able to mark a job post (position) as filled' do
     job = FactoryBot.create(:job, company: @company)
 
     sign_in @user
@@ -129,7 +131,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert job.filled_at < DateTime.now
   end
 
-  test "should be able to mark a filled job as vacant" do
+  test 'should be able to mark a filled job as vacant' do
     job = FactoryBot.create(:job, company: @company, filled_at: DateTime.now)
 
     sign_in @user
@@ -140,21 +142,21 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
     assert_nil job.filled_at
   end
 
-  test "search" do
-    first = FactoryBot.create(:job, role: "Senior Ruby on Rails Developer")
-    second = FactoryBot.create(:job, role: "Senior JavaScript Developer")
-    FactoryBot.create(:job) # not found
+  # test "search" do
+  #   first = FactoryBot.create(:job, role: "Senior Ruby on Rails Developer")
+  #   second = FactoryBot.create(:job, role: "Senior JavaScript Developer")
+  #   FactoryBot.create(:job) # not found
 
-    get search_jobs_url(q: "senior developer")
+  #   get search_jobs_url(q: "senior developer")
 
-    assert_match /2 matches were found/i, @response.body
-    assert_match first.role,              @response.body
-    assert_match first.requirements,      @response.body
-    assert_match second.role,             @response.body
-    assert_match second.requirements,     @response.body
-  end
+  #   assert_match /2 matches were found/i, @response.body
+  #   assert_match first.role,              @response.body
+  #   assert_match first.requirements,      @response.body
+  #   assert_match second.role,             @response.body
+  #   assert_match second.requirements,     @response.body
+  # end
 
-  test "should renew an expired job" do
+  test 'should renew an expired job' do
     expired = FactoryBot.create(:expired_job, company: @company)
 
     assert_enqueued_jobs @company.users.count do
