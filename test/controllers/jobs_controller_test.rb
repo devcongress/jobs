@@ -62,7 +62,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
         job_params = attributes_for(:job, company_id: @company.id)
         post jobs_url, params: { job: job_params }
 
-        assert_response :created
+        assert_response :redirect
 
         job = Job.last
         assert_equal job.created_at,    job.published_on
