@@ -106,6 +106,7 @@ class JobsController < ApplicationController
 
   def set_job
     @job = Job.find_by(id: params[:id])
+    raise_not_found unless @job
   end
 
   def job_params
