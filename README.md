@@ -65,7 +65,7 @@ The application runs at http://localhost:3000/
 ### Migrations
 
 - `docker-compose stop`: stop any running containers to prevent contention over database files
-- `docker-compose run --rm web bundle exec rails db:migrate`: run migrations
+- `docker-compose run --rm web bundle exec rails db:migrate`: apply migrations
 
 ### Seeding
 
@@ -75,7 +75,7 @@ The application runs at http://localhost:3000/
 ## Testing
 
 - `docker-compose stop`: stop any running containers to prevent contention over database files
-- `docker-compose run --rm web bundle exec rails test`: run migrations
+- `docker-compose run --rm web bundle exec rails test`: run tests
 
 ## Troubleshooting
 
