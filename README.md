@@ -52,6 +52,11 @@ The application runs at http://localhost:3000/
 > - email: test@example.com
 > - password: password1
 
+## Emails
+
+Mailcatcher is setup in development.
+You can view all outbound emails at [http://localhost:1080/](http://localhost:1080/)
+
 ### Helpful Commands
 
 - `docker-compose stop`: stop the running containers.

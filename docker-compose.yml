@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 
 x-db_config: &db_config
   POSTGRES_PASSWORD: postgres
@@ -16,6 +16,13 @@ services:
       - jobs
     ports:
       - "5433:5432"
+  mailcatcher:
+    image: stpaquet/alpinemailcatcher
+    networks:
+      - jobs
+    ports:
+      - "1080:1080"
+      - "1025:1025"
 
   web:
     build: .
