@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+
+
 body {
-    background-color: rgba(5, 175, 235, .10);
     color: #333;
-    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 1.5;
     width: 100%;
@@ -15,35 +17,7 @@ a {
     -ms-transition: all .25s ease;
     -o-transition: all .25s ease;
     transition: all .25s ease;
-    &:visited {
-        color: #3705ec;
-    }
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: Cairo, serif;
-}
-
-h1 {
-    font-weight: 400;
-    font-size: 2em;
-    color: #05AFEB;
-    letter-spacing: 0.04px;
-    margin: 0.4em 0 0;
-}
-
-div {
-    &.field,
-    &.actions {
-        margin-bottom: 10px;
-    }
-}
-
 .error_explanation {
     width: 450px;
     border: 2px solid red;
@@ -67,12 +41,8 @@ div {
 
 .main {
     width: 100%;
-    max-width: 800px;
+    max-width: 960px;
     margin: 0 auto;
-}
-
-footer {
-    margin-bottom: 100px;
 }
 
 @media (max-width: 640px) {
@@ -83,4 +53,8 @@ footer {
     .navbar {
         max-width: 95%;
     }
+}
+
+.uk-form-label {
+    font-weight: 700;
 }

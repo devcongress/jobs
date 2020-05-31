@@ -1,12 +1,11 @@
 .job--list {
-    margin: 0;
     padding: 0;
 }
 
 .job--list__item {
     display: flex;
     list-style: none;
-    padding: 10px;
+    padding: 30px 35px;
     justify-content: space-between;
     &:not(:last-child) {
         border-bottom: 1px solid rgba(151, 151, 151, .2);
@@ -42,12 +41,12 @@
 }
 
 .job--list__item-link {
-    color: #0097C6;
+    color: #3B6DD0;
     display: block;
     width: 100%;
     position: relative;
     &:visited {
-        color: #0097C6;
+        color: #3B6DD0;
     }
     &:hover {
         color: #EC058C;

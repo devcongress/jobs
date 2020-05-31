@@ -1,19 +1,58 @@
 <% content_for :title do %>
   <%= "Your Profile | #{t('app.name')}" %>
-<% end %><h1>Your Profile</h1>
-<p>Joined <%= time_ago_in_words(current_user.created_at) %> ago</p>
-<p><%= current_user.email %></p>
-<div class="main--content">
-  <h2>Companies You're Recruiting For</h2>
-  <% if current_user.companies.empty? %>
-    <p>You're not recruiting for any company</p>
-    <p>In order to start posting job opportunities, you should <%= link_to "register the company", new_company_path %></p>
-  <% else %>
-    <p>Remember that you can still <%= link_to "register new companies", new_company_path %> in order to post their jobs. You can link an unlimited number of companies to your account.</p>
-    <ul>
-      <% current_user.companies.each do |c| %>
-        <li><%= link_to "#{c.name} (#{c.jobs.count})", company_path(c) %></li>
-      <% end %>
-    </ul>
-  <% end %>
-</div>
+<% end %>
+<main class="dc-account">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <div class="uk-grid">
+          <div class="uk-width-1-2@m uk-margin-small-bottom">
+            <h1 class="page--title">Your Profile</h1>
+          </div>
+          <div class="uk-width-1-2@m">
+            <p class="dc-job-meta uk-text-right@m">
+              <span class="dc-job-type uk-margin-right"><%= current_user.email %></span>
+              Joined <%= time_ago_in_words(current_user.created_at) %> ago
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-flex-last uk-flex-first@m uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <h3>Companies You're Recruiting For</h3>
+              <% if current_user.companies.empty? %>
+                <p>You're not recruiting for any company</p>
+                <p>In order to start posting job opportunities, you should <%= link_to "register the company", new_company_path %></p>
+              <% else %>
+                <p>Remember that you can still <%= link_to "register new companies", new_company_path %> in order to post their jobs. You can link an unlimited number of companies to your account.</p>
+                <ul class="uk-list uk-list-divider">
+                  <% current_user.companies.each do |c| %>
+                    <li><%= link_to "#{c.name} (#{c.jobs.count})", company_path(c) %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="uk-flex-first uk-flex-last@m uk-text-center uk-width-1-3@m">
+            <div class="uk-card uk-card-default uk-card-body uk-margin-bottom dc-content-container">
+              <h3>Account information</h3>
+              <hr>
+              <ul class="uk-list uk-list-divider">
+                <li><%= current_user.email %></li>
+                <li>Last signed in <%= time_ago_in_words(current_user.last_sign_in_at) %></li>
+                <li>Last signed in IP <%= current_user.last_sign_in_ip %></li>
+                <li><%= link_to 'Edit Account', '/account', class: "uk-button" %></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>

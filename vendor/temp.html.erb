@@ -1,0 +1,27 @@
+
+
+<ul class="job--list">
+  <% @jobs.each do |job| %>
+    <li class="job--list__item">
+      <%= link_to job.role + " at " + job.company, job, :class => "job--list__item-link" %>
+      <div class="job--list__action-group">
+        <% if user_signed_in? && job.user_id == current_user.id %>
+          <% if job.is_archived? %>
+            <% # = link_to 'Unarchive', archive_path(job), :class => "job--list__action job--list__action-unarchive", method: :patch %>
+          <% else %>
+            <% # = link_to 'Archive', archive_path(job), :class => "job--list__action job--list__action-archive", method: :patch %>
+            <% # = button_to 'Arch', archive_job_path, @job %>
+          <% end %>
+          <%= link_to 'Edit', edit_job_path(job), :class => "job--list__action job--list__action-edit" %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>
+
+
+<%= button_to "Mark as Filled", {filled_job_path(job) unless job.filled_at?} %>
+<%= button_to "Mark as Vacant", {vacant_job_path(job) if job.filled_at?} %>
+
+
+<%= button_to "Mark as Filled", :class => "job--list__action job--list__action-edit" %>

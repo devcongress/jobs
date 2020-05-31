@@ -1,6 +1,7 @@
 #!/bin/bash
 
 gem install bundler
+bundle install
 bundle binstubs --all
 
 if [[ "$@" == *"rails s"* ]]; then

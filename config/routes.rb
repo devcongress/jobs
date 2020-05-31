@@ -1,13 +1,15 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
-  get 'pages/pricing'
+Rails.application.routes.draw do
+  get 'pages/terms'
   get 'pages/updates'
-  root to: "pages#index"
+  root to: 'pages#index'
 
   get 'about'   => 'pages#about'
   get 'help'    => 'pages#help'
   get 'pricing' => 'pages#pricing'
   get 'privacy' => 'pages#privacy'
+  get 'terms'   => 'pages#terms'
   get 'updates' => 'pages#updates'
 
   get 'profile' => 'profile#show'
@@ -19,14 +21,13 @@ Rails.application.routes.draw do
     end
 
     member do
-      post "filled"
-      post "vacant"
-      post "renew"
+      post 'filled'
+      post 'vacant'
+      post 'renew'
     end
   end
 
-  devise_for :users, skip: [:sessions, :registrations, :passwords], controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
-
+  devise_for :users, skip: %i[sessions registrations passwords], controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
   devise_scope :user do
     # sessions
@@ -49,8 +50,4 @@ Rails.application.routes.draw do
     patch 'edit-pass', to: 'devise/passwords#update', as: :update_user_password
     post  'new-pass',  to: 'devise/passwords#create', as: :user_password
   end
-
-
-
-
 end

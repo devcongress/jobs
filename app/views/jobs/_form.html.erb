@@ -1,4 +1,4 @@
-<%= form_with(model: job, local: true, :class => "pure-form pure-form-stacked") do |form| %>
+<%= form_with(model: job, local: true, :html => {:class => 'uk-form-stacked'}) do |form| %>
   <% if job.errors.any? %>
     <div class="error_explanation">
       <h2>
@@ -14,63 +14,76 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
-    <%= form.label :role %>
-    <%= form.text_field :role %>
-    <span class="pure-form-message">What will be their title at the new role?</span>
+
+  <div class="uk-margin">
+    <h4><%= form.label :role, :class => "uk-form-label" %></h4>
+    <p class="uk-text-small uk-text-muted">What will be their title at the new role?</p>
+    <%= form.text_field :role, :class => "uk-input uk-width-1-2" %>
   </div>
-  <div class="field">
-    <%= form.label :company_id, "Company Name" %>
-    <%= form.collection_select(:company_id, @current_user.companies, :id, :name) %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :company_id, "Company Name", :class => "uk-form-label" %></h4>
+    <%= form.collection_select(:company_id, @current_user.companies, :id, :name, {}, :class => "uk-select") %>
   </div>
-  <div class="field">
-    <%= form.check_box :remote_ok %> Remote OK
+
+  <div class="uk-margin">
+    <%= form.check_box :remote_ok, :class => "uk-checkbox" %> Remote OK
   </div>
-  <div class="field">
-    <%= form.label :duration %>
-    <%= form.select(:duration, {"Full-time" => "Full-Time", "Part-time" => "Part-Time", "Contract" => "Contract", "Internship" => "Internship"}) %>
-    <span class="pure-form-message">What is the duration for this project?</span>
+
+  <div class="uk-margin">
+    <h4><%= form.label :duration, :class => "uk-form-label" %></h4>
+    <%= form.select :duration, {"Full-time" => "Full-Time", "Part-time" => "Part-Time", "Contract" => "Contract", "Internship" => "Internship"}, {}, class: "uk-select" %>
+    <p class="pure-form-message">What is the duration for this project?</p>
   </div>
-  <div class="field">
-    <%= form.label "Salary per month/project" %>
-    Between <%= form.number_field :salary_lower, min: 0 %> and <%= form.number_field :salary_upper, min: 0 %>
-    <span class="pure-form-message">Please note: there's a correlation between experience/expertise and compensation. Therefore, it's important to provide a figure to attract the right pool of candidates.</span>
+
+  <div class="uk-margin">
+    <h4><%= form.label "Salary per month/project", :class => "uk-form-label" %></h4>
+    Between <%= form.number_field :salary_lower, min: 0, class: "uk-input" %> and <%= form.number_field :salary_upper, min: 0, class: "uk-input" %>
+    <p class="pure-form-message">Please note: there's a correlation between experience/expertise and compensation. Therefore, it's important to provide a figure to attract the right pool of candidates.</p>
   </div>
-  <div class="field">
-    <%= form.label :requirements %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :requirements, :class => "uk-form-label" %></h4>
     <%= form.hidden_field :requirements, id: 'requirements' %>
     <trix-editor input="requirements"></trix-editor>
-    <span class="pure-form-message">What are the 1 to 3 main things you need your future developer to help with? Please feel free to keep this as simple as possible and use every day language. Please be as specific as possible. For example: "I need the developer to help us build a new iPhone app"</span>
+    <p class="pure-form-message">What are the 1 to 3 main things you need your future developer to help with? Please feel free to keep this as simple as possible and use every day language. Please be as specific as possible. For example: "I need the developer to help us build a new iPhone app"</p>
   </div>
-  <div class="field">
-    <%= form.label :qualification %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :qualification, :class => "uk-form-label" %></h4>
     <%= form.hidden_field :qualification, id: 'qualification' %>
     <trix-editor input="qualification"></trix-editor>
-    <span class="pure-form-message">This could be anything from "I require the developer to be fluent in French" to something as technical as "I require the developer to have an expert-level familiarity with PHP"</span>
+    <p class="pure-form-message">This could be anything from "I require the developer to be fluent in French" to something as technical as "I require the developer to have an expert-level familiarity with PHP"</p>
   </div>
-  <div class="field">
-    <%= form.label :perks %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :perks, :class => "uk-form-label" %></h4>
     <%= form.hidden_field :perks, id: 'perks' %>
     <trix-editor input="perks"></trix-editor>
-    <span class="pure-form-message">Please remember that the best developers are motivated by a mission. Please *sell* the project succinctly.</span>
+    <p class="pure-form-message">Please remember that the best developers are motivated by a mission. Please *sell* the project succinctly.</p>
   </div>
-  <div class="field">
-    <%= form.label :contact_email %>
-    <%= form.email_field :contact_email %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :contact_email, :class => "uk-form-label" %></h4>
+    <%= form.email_field :contact_email, :class => "uk-input uk-width-1-2" %>
   </div>
-  <div class="field">
-    <%= form.label :city %>
-    <%= form.text_field :city %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :city, :class => "uk-form-label" %></h4>
+    <%= form.text_field :city, :class => "uk-input uk-width-1-2" %>
   </div>
-  <div class="field">
-    <%= form.label :country %>
-    <%= form.select :country, @countries, include_blank: true %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :country, :class => "uk-form-label" %></h4>
+    <%= form.text_field :country, :class => "uk-input uk-width-1-2" %>
   </div>
-  <div class="field">
-    <%= form.label :apply_link, "Link to Apply" %>
-    <%= form.url_field :apply_link %>
+
+  <div class="uk-margin">
+    <h4><%= form.label :apply_link, "Link to Apply", :class => "uk-form-label" %></h4>
+    <%= form.url_field :apply_link, :class => "uk-input uk-width-1-2" %>
   </div>
-  <div class="actions">
-    <%= form.submit %>
+
+  <div class="uk-margin">
+    <%= form.submit "Create Job", :class => "uk-button uk-button-primary" %>
   </div>
 <% end %>
