@@ -1,7 +1,7 @@
 #!/bin/bash
 
 gem install bundler
-bundle install --binstubs="$BUNDLE_BIN"
+bundle binstubs --all
 
 if [[ "$@" == *"rails s"* ]]; then
   # only remove pid when running rails

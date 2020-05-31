@@ -26,7 +26,7 @@ FactoryBot.define do
     company
 
     qualification { Faker::Job.key_skill }
-    requirements  { Faker::Lorem.paragraph(2) }
+    requirements  { Faker::Lorem.paragraph(sentence_count: 2) }
     role          { Faker::Job.title }
     salary_lower  { rand(0..1000) }
     salary_upper  { rand(2000..5000) }

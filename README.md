@@ -14,34 +14,68 @@ This is the code which runs the DevCongress Jobs website, which lives at [jobs.d
 
 [Install Docker and Docker Compose](https://docs.docker.com/v17.09/engine/installation/#supported-platforms) (Docker Compose comes with Docker on Windows and MacOS)
 
-### Run Project
+### Build
 
-Run `./bin/create.sh` if on linux.
+On first install, you will need to run a build to setup any dependencies and get you started.
 
-Otherwise,
-- `docker-compose up --build -d`: build app image and start the containers in detached mode
-- `docker-compose run --rm web rails db:migrate db:seed`: apply migrations and seed the database
+Any application code changes are automatically reloaded, however, changes to certain files e.g. [Dockerfile](./Dockerfile) require a build.
 
-> You can now log in with the default user that was created during the seeding
+#### Linux/Mac
+
+- `./scripts/build.sh`
+
+#### Others
+
+- `docker-compose build --no-cache`: rebuild containers
+- `docker-compose run --rm web bundle exec rails db:migrate db:seed`: apply migrations and seed the database
+
+### Run
+
+#### Linux/Mac
+
+- `./scripts/start.sh`
+
+#### Others
+
+- `docker-compose up --build`: build and start containers
+
+If you'd rather run it in the background,
+
+- `docker-compose up --build -d`: build and start containers in detached mode
+
+## Develop
+
+The application runs at http://localhost:3000/
+
+> You can login with the default user created during seeding
+>
 > - email: test@example.com
 > - password: password1
 
-Some helpful commands (all commands should be run from the project directory)
+### Helpful Commands
+
 - `docker-compose stop`: stop the running containers.
 - `docker-compose start`: start stopped containers.
 - `docker-compose down`: stop and remove containers and networks. you will need to recreate them using `up`
 
-> To remove any persisted data, delete the `.volumes` directory.
+> **NOTE**: all `docker-compose` commands should be run from the project directory
 
-## Migrations
+> **TIP**: To remove any persisted data, delete the [.volumes](./.volumes) directory.
 
-To apply new database changes, run 
-- `docker-compose run --rm web rails db:migrate`
+### Migrations
 
-## Seeding
+- `docker-compose stop`: stop any running containers to prevent contention over database files
+- `docker-compose run --rm web bundle exec rails db:migrate`: apply migrations
 
-To seed the database, run 
-- `docker-compose run --rm web rails db:seed`
+### Seeding
+
+- `docker-compose stop`: stop any running containers to prevent contention over database files
+- `docker-compose run --rm web bundle exec rails db:seed`: seed database
+
+## Testing
+
+- `docker-compose stop`: stop any running containers to prevent contention over database files
+- `docker-compose run --rm web bundle exec rails test`: run tests
 
 ## Troubleshooting
 
