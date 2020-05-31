@@ -106,6 +106,7 @@ class JobsController < ApplicationController
 
   def set_job
     @job = Job.find_by(id: params[:id])
+    raise_not_found unless @job
   end
 
   def job_params
@@ -148,6 +149,6 @@ class JobsController < ApplicationController
   def job_post_successful
     JobsMailer.with(job: @job).published.deliver_later
     # FIXME: use a job for this
-    $tweetJob.update("New Job Vacancy: #{@job.title}. Read more at #{url_for(@job)}") unless Rails.env.test?
+    $tweetJob.update("New Job Vacancy: #{@job.title}. Read more at #{url_for(@job)}") if Rails.env.production?
   end
 end
