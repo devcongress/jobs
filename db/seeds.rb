@@ -132,4 +132,7 @@ jobs.each do |job|
   puts job[:role]
   Job.where(role: job[:role], requirements: job[:requirements])
     .first_or_create.update_attributes(job)
+  
+  j = Job.find_by(role: job[:role], requirements: job[:requirements])
+  j.renewals.create([{:renewed_on => 5.days.from_now}])
 end
