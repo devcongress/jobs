@@ -8,6 +8,9 @@
 
 This is the code which runs the DevCongress Jobs website, which lives at [jobs.devcongress.org](http://jobs.devcongress.org)
 
+Design specs available [here](
+https://app.lucidchart.com/invitations/accept/3fe352de-10f8-468e-8d2c-b883c752494d)
+
 ## Docker setup
 
 ### Requirements
