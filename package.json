@@ -4,7 +4,7 @@
   "license": "MIT",
   "author": "DevCongress",
   "repository": {"type": "git", "url": "https://github.com/DevCongress/jobs.git"},
-  "bugs": {"url": "https://github.com/DevCongress/jobs/issues"},
+  "bugs": "https://github.com/DevCongress/jobs/issues",
   "keywords": [
     "devcongress",
     "jobs",
