@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -13,44 +15,45 @@ gem 'sprockets', '~> 3.7', '>= 3.7.2'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'coffee-rails', '~> 4.2'
-gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
+gem 'turbolinks', '~> 5'
 
 gem 'bootsnap', '~> 1.3', require: false
 
 gem 'devise', '~> 4.4', '>= 4.4.3'
-gem 'sendgrid', '~> 1.2', '>= 1.2.4'
-gem 'twitter', '~> 6.2'
 gem 'oauth'
 gem 'omniauth-google-oauth2'
-
+gem 'sendgrid', '~> 1.2', '>= 1.2.4'
+gem 'twitter', '~> 6.2'
 
 gem 'pg'
+gem 'sentry-raven'
 gem 'trix'
-gem "sentry-raven"
 
+gem 'jwt'
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'awesome_print'
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
 end
 
 group :development do
-  gem 'web-console', '>= 3.3.0'
+  gem 'annotate'
+  gem 'figaro'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'annotate'
-  gem "figaro"
+  gem 'web-console', '>= 3.3.0'
 end
 
 group :test do
   gem 'capybara', '>= 2.15', '< 4.0'
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
   gem 'faker'
-  gem 'shoulda-matchers'
   gem 'minitest-matchers_vaccine'
+  gem 'selenium-webdriver'
+  gem 'shoulda-matchers'
+  gem 'webdrivers'
 end
 
 group :production do
@@ -58,5 +61,4 @@ group :production do
   gem 'skylight'
 end
 
-
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
