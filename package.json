@@ -1,5 +1,19 @@
 {
   "name": "dcjobs",
   "private": true,
-  "dependencies": {}
+  "license": "MIT",
+  "author": "DevCongress",
+  "repository": {"type": "git", "url": "https://github.com/DevCongress/jobs.git"},
+  "bugs": {"url": "https://github.com/DevCongress/jobs/issues"},
+  "keywords": [
+    "devcongress",
+    "jobs",
+    "job board",
+    "ghana",
+    "africa",
+    "hiring"
+  ],
+  "dependencies": {
+    "@semantic-release/github": "^7.0.7"
+  }
 }
