@@ -1,0 +1,26 @@
+<% content_for :title do %>
+  <%= "Log In | #{t('app.name')}" %>
+<% end %>
+<main class="dc-home">
+  <article>
+    <section class="dc-page--header">
+      <div class="uk-container">
+        <h1 class="page--title">Sign In</h1>
+      </div>
+    </section>
+
+    <section class="dc-main--content">
+      <div class="uk-container">
+        <div class="uk-grid" >
+          <div class="uk-width-expand@m">
+            <div class="uk-card uk-card-default uk-card-body dc-content-container">
+              <p>
+                Please check your email for instructions on how to continue.
+              </p>
+							<%= link_to 'Back to jobs', jobs_path %>
+            </div>
+          </div>
+      </div>
+    </section>
+  </article>
+</main>

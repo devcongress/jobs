@@ -27,27 +27,28 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users, skip: %i[sessions registrations passwords], controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, skip: %i[sessions registrations passwords]
 
   devise_scope :user do
     # sessions
-    get    'login',  to: 'devise/sessions#new',     as: :new_user_session
-    post   'login',  to: 'devise/sessions#create',  as: :user_session
-    delete 'logout', to: 'devise/sessions#destroy', as: :destroy_user_session
+    get    'login',  to: 'users/sessions#new', as: :new_user_session
+    post   'login',  to: 'users/sessions#login', as: :user_session
+    get    'sign_in', to: 'users/sessions#create', as: :start_user_session
+    delete 'logout', to: 'users/sessions#destroy', as: :destroy_user_session
 
     # registrations
-    put    '/account',  to: 'devise/registrations#update'
-    delete '/account',  to: 'devise/registrations#destroy'
-    post   '/account',  to: 'devise/registrations#create'
-    get    '/register', to: 'devise/registrations#new',    as: :new_user_registration
-    get    '/account',  to: 'devise/registrations#edit',   as: :edit_user_registration
-    patch  '/account',  to: 'devise/registrations#update', as: :user_registration
-    get    '/account/cancel', to: 'devise/registrations#cancel', as: :cancel_user_registration
+    put    '/account',  to: 'users/registrations#update'
+    delete '/account',  to: 'users/registrations#destroy'
+    post   '/account',  to: 'users/registrations#create'
+    get    '/register', to: 'users/registrations#new',    as: :new_user_registration
+    get    '/account',  to: 'users/registrations#edit',   as: :edit_user_registration
+    patch  '/account',  to: 'users/registrations#update', as: :user_registration
+    get    '/account/cancel', to: 'users/registrations#cancel', as: :cancel_user_registration
 
-    # passwords
-    get   'new-pass',  to: 'devise/passwords#new',    as: :new_user_password
-    get   'edit-pass', to: 'devise/passwords#edit',   as: :edit_user_password
-    patch 'edit-pass', to: 'devise/passwords#update', as: :update_user_password
-    post  'new-pass',  to: 'devise/passwords#create', as: :user_password
+    # # passwords
+    # get   'new-pass',  to: 'users/passwords#new',    as: :new_user_password
+    # get   'edit-pass', to: 'users/passwords#edit',   as: :edit_user_password
+    # patch 'edit-pass', to: 'users/passwords#update', as: :update_user_password
+    # post  'new-pass',  to: 'users/passwords#create', as: :user_password
   end
 end
