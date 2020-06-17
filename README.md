@@ -17,6 +17,13 @@ https://app.lucidchart.com/invitations/accept/3fe352de-10f8-468e-8d2c-b883c75249
 
 [Install Docker and Docker Compose](https://docs.docker.com/v17.09/engine/installation/#supported-platforms) (Docker Compose comes with Docker on Windows and MacOS)
 
+### Alternative for windows
+If your docker installation fails, you can install [rails](https://gorails.com/setup/windows/10#rails), [ruby](https://rubyinstaller.org/) and [postgress](https://gorails.com/setup/windows/10#rails). Installing ubuntu on windows also makes your setup easier.
+- Run bundle install
+- Run rake db:create to create your db
+- Run bin/rails db:migrate RAILS_ENV=development to migrate your db
+- Serve your project
+
 ### Build
 
 On first install, you will need to run a build to setup any dependencies and get you started.
