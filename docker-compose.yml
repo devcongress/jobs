@@ -1,8 +1,8 @@
 version: "3.5"
 
 x-db_config: &db_config
-  POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
   POSTGRES_DB: jobs_dev
 
 services:
@@ -15,7 +15,7 @@ services:
     networks:
       - jobs
     ports:
-      - "5433:5432"
+      - "6432:5432"
   mailcatcher:
     image: stpaquet/alpinemailcatcher
     networks:
@@ -29,6 +29,7 @@ services:
     environment:
       <<: *db_config
       POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
     volumes:
       - ./:/app
       - bundle:/bundle:cached
