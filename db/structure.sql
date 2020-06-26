@@ -230,6 +230,39 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
+-- Name: key_values; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.key_values (
+    id bigint NOT NULL,
+    key text NOT NULL,
+    sub_key text NOT NULL,
+    data jsonb NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: key_values_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.key_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: key_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.key_values_id_seq OWNED BY public.key_values.id;
+
+
+--
 -- Name: renewals; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -317,6 +350,13 @@ ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id
 
 
 --
+-- Name: key_values id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.key_values ALTER COLUMN id SET DEFAULT nextval('public.key_values_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -364,6 +404,14 @@ ALTER TABLE ONLY public.jobs
 
 
 --
+-- Name: key_values key_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.key_values
+    ADD CONSTRAINT key_values_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -405,6 +453,13 @@ CREATE UNIQUE INDEX index_companies_on_email ON public.companies USING btree (em
 --
 
 CREATE INDEX index_jobs_on_company_id ON public.jobs USING btree (company_id);
+
+
+--
+-- Name: index_key_values_on_key_and_sub_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_key_values_on_key_and_sub_key ON public.key_values USING btree (key, sub_key);
 
 
 --
@@ -499,6 +554,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181202105418'),
 ('20181205160427'),
 ('20190228175757'),
-('20190309124441');
+('20190309124441'),
+('20200626162000');
 
 
