@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: jobs
@@ -58,93 +60,101 @@ class Job < ApplicationRecord
   end
 
   def published_on
-    renewals.order('renewed_on DESC').first.renewed_on
+    @published_on ||= renewals.order('renewed_on DESC').first&.renewed_on
+  end
+
+  def published?
+    published_on.present?
   end
 
   def active?
-    !archived && (published_on + Job.validity_period.days) >= DateTime.now
+    !archived && published? && (published_on + Job.validity_period.days) >= DateTime.now
   end
 
   # `Job.active` is a version of `all` that returns
   # jobs that haven't been archived and are still within
   # the validity period since they were posted.
   def self.all_active
-    Job.find_by_sql <<-SQL
-WITH latest_renewals AS (
-  SELECT job_id, max(renewed_on) AS published_on
-    FROM renewals
-GROUP BY job_id
-)
-SELECT jobs.*
-  FROM jobs
-  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
- WHERE NOT archived
-       AND filled_at IS NULL
-       AND tsrange(
-         published_on,
-         published_on + INTERVAL '#{self.validity_period}' DAY, '[]'
-       ) @> now()::timestamp
-ORDER BY published_on DESC
+    Job.find_by_sql <<~SQL
+      WITH latest_renewals AS (
+        SELECT job_id, max(renewed_on) AS published_on
+          FROM renewals
+      GROUP BY job_id
+      )
+      SELECT jobs.*
+        FROM jobs
+        JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+       WHERE NOT archived
+             AND filled_at IS NULL
+             AND tsrange(
+               published_on,
+               published_on + INTERVAL '#{validity_period}' DAY, '[]'
+             ) @> now()::timestamp
+      ORDER BY published_on DESC
     SQL
-
   end
 
-  def self.validity_period; (ENV['JOB_VALIDITY_PERIOD'] || 30).to_i.abs; end
-  def self.days_to_expiry;  (ENV['JOB_DAYS_TO_EXPIRY'] || 7).to_i.abs;   end
+  def self.validity_period
+    (ENV['JOB_VALIDITY_PERIOD'] || 30).to_i.abs
+  end
+
+  def self.days_to_expiry
+    (ENV['JOB_DAYS_TO_EXPIRY'] || 7).to_i.abs
+  end
 
   def self.search(query)
-    Job.find_by_sql [<<-SQL, query]
-WITH latest_renewals AS (
-  SELECT job_id,
-         max(renewed_on) AS published_on
-    FROM renewals
-GROUP BY job_id
-)
-SELECT jobs.*
-  FROM jobs
-  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
- WHERE NOT archived
-       AND filled_at IS NULL
-       AND tsrange(
-        published_on,
-        published_on + INTERVAL '#{self.validity_period}' DAY, '[]'
-       ) @> now()::timestamp
-       AND plainto_tsquery(?) @@ full_text_search
-       ORDER BY created_at DESC
+    Job.find_by_sql [<<~SQL, query]
+      WITH latest_renewals AS (
+        SELECT job_id,
+               max(renewed_on) AS published_on
+          FROM renewals
+      GROUP BY job_id
+      )
+      SELECT jobs.*
+        FROM jobs
+        JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+       WHERE NOT archived
+             AND filled_at IS NULL
+             AND tsrange(
+              published_on,
+              published_on + INTERVAL '#{validity_period}' DAY, '[]'
+             ) @> now()::timestamp
+             AND plainto_tsquery(?) @@ full_text_search
+             ORDER BY created_at DESC
     SQL
   end
 
   def self.expires_soon
-    Job.find_by_sql <<-SQL
-WITH latest_renewals AS (
-  SELECT job_id,
-         max(renewed_on) AS published_on
-    FROM renewals
-GROUP BY job_id
-)
-SELECT jobs.*
-  FROM jobs
-  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
- WHERE NOT archived
-       AND filled_at IS NULL
-       AND extract(days from now() - published_on) = #{self.validity_period - self.days_to_expiry}
+    Job.find_by_sql <<~SQL
+      WITH latest_renewals AS (
+        SELECT job_id,
+               max(renewed_on) AS published_on
+          FROM renewals
+      GROUP BY job_id
+      )
+      SELECT jobs.*
+        FROM jobs
+        JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+       WHERE NOT archived
+             AND filled_at IS NULL
+             AND extract(days from now() - published_on) = #{validity_period - days_to_expiry}
     SQL
   end
 
   def self.expired_today
-    Job.find_by_sql <<-SQL
-WITH latest_renewals AS (
-  SELECT job_id,
-         max(renewed_on) AS published_on
-    FROM renewals
-GROUP BY job_id
-)
-SELECT jobs.*
-  FROM jobs
-  JOIN latest_renewals ON latest_renewals.job_id = jobs.id
-WHERE NOT archived
-      AND filled_at IS NULL
-      AND extract(days from now() - published_on) = #{self.validity_period}
+    Job.find_by_sql <<~SQL
+      WITH latest_renewals AS (
+        SELECT job_id,
+               max(renewed_on) AS published_on
+          FROM renewals
+      GROUP BY job_id
+      )
+      SELECT jobs.*
+        FROM jobs
+        JOIN latest_renewals ON latest_renewals.job_id = jobs.id
+      WHERE NOT archived
+            AND filled_at IS NULL
+            AND extract(days from now() - published_on) = #{validity_period}
     SQL
   end
 end

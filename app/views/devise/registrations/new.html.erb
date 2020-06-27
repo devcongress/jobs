@@ -19,37 +19,48 @@
                   <%= alert %>
                 </span>
               <% end %>
-              <%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html => {:class => 'uk-form-horizontal'}) do |f| %>
-                <span class="alert">
-                  <%= devise_error_messages! %>
-                </span>
-                <div class="uk-margin">
-                  <%= f.label :email, :class => "uk-form-label" %>
-                  <div class="uk-form-controls">
-                    <%= f.email_field :email, autofocus: true, autocomplete: "email", :class => "uk-input" %>
-                  </div>      
-                </div>
+              <%= form_for(@user, url: start_user_registration_path, :html => {:class => 'uk-form-horizontal'}) do |f| %>
 
-                <div class="uk-margin">
-                  <%= f.label "Password", :class => "uk-form-label" %>
-                  <div class="uk-form-controls">
-                    <%= f.password_field :password, autocomplete: "off", :class => "uk-input" %>
-                    <span class="uk-text-meta uk-display-inline-block uk-margin-small uk-margin-remove-bottom"><%= @minimum_password_length %> characters minimum</span>
-                  </div>      
-                </div>
+                <fieldset>
+                  <%= f.fields_for @job do |form| %>
+                    <%= render 'job_form', form: form, job: @job %>
+                  <% end %>
+                </fieldset>
 
-                <div class="uk-margin">
-                  <%= f.label :password_confirmation, :class => "uk-form-label" %>
-                  <div class="uk-form-controls">
-                    <%= f.password_field :password_confirmation, autocomplete: "off", :class => "uk-input" %>
-                  </div>
-                </div>
+                <fieldset>
+                  <%= f.fields_for @company do |form| %>
+                    <%= render 'company_form', form: form, company: @company %>
+                  <% end %>
+                </fieldset>
+  
+                <fieldset>
+                  <h2>Login Details</h2>
 
-                <div class="uk-form-controls uk-padding-small uk-padding-remove-left uk-padding-remove-vertical">
+                  <% if @user.errors.any? %>
+                    <div class="error_explanation">
+                      <ul>
+                        <% @user.errors.full_messages.each do |message| %>
+                          <li>
+                            <%= message %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  <% end %>
+
                   <div class="uk-margin">
-                    <%= f.submit "Sign up", :class => "uk-button uk-button-primary" %>
+                    <%= f.label :email, :class => "uk-form-label" %>
+                    <div class="uk-form-controls">
+                      <%= f.email_field :email, autocomplete: "email", :class => "uk-input" %>
+                    </div>      
                   </div>
-                </div>
+
+                  <div class="uk-form-controls uk-padding-small uk-padding-remove-left uk-padding-remove-vertical">
+                    <div class="uk-margin">
+                      <%= f.submit "Sign up", :class => "uk-button uk-button-primary" %>
+                    </div>
+                  </div>
+                </fieldset>
 
               <% end %>
               <div class="uk-form-horizontal">

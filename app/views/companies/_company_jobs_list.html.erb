@@ -18,11 +18,13 @@
       <li class="job--list__item">
         <s>
           <%= link_to job.role, job, :class => "job--list__item-link" %>
+          <% if job.published? %>
           <small>(posted <%= time_ago_in_words(job.published_on) %> ago)</small>
+          <% end %>
         </s>
         <div class="job--list__action-group">
           <% if current_user && current_user.companies.include?(@company) %>
-            <%= button_to "Renew", renew_job_path(job), :class => "job--list__action job--list__action-edit" %>
+            <%= button_to "Publish", renew_job_path(job), :class => "job--list__action job--list__action-edit" %>
           <% end %>
         </div>
       </li>

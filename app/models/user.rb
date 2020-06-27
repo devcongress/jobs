@@ -24,6 +24,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :trackable, :validatable
 
+  before_validation :set_encrypted_password, on: :create
+
   has_many :jobs
   has_many :clients
   has_many :companies, through: :clients
@@ -33,8 +35,14 @@ class User < ApplicationRecord
   end
 
   def password_required?
-    # only require password on new records
-    !persisted?
+    false
+  end
+
+  private
+
+  def set_encrypted_password
+    # we don't require password, but encrypted_password does not permit nil
+    self.encrypted_password = ''
   end
 
   def after_database_authentication
