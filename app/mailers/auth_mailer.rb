@@ -10,4 +10,14 @@ class AuthMailer < ApplicationMailer
 
     mail(to: to, subject: subject)
   end
+
+  def sign_up
+    @email = params[:email]
+    @token = params[:token]
+
+    to = @email
+    subject = 'Complete your DevCongress Jobs registration'
+
+    mail(to: to, subject: subject)
+  end
 end

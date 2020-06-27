@@ -13,7 +13,9 @@
           <div class="uk-width-1-2@m">
             <p class="dc-job-meta uk-text-right@m">
               <span class="dc-job-type uk-margin-right"><%= @job.duration %></span>
+              <% if @job.published? %>
               Posted <%= time_ago_in_words(@job.published_on) %> ago
+              <% end %>
             </p>
           </div>
         </div>
@@ -26,7 +28,7 @@
           <div class="uk-width-expand@m uk-margin-bottom">
             <div class="uk-card uk-card-default uk-card-body dc-content-container">
               <% unless @job.active? %>
-                <h3 style="color: red">This job is no longer active!</h3>
+                <h3 style="color: red">This job is not active!</h3>
               <% end %>
               <h3>About role</h3>
               <%= simple_format @job.requirements.to_s.html_safe %>

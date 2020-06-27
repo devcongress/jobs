@@ -1,0 +1,10 @@
+<h1>Confirm your email address to continue on DevCongress Jobs</h1>
+<p>
+  Once you've confirmed that <%= @email %> is your email address, we’ll get you started.
+</p>
+<p>
+  <strong><%= link_to 'Confirm Email Address', complete_user_registration_url(token: @token) %></strong>
+</p>
+<p>
+  If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.
+</p>

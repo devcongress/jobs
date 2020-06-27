@@ -1,0 +1,84 @@
+<h2>Company Details</h2>
+
+<% if company.errors.any? %>
+  <div class="error_explanation">
+    <ul>
+      <% company.errors.full_messages.each do |message| %>
+        <li>
+          <%= message %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="uk-margin">
+  <%= form.label :name, :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.text_field :name, required: true, placeholder: "Acme Widgets Inc.", :class => "uk-input" %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :industry, "Industry", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.collection_select :industry, Industry.all, :name, :name, {}, { class: "uk-select" } %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :description, "Description", :class => "uk-form-label" %>
+  <%= form.hidden_field :description, required: true, id: 'description' %>
+  <div class="uk-form-controls">
+    <trix-editor input="description"></trix-editor>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :website, "Website", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.url_field :website, :class => "uk-input" %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :email, "Contact Email", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.email_field :email, required: true, :class => "uk-input" %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :phone, "Contact Phone", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.telephone_field :phone, required: true, :class => "uk-input" %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :city, "City", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.text_field :city, require: true, :class => "uk-input" %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :state_or_region, "State/Region", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.text_field :state_or_region, require: true, :class => "uk-input" %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :post_code, "Post/Zip Code", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.text_field :post_code, require: true, :class => "uk-input" %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= form.label :country, "Country", :class => "uk-form-label" %>
+  <div class="uk-form-controls">
+    <%= form.text_field :country, require: true, :class => "uk-input" %>
+  </div>
+</div>
