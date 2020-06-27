@@ -36,3 +36,7 @@
 
 # Ignore application configuration
 /config/application.yml
+
+.env
+.env.development.local
+.env.test.local
