@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class JobsController < ApplicationController
-  before_action :set_job,            except: %i[new index]
+  before_action :set_job,            except: %i[new index create]
   before_action :authenticate_user!, except: %i[index show search renew]
   before_action :require_ownership, only: %i[edit update destroy renew]
 
