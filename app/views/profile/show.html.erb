@@ -25,14 +25,29 @@
           <div class="uk-flex-last uk-flex-first@m uk-width-expand@m">
             <div class="uk-card uk-card-default uk-card-body dc-content-container">
               <h3>Companies You're Recruiting For</h3>
-              <% if current_user.companies.empty? %>
+              <% if @companies.empty? %>
                 <p>You're not recruiting for any company</p>
                 <p>In order to start posting job opportunities, you should <%= link_to "register the company", new_company_path %></p>
               <% else %>
                 <p>Remember that you can still <%= link_to "register new companies", new_company_path %> in order to post their jobs. You can link an unlimited number of companies to your account.</p>
                 <ul class="uk-list uk-list-divider">
-                  <% current_user.companies.each do |c| %>
+                  <% @companies.each do |c| %>
                     <li><%= link_to "#{c.name} (#{c.jobs.count})", company_path(c) %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <h3>Jobs you've listed</h3>
+              <% if @jobs.empty? %>
+                <p>You haven't listed any jobs yet.</p>
+                <p>In order to post your first job, you should <%= link_to "post a job", new_job_path %></p>
+              <% else %>
+                <p>Remember that you can still <%= link_to "post a job", new_job_path %> </p>
+                <ul class="uk-list uk-list-divider">
+                  <% @jobs.each do |c| %>
+                    <% c.each do |j| %>
+                      <li><%= link_to "#{j.role}", j %></li>
+                    <% end %>
                   <% end %>
                 </ul>
               <% end %>
