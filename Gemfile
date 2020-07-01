@@ -7,8 +7,6 @@ gem 'puma'
 
 gem 'rails', '~> 5.2.2'
 gem 'sass-rails', '~> 5.0'
-# gem 'sass', '~> 3.4', '>= 3.4.22'
-# gem 'sassc', '~> 2.0', '>= 2.0.1'
 gem 'sprockets', '~> 3.7', '>= 3.7.2'
 gem 'uglifier', '>= 1.3.0'
 
@@ -33,6 +31,7 @@ gem "sentry-raven"
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
+  gem 'dotenv-rails'
 end
 
 group :development do
