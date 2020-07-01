@@ -10,20 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
 -- Name: citext; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -67,7 +53,7 @@ $$;
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
@@ -152,37 +138,6 @@ CREATE SEQUENCE public.companies_id_seq
 --
 
 ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
-
-
---
--- Name: industries; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.industries (
-    id bigint NOT NULL,
-    name text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: industries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.industries_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: industries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.industries_id_seq OWNED BY public.industries.id;
 
 
 --
@@ -303,13 +258,6 @@ ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
--- Name: industries id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.industries ALTER COLUMN id SET DEFAULT nextval('public.industries_id_seq'::regclass);
-
-
---
 -- Name: jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -345,14 +293,6 @@ ALTER TABLE ONLY public.clients
 
 ALTER TABLE ONLY public.companies
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
-
-
---
--- Name: industries industries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.industries
-    ADD CONSTRAINT industries_pkey PRIMARY KEY (id);
 
 
 --
@@ -429,17 +369,10 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
--- Name: lower_industry_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX lower_industry_name ON public.industries USING btree (lower(name));
-
-
---
 -- Name: jobs trg_prepare_full_text_search_document; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER trg_prepare_full_text_search_document BEFORE INSERT OR UPDATE OF role, qualification, requirements, perks ON public.jobs FOR EACH ROW EXECUTE PROCEDURE public.prepare_full_text_search_document();
+CREATE TRIGGER trg_prepare_full_text_search_document BEFORE INSERT OR UPDATE OF role, qualification, requirements, perks ON public.jobs FOR EACH ROW EXECUTE FUNCTION public.prepare_full_text_search_document();
 
 
 --
@@ -499,6 +432,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181202105418'),
 ('20181205160427'),
 ('20190228175757'),
-('20190309124441');
+('20190309124441'),
+('20200701220546');
 
 
