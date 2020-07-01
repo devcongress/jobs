@@ -1,0 +1,50 @@
+# Static data: because some things don't change.
+# =============================================
+# 
+# The values below could be stored in a database (as industries were), but that
+# incurs network and garbage collection cost. The values don't change, or rarely
+# do, as such we can hold them in memory for the entire duration the application
+# is up. Saves us both network and garbage collection cost, at a small price.
+#
+# Proof available on request.
+---
+:static_data:
+  :industries:
+    :description: "A list of all industries that a company can belong to"
+    :values:
+      - "Accounting"
+      - "Advertising/Public Relations"
+      - "Agribusiness"
+      - "Air"
+      - "Architecture"
+      - "Auto"
+      - "Banking & Finance"
+      - "Communications/Electronics"
+      - "Construction"
+      - "Education"
+      - "Energy"
+      - "Entertainment"
+      - "Environment"
+      - "Food & Beverage"
+      - "Games"
+      - "Government"
+      - "Health"
+      - "Hospitality"
+      - "Human Rights"
+      - "Insurance"
+      - "Internet & Software"
+      - "Law"
+      - "Manufacturing"
+      - "Marine"
+      - "Media"
+      - "Natural Resources"
+      - "Non-profits"
+      - "Oil & Gas"
+      - "Other"
+      - "Printing & Publishing"
+      - "Real Estate"
+      - "Religious Organization"
+      - "Services"
+      - "Sports"
+      - "Telecom Services & Equipment"
+      - "Transport"
