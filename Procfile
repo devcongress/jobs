@@ -1,1 +1,1 @@
-web: bin/rails server -p $PORT
+web: RUBYOPT='-W:no-deprecated' bin/rails server -p $PORT
