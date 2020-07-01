@@ -7,8 +7,7 @@ class CompaniesTest < ApplicationSystemTestCase
   end
 
   test "creating a company" do
-    industry = FactoryBot.create(:industry)
-    company = FactoryBot.build(:company, industry: industry.name)
+    company = FactoryBot.build(:company, industry: StaticData[:industries].sample)
 
     visit new_company_url
 
