@@ -10,7 +10,7 @@ module StaticData
   end
 
   def self.[](key)
-    @@data[key] 
+    @@data[key]&.[](:values)
   end
 end
 
