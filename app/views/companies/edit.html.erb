@@ -33,7 +33,7 @@
                 <div class="uk-margin">
                   <%= f.label :industry, "Industry" %>
                   <div class="uk-form-controls">
-                    <%= f.collection_select :industry, StaticData[:industry], :name, :name, {}, { class: "uk-select" } %>
+                    <%= f.select :industry, StaticData[:industry].map {|v| [v, v]}, {}, { class: "uk-select" } %>
                   </div>
                 </div>
 
