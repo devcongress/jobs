@@ -5,10 +5,10 @@ before_install:
 - gem update --system
 - gem install bundler
 before_script:
-- bin/rails db:create --all
-- bin/rails db:migrate
+- RUBYOPT='-W:no-deprecated' bin/rails db:create --all
+- RUBYOPT='-W:no-deprecated' bin/rails db:migrate
 script:
-- bin/rails test
+- RUBYOPT='-W:no-deprecated' bin/rails test
 services:
 - postgresql
 notifications:
