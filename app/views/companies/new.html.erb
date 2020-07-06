@@ -86,10 +86,16 @@
                   </div>
                 </div>
 
-                <div class="uk-margin">
+                <!-- <div class="uk-margin">
                   <%= form.label :country, "Country", :class => "uk-form-label" %>
                   <div class="uk-form-controls">
                     <%= form.text_field :country, require: true, :class => "uk-input" %>
+                  </div>
+                </div> -->
+                <div class="uk-margin">
+                  <%= form.label :country, "Country", :class => "uk-form-label" %>
+                  <div class="uk-form-controls">
+                    <%= form.select :country, StaticData[:countries].map {|v| [v[:name], v[:code]]}, {}, { class: "uk-select" } %>
                   </div>
                 </div>
 
