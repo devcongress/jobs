@@ -192,7 +192,8 @@ CREATE TABLE public.jobs (
     country character varying DEFAULT ''::character varying NOT NULL,
     apply_link text DEFAULT ''::text NOT NULL,
     filled_at timestamp without time zone,
-    full_text_search tsvector NOT NULL
+    full_text_search tsvector NOT NULL,
+    engagement_type text DEFAULT ''::text NOT NULL
 );
 
 
@@ -487,6 +488,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190228175757'),
 ('20190309124441'),
 ('20200701220546'),
-('20200706140825');
+('20200706140825'),
+('20200707172640');
 
 

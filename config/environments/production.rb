@@ -106,4 +106,8 @@ Rails.application.configure do
             domain: ENV['SENDGRID_DOMAIN']
   }
 
+  Raven.configure do |config|
+    config.dsn = 'https://f3bcfcf98aac4331b3df9af207507b4f:fc1a39e637804bf18c583f0dfa3bcbfd@sentry.io/1422368'
+  end
+
 end

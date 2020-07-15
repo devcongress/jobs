@@ -2,9 +2,9 @@ default: &default
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-  # username: <%= ENV["POSTGRES_USER"] || ENV["JOBS_DB_USERNAME"] %>
-  # password: <%= ENV["POSTGRES_PASSWORD"] || ENV["JOBS_DB_PASSWORD"] %>
-  # host:  <%= ENV["POSTGRES_HOST"] || 'localhost' %>
+  username: <%= ENV["POSTGRES_USER"] || ENV["JOBS_DB_USERNAME"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] || ENV["JOBS_DB_PASSWORD"] %>
+  host:  <%= ENV["POSTGRES_HOST"] || 'localhost' %>
   port: 5432
 
 development:

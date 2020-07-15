@@ -33,7 +33,7 @@
                 <div class="uk-margin">
                   <%= f.label :industry, "Industry" %>
                   <div class="uk-form-controls">
-                    <%= f.select :industry, StaticData[:industry].map {|v| [v, v]}, {}, { class: "uk-select" } %>
+                    <%= f.select :industry, StaticData[:industries].map {|v| [v, v]}, {}, { class: "uk-select" } %>
                   </div>
                 </div>
 
@@ -90,10 +90,10 @@
                 <div class="uk-margin">
                   <%= f.label :country, "Country", :class => "uk-form-label" %>
                   <div class="uk-form-controls">
-                    <%= f.text_field :country, require: true, :class => "uk-input" %>
+                    <%= f.select :country, StaticData[:countries].map {|v| [v[:name], v[:code]]}, {}, { class: "uk-select" } %>
                   </div>
                 </div>
-
+                
                 <div class="uk-form-controls uk-padding-small uk-padding-remove-left">
                   <div class="uk-margin">
                     <%= f.submit "Save", :class => "uk-button uk-button-primary" %>
