@@ -37,6 +37,12 @@
   </div>
 
   <div class="uk-margin">
+    <h4><%= form.label :enagagement_type, :class => "uk-form-label" %></h4>
+    <%= form.select :duration, {"Full-time" => "Full-Time", "Part-time" => "Part-Time", "Gig" => "Gig"}, {}, class: "uk-select" %>
+    <p class="pure-form-message">What is the enagagement type for this project?</p>
+  </div>
+
+  <div class="uk-margin">
     <h4><%= form.label "Salary per month/project", :class => "uk-form-label" %></h4>
     Between <%= form.number_field :salary_lower, min: 0, class: "uk-input" %> and <%= form.number_field :salary_upper, min: 0, class: "uk-input" %>
     <p class="pure-form-message">Please note: there's a correlation between experience/expertise and compensation. Therefore, it's important to provide a figure to attract the right pool of candidates.</p>

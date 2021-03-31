@@ -25,7 +25,6 @@ gem 'omniauth-google-oauth2'
 
 gem 'pg'
 gem 'trix'
-gem "sentry-raven"
 
 
 group :development, :test do
@@ -55,6 +54,7 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'skylight'
+  gem "sentry-raven"
 end
 
 
