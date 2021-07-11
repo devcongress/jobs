@@ -15,7 +15,7 @@
           <div class="uk-width-expand@m">
             <div class="uk-card uk-card-default uk-card-body dc-content-container">
               <% if alert %>
-                <span class="alert">
+                <span class="uk-alert-danger">
                   <%= alert %>
                 </span>
               <% end %>
@@ -29,13 +29,6 @@
                   </div>
                 </div>
                 
-                <div class="uk-margin">
-                  <%= f.label :password, :class => "uk-form-label" %>
-                  <div class="uk-form-controls">
-                    <%= f.password_field :password, autocomplete: "off", :class => "uk-input" %>
-                  </div>
-                </div>
-
                 <div class="uk-margin">
                   <div class="uk-form-controls">
                     <% if devise_mapping.rememberable? %>

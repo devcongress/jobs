@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -20,30 +22,23 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
+  devise :database_authenticatable, :registerable, :rememberable, :trackable, :validatable
 
   has_many :jobs
   has_many :clients
   has_many :companies, through: :clients
 
   def is_owner?(job)
-    if job.user_id == self.id
-      return true
-    end
+    return true if job.user_id == id
   end
 
-  def self.from_omniauth(access_token)
-    data = access_token.info
-    user = User.where(email: data['email']).first
+  def password_required?
+    # only require password on new records
+    !persisted?
+  end
 
-    # Uncomment the section below if you want users to be created if they don't exist
-    unless user
-        user = User.create(
-           email: data['email'],
-           password: Devise.friendly_token[0,20]
-        )
-    end
-    user
+  def after_database_authentication
+    # we invalidate the password each after each authentication
+    update_attribute(:encrypted_password, '')
   end
 end
