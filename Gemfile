@@ -5,7 +5,7 @@ ruby '2.7.1'
 
 gem 'puma'
 
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 6.1.7'
 gem 'sass-rails', '~> 5.0'
 gem 'sprockets', '~> 3.7', '>= 3.7.2'
 gem 'uglifier', '>= 1.3.0'
