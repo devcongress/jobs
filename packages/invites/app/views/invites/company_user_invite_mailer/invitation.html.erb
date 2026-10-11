@@ -1,0 +1,15 @@
+<% company = @invite.entity.to_label %>
+<% inviter = @invite.invited_by.try(:developer_profile)&.name || @invite.invited_by.email %>
+<% content_for :preheader, "#{inviter} invited you to join #{company}." %>
+<%= email_heading "Join #{company} on DevCongress Connect" %>
+<%= email_paragraph "Hi there," %>
+<%= email_paragraph do %>
+  <strong><%= inviter %></strong> invited you to join <strong><%= company %></strong> as <%= @invite.role == "owner" ? "an owner" : "a #{@invite.role}" %>. You'll be able to post jobs and review applicants together.
+<% end %>
+<%= email_button "Accept the invitation", @invitation_url %>
+<% if @invite.expires_at.present? %>
+  <%= email_muted "The invitation expires on #{@invite.expires_at.to_date.to_fs(:long)}." %>
+<% end %>
+<%= email_paragraph "New to DevCongress Connect? You'll create an account with this email address when you accept." %>
+<%= email_link_fallback @invitation_url %>
+<% content_for :footer_note, "Not expecting this? You can ignore this email; nothing happens unless you accept." %>

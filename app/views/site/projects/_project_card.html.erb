@@ -1,0 +1,27 @@
+<% skills = project.skills.map(&:name).sort.first(4) %>
+<%# Hidden profiles stay off cards, like everywhere else. %>
+<% people = [project.owner, *project.confirmed_contributors.map(&:profile).select { _1.visible_to?(current_user) }].uniq.first(5) %>
+<%= link_to public_project_path(project.slug), class: "group dc-box flex h-full flex-col gap-4 p-8" do %>
+  <span class="flex items-center justify-between gap-3">
+    <span class="h-3 w-3 shrink-0 rounded-full border-2 border-[#111] <%= project.ongoing? ? "bg-[#e8117f]" : "bg-[#f5e642]" %>"></span>
+    <% if project.ongoing? %><span class="dc-badge text-[#7c3aed]">Ongoing</span><% elsif project.period %><span class="dc-badge text-[#0284c7]">Shipped</span><% end %>
+  </span>
+  <span class="dc-heading text-[1.75rem] leading-snug transition-colors group-hover:text-[#e8117f]"><%= project.title %></span>
+  <% if project.summary.present? %><span class="flex-1 text-sm text-[#555]"><%= project.summary %></span><% end %>
+  <% if skills.any? %>
+    <span class="flex flex-wrap gap-1.5"><% skills.each do |skill| %><%= pill(skill) %><% end %></span>
+  <% end %>
+  <span class="mt-auto flex items-center justify-between gap-3 pt-2">
+    <span class="flex min-w-0 items-center gap-2">
+      <span class="flex -space-x-1.5">
+        <% people.each do |person| %>
+          <%= render InitialsAvatar.new(name: person.name, seed: person.handle, size: :sm, class: "ring-2 ring-white") %>
+        <% end %>
+      </span>
+      <span class="truncate text-xs text-[#6b6b6b]">
+        <%= project.owner.name %><%= " + #{pluralize(people.size - 1, "other")}" if people.size > 1 %>
+      </span>
+    </span>
+    <span class="dc-link shrink-0">View →</span>
+  </span>
+<% end %>

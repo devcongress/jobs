@@ -1,0 +1,37 @@
+<% company = @company %>
+<% content_for :title, company.display_name %>
+<% content_for :description, "Jobs at #{company.display_name} on DevCongress Connect." %>
+<% og_card OgCard::Company.new(company) %>
+<% structured_data StructuredData::Company.new(company, view: self).to_h %>
+<% location = [company.city, company.country].compact_blank.join(", ") %>
+
+<div class="dc-container max-w-5xl py-10">
+  <section class="flex flex-col gap-5 rounded-2xl border-2 border-[#111] bg-white p-6 shadow-[8px_8px_0_#e8117f] sm:flex-row sm:items-center">
+    <%= render InitialsAvatar.new(name: company.display_name, seed: company.slug, size: :xl, shape: :square) %>
+    <div class="min-w-0">
+      <h1 class="dc-heading text-4xl"><%= company.display_name %></h1>
+      <p class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-[#555]">
+        <% if location.present? %><span class="flex items-center gap-1"><%= render Phlex::TablerIcons::MapPin.new(class: "h-4 w-4") %> <%= location %></span><% end %>
+        <% if company.website.present? %><%= link_to company.website.sub(%r{\Ahttps?://(www\.)?}, ""), company.website, target: "_blank", rel: "nofollow noopener", class: "text-[#e8117f] hover:underline" %><% end %>
+      </p>
+    </div>
+  </section>
+
+  <% if company.description.present? %>
+    <section class="mt-10">
+      <h2 class="dc-heading text-3xl">About</h2>
+      <div class="prose mt-4 max-w-none prose-a:text-[#e8117f]"><%= render_markdown(company.description) %></div>
+    </section>
+  <% end %>
+
+  <section class="mt-10">
+    <h2 class="dc-heading text-3xl">Open jobs</h2>
+    <% if @jobs.any? %>
+      <ul class="mt-6 space-y-3">
+        <% @jobs.each do |job| %><li><%= render "site/jobs/job_card", job: %></li><% end %>
+      </ul>
+    <% else %>
+      <p class="mt-4 text-[#555]"><%= company.display_name %> has no open jobs<%= " you can see" unless current_user %> right now.</p>
+    <% end %>
+  </section>
+</div>

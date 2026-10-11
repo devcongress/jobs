@@ -1,0 +1,44 @@
+<% first_name = @profile.name.split.first %>
+<% case @application.status %>
+<% when "shortlisted" %>
+  <% content_for :preheader, "#{@company.display_name} wants to take a closer look." %>
+  <%= email_heading "You're on the shortlist" %>
+  <%= email_paragraph "Hi #{first_name}," %>
+  <%= email_paragraph do %>
+    <strong><%= @company.display_name %></strong> shortlisted you for <strong><%= @job.title %></strong>. Expect them to reach out about next steps.
+  <% end %>
+<% when "hired" %>
+  <% content_for :preheader, "Congratulations from all of us." %>
+  <%= email_heading "Congratulations!" %>
+  <%= email_paragraph "Hi #{first_name}," %>
+  <%= email_paragraph do %>
+    <strong><%= @company.display_name %></strong> marked you as hired for <strong><%= @job.title %></strong>. Well done. If you're no longer looking, update your availability so other companies know.
+  <% end %>
+<% when "rejected" %>
+  <% content_for :preheader, "An update on #{@job.title}." %>
+  <%= email_heading "An update on your application" %>
+  <%= email_paragraph "Hi #{first_name}," %>
+  <%= email_paragraph do %>
+    <strong><%= @company.display_name %></strong> decided not to move forward with your application for <strong><%= @job.title %></strong>. It's not the news you wanted, and it's no reflection on what you can do. Thanks for putting yourself forward.
+  <% end %>
+<% else %>
+  <% content_for :preheader, "#{@company.display_name} is looking at your application." %>
+  <%= email_heading "Your application is being reviewed" %>
+  <%= email_paragraph "Hi #{first_name}," %>
+  <%= email_paragraph do %>
+    <strong><%= @company.display_name %></strong> started reviewing your application for <strong><%= @job.title %></strong>.
+  <% end %>
+<% end %>
+<% if @message.present? %>
+  <%= email_panel do %>
+    <div style="margin-bottom:6px;font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:<%= EmailHelper::MUTED %>;">A note from <%= @company.display_name %></div>
+    <%= simple_format @message, {style: "margin:0 0 8px;"}, wrapper_tag: "div" %>
+  <% end %>
+<% end %>
+<%= render "hiring/mailer/job_panel", job: @job %>
+<% if @application.rejected? %>
+  <%= email_button "Browse open jobs", @jobs_url %>
+<% else %>
+  <%= email_button "View your application", @application_url %>
+<% end %>
+<% content_for :footer_note, "You're getting this because you applied for a job on DevCongress Connect." %>

@@ -1,0 +1,2 @@
+class SkillsController < ::ResourceController
+end

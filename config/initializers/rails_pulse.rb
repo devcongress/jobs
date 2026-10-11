@@ -1,0 +1,30 @@
+# frozen_string_literal: true
+
+RailsPulse.configure do |config|
+  # Enable/disable Rails Pulse globally
+  config.enabled = Rails.env.production? || Rails.env.development?
+
+  # Asset tracking (disable to reduce noise)
+  config.track_assets = false
+
+  # Background job tracking (off by default in the gem; enabling mounts /jobs)
+  config.track_jobs = true
+
+  # Don't capture job arguments — they may contain sensitive data
+  config.capture_job_arguments = false
+
+  # Match the engine mount so Pulse doesn't self-track its own dashboard
+  config.mount_path = "/manage/pulse"
+
+  # Auth is handled upstream by ManagementConstraint in routes.rb;
+  # disable the gem's built-in auth to avoid double prompts.
+  config.authentication_enabled = false
+
+  # Skip Rails' default health check and other mounted management engines
+  # (mission_control-jobs, solid_errors, litestream, etc.) so they don't
+  # pollute the application route list.
+  config.ignored_routes = ["/up", "/cable", %r{^/manage/}]
+
+  # Use separate database for performance data
+  config.connects_to = {database: {writing: :rails_pulse, reading: :rails_pulse}}
+end

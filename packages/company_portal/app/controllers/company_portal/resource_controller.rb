@@ -1,0 +1,7 @@
+module CompanyPortal
+  # Base controller for portal resources when no feature package controller exists.
+  # Add customizations to Concerns::Controller, not here.
+  class ResourceController < ::ResourceController
+    include CompanyPortal::Concerns::Controller
+  end
+end

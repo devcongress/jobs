@@ -1,0 +1,28 @@
+<%# Follow / Following / Follow back / Connected, from the viewer's side.
+    Locals: profile (the person shown), following (viewer follows them),
+    followed_by (they follow the viewer), variant: :site (public pages) or
+    :portal (Plutonium pages), size: :md or :sm. %>
+<% variant = local_assigns.fetch(:variant, :site) %>
+<% size = local_assigns.fetch(:size, :md) %>
+<% path = main_app.follow_developer_path(handle: profile.handle) %>
+<% connected = following && followed_by %>
+<% label, icon = if connected then ["Connected", Phlex::TablerIcons::UserCheck]
+   elsif following then ["Following", Phlex::TablerIcons::Check]
+   elsif followed_by then ["Follow back", Phlex::TablerIcons::UserPlus]
+   else ["Follow", Phlex::TablerIcons::UserPlus] end %>
+<% classes = if variant == :portal
+     ["pu-btn", (size == :sm) ? "pu-btn-sm" : "pu-btn-md", following ? "pu-btn-outline" : "pu-btn-primary"]
+   else
+     ["dc-btn dc-btn-sm", ("px-3 py-1.5 text-xs" if size == :sm), following ? "dc-btn-white" : "dc-btn-primary"]
+   end %>
+<% if following %>
+  <%= button_to path, method: :delete, class: class_names(classes, "group"), form: {class: "inline", data: {turbo_confirm: (connected ? "Unfollow #{profile.name}? You'll no longer be connected." : nil)}}, title: "Unfollow #{profile.name}" do %>
+    <%= render icon.new(class: "h-4 w-4") %>
+    <span><%= label %></span>
+  <% end %>
+<% else %>
+  <%= button_to path, method: :post, class: classes, form: {class: "inline"} do %>
+    <%= render icon.new(class: "h-4 w-4") %>
+    <span><%= label %></span>
+  <% end %>
+<% end %>

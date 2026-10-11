@@ -1,0 +1,98 @@
+#!/bin/bash -e
+
+# Restore and migrate against the freshly-built image *before* the new web
+# container boots, so no container ever starts against a schema it is newer
+# than. This is the only place migrations run: bin/docker-entrypoint just
+# execs. Deploying with --skip-hooks therefore applies no migrations at all.
+#
+# Keeping it out of the entrypoint means each web start pays one Rails boot
+# inside the kamal-proxy healthcheck window instead of two or three.
+
+if [ "$KAMAL_COMMAND" != "deploy" ] && [ "$KAMAL_COMMAND" != "redeploy" ]; then
+  exit 0
+fi
+
+# Scope to a single role. `web`, `job` and `litestream` run on the same server
+# and share the SQLite storage volume, so an unscoped `app exec` fans out per
+# role and runs db:prepare at once against the same database files. Two
+# concurrent migration runs race as soon as there is anything pending: one
+# creates the table, the other dies on "already exists" and takes the deploy
+# with it.
+#
+# --primary is not enough. It picks the primary *host*, and every role is on
+# that host, so the command still runs once per role. --roles is what narrows
+# it to one.
+#
+# The secrets file a container gets is written by `app boot`, which runs *after*
+# this hook, so the commands below read whatever the previous run left on the
+# server. Kamal resolves .kamal/secrets from the shell and writes an empty value
+# rather than failing when a variable is unset, so one deploy from a shell
+# without secrets leaves every value blank. After that db:prepare dies on a
+# missing RAILS_MASTER_KEY, this hook fails, and the boot that would have
+# rewritten the file never runs: the deploy cannot repair itself, and every
+# later one fails the same way until someone breaks the cycle by hand.
+#
+# Checked with plain ruby rather than rails, so it costs a container start and
+# not a boot.
+#
+# The output captured here includes Kamal's own log of the command it ran, so
+# every pattern below must be text only the container or docker can produce.
+# The marker is assembled at runtime (SECRETS_ + OK) so it never appears in the
+# echoed command, and the missing-file case matches docker's error, not the
+# --env-file argument.
+echo "Checking the server still has its secrets..."
+env_check=$(kamal app exec --roles=web --primary --version "$KAMAL_VERSION" \
+  'ruby -e "puts %q{SECRETS_} + (ENV[%q{RAILS_MASTER_KEY}].to_s.empty? ? %q{EMPTY} : %q{OK})"' 2>&1) || true
+
+case "$env_check" in
+  *"web.env: no such file"*)
+    cat >&2 <<'MSG'
+✗ The server has no secrets file for this app yet: this is its first deploy.
+
+  `app boot` writes that file, and it runs after this hook. Boot once with
+  hooks off, then deploy normally to restore and migrate:
+
+      bin/deploy --skip-hooks
+      bin/deploy
+
+  Until the second deploy finishes there is no schema, so the site and the job
+  worker error. /up still answers, so the first boot passes its healthcheck.
+MSG
+    exit 1
+    ;;
+  *SECRETS_OK*) ;;
+  *SECRETS_EMPTY*)
+    cat >&2 <<'MSG'
+✗ The server's secrets file has no RAILS_MASTER_KEY, so db:prepare would fail.
+
+  It is rewritten by `app boot`, which runs after this hook, so a deploy cannot
+  repair it. Break the cycle once with hooks off, which lets boot rewrite it:
+
+      bin/deploy --skip-hooks
+
+  Note that skips this hook, so no migrations run. Check for pending ones first,
+  and deploy again normally afterwards to apply them.
+
+  Deploy with bin/deploy rather than kamal directly: it loads .env.production
+  and config/master.key, which is where the secrets Kamal expects come from.
+MSG
+    exit 1
+    ;;
+  *)
+    echo "✗ Could not check the server env before db:prepare:" >&2
+    echo "$env_check" >&2
+    exit 1
+    ;;
+esac
+
+# Bring back any replicated database missing from the volume before db:prepare
+# would create it empty. A no-op whenever the databases are on disk, which is
+# every deploy except the first on a fresh volume.
+echo "Restoring any missing database from Backblaze B2..."
+kamal app exec --roles=web --primary --version "$KAMAL_VERSION" "./bin/rails litestream:restore_missing"
+
+# db:seed as well as db:prepare: prepare only seeds a database it has just
+# created, and db/seeds.rb is idempotent and meant for every deploy, so skills
+# added to db/seeds/skills.yml reach production on the next one.
+echo "Running db:prepare and db:seed against version $KAMAL_VERSION..."
+kamal app exec --roles=web --primary --version "$KAMAL_VERSION" "./bin/rails db:prepare db:seed"

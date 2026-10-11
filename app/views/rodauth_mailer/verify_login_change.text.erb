@@ -1,0 +1,15 @@
+Confirm your new email
+======================
+
+Hi <%= @first_name.presence || "there" %>,
+
+You asked to change the email you sign in to DevCongress Connect with:
+
+  From: <%= @account.email %>
+  To:   <%= @new_email %>
+
+Confirm the change here (the link expires in 24 hours):
+
+<%= @url %>
+
+Didn't ask for this? Ignore this email and nothing changes.

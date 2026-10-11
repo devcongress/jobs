@@ -1,0 +1,45 @@
+<% content_for :title, "Notification settings" %>
+<% slack = current_user.slack_identity.present? %>
+<%# Without Slack sign-in there's nothing to connect, so no Slack column (unless already connected). %>
+<% slack_column = slack || slack_sign_in? %>
+
+<div class="mx-auto max-w-2xl space-y-6">
+  <header>
+    <h1 class="font-display text-3xl text-[var(--pu-text)]">Notification settings</h1>
+    <p class="mt-1 text-[var(--pu-text-muted)]">Choose what we tell you about, and where. Account and security emails, and updates on jobs you post, always come by email to <%= current_user.email %>.</p>
+  </header>
+
+  <% if slack || slack_available? %>
+    <%= render "shared/slack_card", user: current_user %>
+  <% end %>
+
+  <%= form_with url: notification_settings_path, method: :patch, class: "dc-card" do |form| %>
+    <div class="pu-card-body space-y-5">
+      <%= hidden_field_tag "notification_settings[email][]", "", id: nil %>
+      <%= hidden_field_tag "notification_settings[slack][]", "", id: nil if slack_column %>
+      <div class="grid <%= slack_column ? "grid-cols-[1fr_auto_auto]" : "grid-cols-[1fr_auto]" %> items-start gap-x-6 gap-y-5">
+        <span></span>
+        <span class="text-xs font-semibold uppercase tracking-wide text-[var(--pu-text-subtle)]">Email</span>
+        <% if slack_column %>
+          <span class="text-xs font-semibold uppercase tracking-wide text-[var(--pu-text-subtle)]">Slack</span>
+        <% end %>
+        <% NotificationOptOut::CATEGORIES.each do |key, category| %>
+          <span>
+            <span class="block font-semibold text-[var(--pu-text)]"><%= category[:label] %></span>
+            <span class="block text-sm text-[var(--pu-text-muted)]"><%= category[:description] %></span>
+          </span>
+          <%= check_box_tag "notification_settings[email][]", key, current_user.wants_notification?(key, via: :email),
+                id: "notification_email_#{key}", class: "mt-1 h-4 w-4 accent-primary-600", "aria-label": "#{category[:label]} by email" %>
+          <% if slack_column %>
+            <%= check_box_tag "notification_settings[slack][]", key, slack && current_user.wants_notification?(key, via: :slack),
+                  id: "notification_slack_#{key}", disabled: !slack, class: "mt-1 h-4 w-4 accent-primary-600 disabled:opacity-40", "aria-label": "#{category[:label]} on Slack" %>
+          <% end %>
+        <% end %>
+      </div>
+      <% if slack_column && !slack %>
+        <p class="text-sm text-[var(--pu-text-muted)]">Connect Slack first to get these as DMs.</p>
+      <% end %>
+      <%= form.submit "Save", class: "pu-btn pu-btn-md pu-btn-primary" %>
+    </div>
+  <% end %>
+</div>

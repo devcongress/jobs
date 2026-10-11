@@ -1,0 +1,18 @@
+<% content_for :preheader, "#{@profile.name} applied through DevCongress Connect." %>
+<%= email_heading "New applicant" %>
+<%= email_paragraph do %>
+  <strong><%= @profile.name %></strong> applied for <strong><%= @job.title %></strong>.
+<% end %>
+<%= email_panel do %>
+  <%= email_panel_title @profile.name, [@profile.headline.presence, @profile.location.presence].compact.join(" · ") %>
+  <% if @application.cover_note.present? %>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid #d9d4c5;font-size:15px;">
+      <%= simple_format truncate(@application.cover_note, length: 600), {style: "margin:0 0 8px;"}, wrapper_tag: "div" %>
+    </div>
+  <% end %>
+<% end %>
+<%= email_button "Review the application", @application_url %>
+<%= email_paragraph do %>
+  Or see their <%= email_link "full profile", @profile_url %>. Move them along from the application page and they'll get an update.
+<% end %>
+<% content_for :footer_note, @company.personal? ? "You're getting this because you posted on DevCongress Connect." : "You're getting this because you're a member of #{@company.display_name} on DevCongress Connect." %>

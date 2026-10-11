@@ -1,0 +1,45 @@
+<% signed_in = current_user.present? %>
+<% support_url = "https://paystack.shop/pay/devcongress-meetup" %>
+<% links = [["Developers", developers_directory_path], ["Projects", public_projects_path], ["Jobs & gigs", public_jobs_path]] %>
+<header class="dc-navbar" data-controller="site-menu" data-action="keydown@document->site-menu#closeOnEscape">
+  <div class="dc-container dc-navbar-inner">
+    <a href="<%= root_path %>" class="flex shrink-0 items-center gap-2.5" aria-label="DevCongress Connect home">
+      <%= image_tag "brand/devcongress-wordmark.png", alt: "dev:congress{};", class: "h-8 w-auto sm:h-10" %>
+      <span class="rounded-full border-2 border-[#111] bg-white px-2.5 py-0.5 text-xs font-bold uppercase tracking-[0.06em]">Connect</span>
+    </a>
+    <nav class="dc-nav-links" aria-label="Primary">
+      <% links.each do |label, path| %>
+        <%= link_to label, path, class: "dc-nav-link", aria: {current: (current_page?(path) ? "page" : nil)} %>
+      <% end %>
+    </nav>
+    <div class="dc-nav-actions">
+      <% unless signed_in %><%= link_to "Log in", rodauth(:user).login_path, class: "dc-nav-link mr-2" %><% end %>
+      <%= link_to "Support us", support_url, target: "_blank", rel: "noopener noreferrer", class: "dc-btn dc-btn-outline dc-btn-sm" %>
+      <% if signed_in %>
+        <%= link_to "Dashboard", "/dashboard", class: "dc-btn dc-btn-primary dc-btn-sm" %>
+      <% else %>
+        <%= link_to "Join Connect", rodauth(:user).create_account_path, class: "dc-btn dc-btn-primary dc-btn-sm" %>
+      <% end %>
+    </div>
+    <button type="button" class="dc-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-mobile-menu"
+            data-site-menu-target="button" data-action="site-menu#toggle">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="dc-mobile-menu" id="site-mobile-menu" aria-hidden="true" data-site-menu-target="menu">
+    <nav aria-label="Primary">
+      <% links.each do |label, path| %>
+        <%= link_to label, path, data: {action: "site-menu#close"} %>
+      <% end %>
+    </nav>
+    <div class="dc-mobile-actions">
+      <%= link_to "Support us", support_url, target: "_blank", rel: "noopener noreferrer", class: "dc-btn dc-btn-outline" %>
+      <% if signed_in %>
+        <%= link_to "Dashboard", "/dashboard", class: "dc-btn dc-btn-primary" %>
+      <% else %>
+        <%= link_to "Log in", rodauth(:user).login_path, class: "dc-btn dc-btn-white" %>
+        <%= link_to "Join Connect", rodauth(:user).create_account_path, class: "dc-btn dc-btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</header>

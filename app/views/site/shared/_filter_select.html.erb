@@ -1,0 +1,7 @@
+<label class="block">
+  <span class="dc-label"><%= label %></span>
+  <select name="<%= name %>" class="dc-input" onchange="this.form.requestSubmit()">
+    <option value=""><%= all %></option>
+    <%= options_for_select(choices, params[name]) %>
+  </select>
+</label>

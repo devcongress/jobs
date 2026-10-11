@@ -1,3 +1,5 @@
 class ApplicationRecord < ActiveRecord::Base
-  self.abstract_class = true
+  include Plutonium::Resource::Record
+
+  primary_abstract_class
 end

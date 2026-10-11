@@ -1,0 +1,7 @@
+<%= email_panel do %>
+  <%= email_panel_title job.title, [job.poster_name, job.type_label, job.location.presence].compact.join(" · ") %>
+  <% details = [job.pay, job.timing].compact %>
+  <% if details.any? %>
+    <div style="margin-top:6px;font-size:14px;"><%= details.join(" · ") %></div>
+  <% end %>
+<% end %>

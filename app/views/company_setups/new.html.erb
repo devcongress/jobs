@@ -1,0 +1,9 @@
+<% content_for :title, "Set up a company" %>
+
+<div class="space-y-1">
+  <h1 class="font-display text-3xl text-[var(--pu-text)]">Set up a company</h1>
+  <p class="text-sm text-[var(--pu-text-muted)]">You'll be its owner and can invite recruiters. Your developer profile stays as it is.</p>
+</div>
+
+<%= render Forms::CompanySetupForm.new(@company, action: company_setup_path, method: :post,
+      submit_label: "Create company", cancel_url: home_dashboard_path) %>

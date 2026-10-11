@@ -1,0 +1,14 @@
+<% content_for :preheader, "Confirm this address to start signing in with it." %>
+<%= email_heading "Confirm your new email" %>
+<%= render "greeting" %>
+<%= email_paragraph "You asked to change the email you sign in to DevCongress Connect with:" %>
+<%= email_panel do %>
+  <div style="font-size:14px;color:<%= EmailHelper::MUTED %>;">From</div>
+  <div style="margin-bottom:10px;font-weight:600;"><%= @account.email %></div>
+  <div style="font-size:14px;color:<%= EmailHelper::MUTED %>;">To</div>
+  <div style="font-weight:600;"><%= @new_email %></div>
+<% end %>
+<%= email_button "Confirm new email", @url %>
+<%= email_muted "Until you confirm, keep signing in with your current email. The link expires in 24 hours." %>
+<%= email_link_fallback @url %>
+<% content_for :footer_note, "Didn't ask for this? Ignore this email and nothing changes." %>

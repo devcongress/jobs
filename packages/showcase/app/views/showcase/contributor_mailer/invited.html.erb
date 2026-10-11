@@ -1,0 +1,11 @@
+<% content_for :preheader, "Confirm it and the project shows on your profile." %>
+<%= email_heading "You've been credited on a project" %>
+<%= email_paragraph do %>
+  <%= email_link @owner.name, @owner_url %> added you to <strong><%= @project.title %></strong><%= " as #{@contributor.role}" if @contributor.role.present? %>.
+<% end %>
+<%= email_panel do %>
+  <%= email_panel_title @project.title, @project.summary %>
+<% end %>
+<%= email_paragraph "Confirm it if you worked on it, and the project will show on your profile and list you as a contributor. If you didn't, decline it and you'll be removed." %>
+<%= email_button "Confirm or decline", @confirm_url %>
+<% content_for :footer_note, "You're getting this because you have a developer profile on DevCongress Connect." %>

@@ -1,0 +1,11 @@
+<%= email_heading title %>
+<%= render "greeting" %>
+<%= email_paragraph do %>
+  The password for <strong><%= @account.email %></strong> on <%= @product_name %> was <%= action %> on <%= Time.current.utc.strftime("%-d %B %Y at %H:%M UTC") %>.
+<% end %>
+<%= email_paragraph "If this was you, there's nothing else to do." %>
+<%= email_panel do %>
+  <strong>Wasn't you?</strong> Reset your password now so nobody else can use your account.
+<% end %>
+<%= email_button "Reset my password", @reset_request_url %>
+<% content_for :footer_note, "We send this email whenever your password changes, to keep your account safe." %>

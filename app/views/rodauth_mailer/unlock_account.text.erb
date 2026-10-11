@@ -1,0 +1,10 @@
+Unlock your account
+===================
+
+Hi <%= @first_name.presence || "there" %>,
+
+Your <%= @product_name %> account (<%= @account.email %>) was locked after too many failed sign-in attempts. If you asked to unlock it, visit this link (it expires in 24 hours):
+
+<%= @url %>
+
+Didn't try to sign in? Someone may be guessing your password. Leave the account locked and tell the other admins.

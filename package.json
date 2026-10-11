@@ -1,5 +1,32 @@
 {
-  "name": "dcjobs",
+  "name": "app",
   "private": true,
-  "dependencies": {}
+  "packageManager": "yarn@4.18.1",
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "postcss ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.23",
+    "@radioactive-labs/plutonium": "^0.67.0",
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/typography": "^0.5.20",
+    "cssnano": "^9.1.2",
+    "easymde": "2.18.0",
+    "flatpickr": "4.6.13",
+    "flowbite-typography": "^1.0.5",
+    "intl-tel-input": "24.8.1",
+    "marked": "^18.0.14",
+    "postcss": "^8.5.28",
+    "postcss-cli": "^12.0.0",
+    "postcss-import": "^17.0.0",
+    "slim-select": "2.10.0",
+    "tailwindcss": "^4.3.3"
+  }
 }

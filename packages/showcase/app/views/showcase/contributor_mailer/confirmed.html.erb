@@ -1,0 +1,7 @@
+<% content_for :preheader, "They now show as a contributor." %>
+<%= email_heading "Credit confirmed" %>
+<%= email_paragraph do %>
+  <strong><%= @profile.name %></strong> confirmed they worked on <strong><%= @project.title %></strong>. They're now listed on the project's page, and it shows on their profile.
+<% end %>
+<%= email_button "View the project", @project_url %>
+<% content_for :footer_note, "You're getting this because you own this project on DevCongress Connect." %>

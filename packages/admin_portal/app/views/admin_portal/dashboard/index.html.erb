@@ -1,0 +1,79 @@
+<% stats = [
+     ["Users", User.count, User],
+     ["Developer profiles", Developers::Profile.count, Developers::Profile],
+     ["Companies", Company.count, Company],
+     ["Skills", Skill.count, Skill]
+   ] %>
+<% content_for :title, "Admin" %>
+
+<div class="mx-auto max-w-6xl space-y-6">
+  <header>
+    <h1 class="font-display text-3xl text-[var(--pu-text)]">Overview</h1>
+    <p class="mt-1 text-[var(--pu-text-muted)]">Everything on DevCongress Connect at a glance.</p>
+  </header>
+
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <% stats.each do |label, count, resource| %>
+      <a href="<%= resource_url_for(resource, parent: nil) %>" class="pu-card block transition-shadow hover:shadow-[var(--pu-shadow-lg)]">
+        <div class="pu-card-body">
+          <p class="text-sm text-[var(--pu-text-muted)]"><%= label %></p>
+          <p class="font-display text-4xl tabular-nums text-primary-600 dark:text-primary-400"><%= count %></p>
+        </div>
+      </a>
+    <% end %>
+  </div>
+
+  <% pending = Hiring::JobPost.pending_review.includes(:company).order(:published_at) %>
+  <section class="dc-card">
+    <div class="pu-card-body space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="font-semibold text-[var(--pu-text)]">Jobs waiting for review</h2>
+        <span class="pu-badge <%= pending.any? ? "pu-badge-warning" : "pu-badge-neutral" %>"><%= pending.size %></span>
+      </div>
+      <% if pending.any? %>
+        <p class="text-sm text-[var(--pu-text-muted)]">First jobs from new companies. Approving one makes it live and lets that company publish without review.</p>
+        <ul class="divide-y divide-[var(--pu-border-muted)]">
+          <% pending.each do |job| %>
+            <li>
+              <a href="<%= resource_url_for(job, parent: nil) %>" class="flex items-center gap-3 py-3 hover:bg-[var(--pu-surface-alt)]">
+                <%= render InitialsAvatar.new(name: job.poster_name, seed: job.company.slug, size: :sm, shape: :square) %>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-sm font-medium text-[var(--pu-text)]"><%= job.title %></span>
+                  <span class="block truncate text-xs text-[var(--pu-text-muted)]"><%= job.poster_name %> · submitted <%= time_ago_in_words(job.published_at) %> ago</span>
+                </span>
+                <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">Review →</span>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-[var(--pu-text-muted)]">Nothing to review.</p>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="pu-card">
+    <div class="pu-card-body space-y-4">
+      <h2 class="font-semibold text-[var(--pu-text)]">Newest developer profiles</h2>
+      <% recent = Developers::Profile.order(created_at: :desc).limit(8) %>
+      <% if recent.any? %>
+        <ul class="divide-y divide-[var(--pu-border-muted)]">
+          <% recent.each do |profile| %>
+            <li>
+              <a href="<%= resource_url_for(profile, parent: nil) %>" class="flex items-center gap-3 py-3 hover:bg-[var(--pu-surface-alt)]">
+                <%= render InitialsAvatar.new(name: profile.name, seed: profile.handle, size: :sm) %>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-sm font-medium text-[var(--pu-text)]"><%= profile.name %></span>
+                  <span class="block truncate text-xs text-[var(--pu-text-muted)]">@<%= profile.handle %><%= " · #{profile.location}" if profile.location.present? %></span>
+                </span>
+                <span class="text-xs text-[var(--pu-text-subtle)]"><%= time_ago_in_words(profile.created_at) %> ago</span>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-[var(--pu-text-muted)]">No developer profiles yet.</p>
+      <% end %>
+    </div>
+  </section>
+</div>

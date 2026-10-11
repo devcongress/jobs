@@ -1,0 +1,9 @@
+<% messages = flash.to_hash.slice("notice", "alert").compact_blank %>
+<% if messages.any? %>
+  <div class="dc-container pt-4" role="status" aria-live="polite">
+    <% messages.each do |type, message| %>
+      <p class="<%= class_names("rounded-lg border-2 border-[#111] px-4 py-2 text-sm font-medium",
+           "bg-[#dcfce7] text-[#166534]" => type == "notice", "bg-[#fde2e7] text-[#9f1239]" => type == "alert") %>"><%= message %></p>
+    <% end %>
+  </div>
+<% end %>

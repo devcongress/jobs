@@ -1,61 +1,108 @@
-source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+source "https://rubygems.org"
 
-ruby '2.7.1'
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 8.1.4"
 
-gem 'puma'
+gem "dotenv", groups: %i[development test]
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft"
+# Use sqlite3 as the database for Active Record
+gem "sqlite3", ">= 2.1"
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", ">= 5.0"
+# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "jsbundling-rails"
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+gem "cssbundling-rails"
+# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+gem "jbuilder"
 
-gem 'rails', '~> 5.2.2'
-gem 'sass-rails', '~> 5.0'
-gem 'sprockets', '~> 3.7', '>= 3.7.2'
-gem 'uglifier', '>= 1.3.0'
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
 
-gem 'coffee-rails', '~> 4.2'
-gem 'turbolinks', '~> 5'
-gem 'jbuilder', '~> 2.5'
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[windows jruby]
 
-gem 'bootsnap', '~> 1.3', require: false
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "solid_cache"
+gem "solid_queue"
+gem "solid_cable"
 
-gem 'devise', '~> 4.4', '>= 4.4.3'
-gem 'sendgrid', '~> 1.2', '>= 1.2.4'
-gem 'twitter', '~> 6.2'
-gem 'oauth'
-gem 'omniauth-google-oauth2'
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
 
+# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+gem "kamal", require: false
 
-gem 'pg'
-gem 'trix'
-gem "sentry-raven"
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
 
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'factory_bot_rails'
-  gem 'dotenv-rails'
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+
+  # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
+  gem "bundler-audit", require: false
+
+  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  gem "brakeman", require: false
 end
 
 group :development do
-  gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'annotate'
-  gem "figaro"
+  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "web-console"
 end
 
 group :test do
-  gem 'capybara', '>= 2.15', '< 4.0'
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
-  gem 'faker'
-  gem 'shoulda-matchers'
-  gem 'minitest-matchers_vaccine'
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "capybara"
+  gem "selenium-webdriver"
 end
 
-group :production do
-  gem 'rails_12factor'
-  gem 'skylight'
-end
+gem "plutonium"
 
+gem "annotated", "~> 0.1.1", group: :development
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "standard", ">= 1.35.1", group: :development
+
+gem "letter_opener", "~> 1.10", group: :development
+
+gem "actual_db_schema", "~> 0.9.2", groups: [:development, :test]
+
+gem "mission_control-jobs", "~> 1.3"
+
+gem "solid_errors", "~> 0.7.0"
+
+gem "litestream", "~> 0.14.0"
+
+# Outgoing mail in production [https://github.com/resend/resend-ruby]
+gem "resend", "~> 1.3"
+
+gem "rails_pulse", "~> 0.4.1"
+
+gem "bcrypt", "~> 3.1"
+
+gem "sequel-activerecord_connection", "~> 2.0"
+
+gem "tilt", "~> 2.9"
+
+gem "rodauth-rails", "~> 2.2"
+
+gem "rotp", "~> 6.3"
+
+gem "rqrcode", "~> 3.2"
+
+gem "active_shrine", "~> 0.7.2"
+
+gem "rodauth-omniauth", "~> 0.6.2"
+gem "omniauth-google-oauth2", "~> 1.2"
+gem "omniauth-github", "~> 2.0"
+
+gem "countries", "~> 8.1"

@@ -1,0 +1,326 @@
+<% profile = current_scoped_entity %>
+<% items = profile.completeness_items.sort_by { |item| item.done ? 1 : 0 } %>
+<% percent = profile.completeness_percent %>
+<% experiences = profile.experiences.limit(4) %>
+<% profile_skills = profile.profile_skills.includes(:skill).sort_by { |ps| ps.skill.name } %>
+<% edit_profile_url = resource_url_for(Developers::Profile, parent: nil, action: :edit) %>
+<% new_experience_url = resource_url_for(Developers::Experience, parent: nil, action: :new) %>
+<% new_skill_url = resource_url_for(Developers::ProfileSkill, parent: nil, action: :new) %>
+<% item_urls = {skills: new_skill_url, experience: new_experience_url} %>
+<% my_applications = profile.job_applications.includes(job_post: :company).order(created_at: :desc).limit(4) %>
+<% latest_jobs = Hiring::JobPost.active.includes(:company).newest.limit(4) %>
+<% projects = Showcase::Project.featuring(profile).includes(:skills).newest.limit(4) %>
+<% pending_credits = profile.project_contributions.pending.includes(project: :owner).to_a %>
+<% network_url = developers_profile_scoped_network_path(developers_profile_scoped: profile) %>
+<% visible = Developers::Profile.visible_to(current_user) %>
+<% network_counts = {
+     "connections" => profile.connections.merge(visible).count,
+     "followers" => profile.followers.merge(visible).count,
+     "following" => profile.following.merge(visible).count
+   } %>
+<% follow_backs = profile.unanswered_followers.merge(visible).limit(3).to_a %>
+<% content_for :title, profile.name %>
+
+<div class="mx-auto max-w-6xl space-y-6">
+  <%= render "visibility_banner", profile:, edit_profile_url: %>
+
+  <section class="dc-card overflow-hidden">
+    <div class="dc-highlight flex h-24 items-start justify-end border-b-2 border-[var(--dc-ink)] px-5 py-3 font-mono text-sm font-semibold"><%= dev_mark("profile") %></div>
+    <div class="px-6 pb-6">
+      <div class="-mt-10 flex items-end justify-between gap-4">
+        <%= render InitialsAvatar.new(name: profile.name, seed: profile.handle, size: :xl, class: "ring-4 ring-[var(--pu-card-bg)]") %>
+        <div class="flex flex-wrap justify-end gap-2">
+          <a href="<%= main_app.developer_page_path(profile.handle) %>" class="pu-btn pu-btn-md pu-btn-outline">
+            <%= render Phlex::TablerIcons::ExternalLink.new(class: "mr-1 h-4 w-4") %> View profile page
+          </a>
+          <%= button_to post_as_yourself_path, method: :post, class: "pu-btn pu-btn-md pu-btn-outline" do %>
+            <%= render Phlex::TablerIcons::Send.new(class: "mr-1 h-4 w-4") %> Post a gig
+          <% end %>
+          <a href="<%= edit_profile_url %>" class="pu-btn pu-btn-md pu-btn-primary">
+            <%= render Phlex::TablerIcons::Pencil.new(class: "mr-1 h-4 w-4") %> Edit profile
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-4 space-y-2">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h1 class="font-display text-3xl text-[var(--pu-text)]"><%= profile.name %></h1>
+          <div class="flex flex-wrap gap-2">
+            <%= render "shared/availability_badge", profile: %>
+            <% if profile.remote_ok? %><span class="pu-badge pu-badge-neutral">Remote OK</span><% end %>
+            <% if profile.visible_to_hidden? %><span class="pu-badge pu-badge-warning">Hidden</span>
+            <% elsif profile.visible_to_members? %><span class="pu-badge pu-badge-neutral">Members only</span>
+            <% else %><span class="pu-badge pu-badge-info">Public</span><% end %>
+          </div>
+        </div>
+        <p class="text-[var(--pu-text-muted)]">
+          @<%= profile.handle %><%= " · #{profile.headline}" if profile.headline.present? %>
+        </p>
+        <% if profile.location.present? %>
+          <p class="flex items-center gap-1 text-sm text-[var(--pu-text-muted)]">
+            <%= render Phlex::TablerIcons::MapPin.new(class: "h-4 w-4") %> <%= profile.location %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div class="space-y-6 lg:col-span-2">
+      <section class="pu-card">
+        <div class="pu-card-body space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-[var(--pu-text)]">Experience</h2>
+            <div class="flex gap-2">
+              <% if experiences.any? %>
+                <a href="<%= resource_url_for(Developers::Experience, parent: nil) %>" class="pu-btn pu-btn-sm pu-btn-ghost">View all</a>
+              <% end %>
+              <a href="<%= new_experience_url %>" class="pu-btn pu-btn-sm pu-btn-outline">
+                <%= render Phlex::TablerIcons::Plus.new(class: "mr-1 h-4 w-4") %> Add
+              </a>
+            </div>
+          </div>
+
+          <% if experiences.any? %>
+            <ol class="relative ml-2 space-y-5 border-l border-[var(--pu-border)]">
+              <% experiences.each do |experience| %>
+                <li class="ml-5">
+                  <span class="absolute -left-[5px] mt-1.5 h-2.5 w-2.5 rounded-full <%= experience.current? ? "bg-primary-600" : "bg-[var(--pu-border-strong)]" %>"></span>
+                  <a href="<%= resource_url_for(experience, parent: nil) %>" class="group block">
+                    <p class="font-medium text-[var(--pu-text)] group-hover:text-primary-600 dark:group-hover:text-primary-400"><%= experience.title %></p>
+                    <p class="text-sm text-[var(--pu-text-muted)]"><%= experience.company_name %><%= " · #{experience.location}" if experience.location.present? %></p>
+                    <p class="text-xs text-[var(--pu-text-subtle)]">
+                      <%= experience.started_on.strftime("%b %Y") %> – <%= experience.ended_on&.strftime("%b %Y") || "Present" %>
+                    </p>
+                  </a>
+                </li>
+              <% end %>
+            </ol>
+          <% else %>
+            <p class="text-sm text-[var(--pu-text-muted)]">Add the roles you've held so companies can see what you've done.</p>
+          <% end %>
+        </div>
+      </section>
+
+      <section class="pu-card">
+        <div class="pu-card-body space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-[var(--pu-text)]">Skills</h2>
+            <div class="flex gap-2">
+              <% if profile_skills.any? %>
+                <a href="<%= resource_url_for(Developers::ProfileSkill, parent: nil) %>" class="pu-btn pu-btn-sm pu-btn-ghost">Manage</a>
+              <% end %>
+              <a href="<%= new_skill_url %>" class="pu-btn pu-btn-sm pu-btn-outline">
+                <%= render Phlex::TablerIcons::Plus.new(class: "mr-1 h-4 w-4") %> Add
+              </a>
+            </div>
+          </div>
+
+          <% if profile_skills.any? %>
+            <ul class="flex flex-wrap gap-2">
+              <% profile_skills.each do |profile_skill| %>
+                <li class="inline-flex items-center gap-1.5 rounded-full border border-[var(--pu-border)] bg-[var(--pu-surface-alt)] px-3 py-1 text-sm">
+                  <span class="font-medium text-[var(--pu-text)]"><%= profile_skill.skill.name %></span>
+                  <% details = [profile_skill.level&.humanize, (pluralize(profile_skill.years, "yr") if profile_skill.years)].compact %>
+                  <% if details.any? %><span class="text-xs text-[var(--pu-text-muted)]"><%= details.join(" · ") %></span><% end %>
+                  <% if profile_skill.endorsements_count.positive? %>
+                    <span class="inline-flex items-center gap-0.5 text-xs font-semibold text-primary-600 dark:text-primary-400" title="<%= pluralize(profile_skill.endorsements_count, "endorsement") %>">
+                      <%= render Phlex::TablerIcons::ThumbUp.new(class: "h-3.5 w-3.5") %><%= profile_skill.endorsements_count %>
+                    </span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm text-[var(--pu-text-muted)]">Add the languages, frameworks and tools you work with.</p>
+          <% end %>
+        </div>
+      </section>
+
+      <section class="pu-card">
+        <div class="pu-card-body space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-[var(--pu-text)]">Projects</h2>
+            <div class="flex gap-2">
+              <% if projects.any? %>
+                <a href="<%= resource_url_for(Showcase::Project, parent: nil) %>" class="pu-btn pu-btn-sm pu-btn-ghost">Manage</a>
+              <% end %>
+              <a href="<%= resource_url_for(Showcase::Project, parent: nil, action: :new) %>" class="pu-btn pu-btn-sm pu-btn-outline">
+                <%= render Phlex::TablerIcons::Plus.new(class: "mr-1 h-4 w-4") %> Add
+              </a>
+            </div>
+          </div>
+          <% if projects.any? %>
+            <ul class="divide-y divide-[var(--pu-border)]">
+              <% projects.each do |project| %>
+                <li class="py-3 first:pt-0 last:pb-0">
+                  <a href="<%= project.owner_id == profile.id ? resource_url_for(project, parent: nil) : main_app.public_project_path(project.slug) %>" class="group block">
+                    <p class="font-medium text-[var(--pu-text)] group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                      <%= project.title %>
+                      <% unless project.owner_id == profile.id %><span class="pu-badge pu-badge-neutral ml-1">Contributor</span><% end %>
+                    </p>
+                    <p class="truncate text-sm text-[var(--pu-text-muted)]"><%= [project.summary.presence, project.skills.map(&:name).sort.first(3).join(", ").presence].compact.join(" · ") %></p>
+                  </a>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm text-[var(--pu-text-muted)]">Show what you've built, and credit the people you built it with.</p>
+          <% end %>
+        </div>
+      </section>
+    </div>
+
+    <aside class="space-y-6">
+      <% if pending_credits.any? %>
+        <section class="pu-card border-warning-500">
+          <div class="pu-card-body space-y-3">
+            <h2 class="font-semibold text-[var(--pu-text)]">Confirm your credits</h2>
+            <p class="text-sm text-[var(--pu-text-muted)]">These projects list you as a contributor. They'll show on your profile once you confirm.</p>
+            <ul class="space-y-2">
+              <% pending_credits.first(3).each do |credit| %>
+                <li>
+                  <a href="<%= resource_url_for(credit, parent: nil) %>" class="flex items-center justify-between gap-3 rounded-[var(--pu-radius-md)] px-2 py-1.5 text-sm hover:bg-[var(--pu-surface-alt)]">
+                    <span class="min-w-0">
+                      <span class="block truncate font-medium text-[var(--pu-text)]"><%= credit.project.title %></span>
+                      <span class="block truncate text-xs text-[var(--pu-text-muted)]">from <%= credit.project.owner.name %><%= " · #{credit.role}" if credit.role.present? %></span>
+                    </span>
+                    <span class="pu-badge pu-badge-warning shrink-0">Review</span>
+                  </a>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </section>
+      <% end %>
+
+      <section class="pu-card">
+        <div class="pu-card-body space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-[var(--pu-text)]">Network</h2>
+            <a href="<%= network_url %>" class="pu-btn pu-btn-sm pu-btn-ghost">Open</a>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center">
+            <% network_counts.each do |tab, count| %>
+              <a href="<%= developers_profile_scoped_network_path(developers_profile_scoped: profile, tab:) %>" class="rounded-[var(--pu-radius-md)] border border-[var(--pu-border)] px-2 py-3 hover:bg-[var(--pu-surface-alt)]">
+                <span class="block text-2xl font-semibold text-[var(--pu-text)]"><%= count %></span>
+                <span class="block text-xs text-[var(--pu-text-muted)]"><%= tab.humanize %></span>
+              </a>
+            <% end %>
+          </div>
+          <% if follow_backs.any? %>
+            <div class="space-y-2">
+              <p class="text-xs font-semibold uppercase tracking-wide text-[var(--pu-text-subtle)]">Follow back to connect</p>
+              <% follow_backs.each do |person| %>
+                <div class="flex items-center gap-3">
+                  <%= render InitialsAvatar.new(name: person.name, seed: person.handle, size: :sm) %>
+                  <a href="<%= main_app.developer_page_path(handle: person.handle) %>" class="min-w-0 flex-1 truncate text-sm font-medium text-[var(--pu-text)] hover:text-primary-600"><%= person.name %></a>
+                  <%= render "shared/follow_button", profile: person, following: false, followed_by: true, variant: :portal, size: :sm %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <a href="<%= developers_profile_scoped_network_path(developers_profile_scoped: profile, tab: "suggestions") %>" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-400">See people you may know →</a>
+          <% end %>
+        </div>
+      </section>
+      <section class="pu-card">
+        <div class="pu-card-body space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-[var(--pu-text)]">Latest jobs</h2>
+            <a href="<%= resource_url_for(Hiring::JobPost, parent: nil) %>" class="pu-btn pu-btn-sm pu-btn-ghost">Browse</a>
+          </div>
+          <% if latest_jobs.any? %>
+            <ul class="space-y-3">
+              <% latest_jobs.each do |job| %>
+                <li>
+                  <a href="<%= resource_url_for(job, parent: nil) %>" class="group flex items-center gap-3">
+                    <%= render InitialsAvatar.new(name: job.poster_name, seed: job.company.slug, size: :sm, shape: :square) %>
+                    <span class="min-w-0">
+                      <span class="block truncate text-sm font-medium text-[var(--pu-text)] group-hover:text-primary-600 dark:group-hover:text-primary-400"><%= job.title %></span>
+                      <span class="block truncate text-xs text-[var(--pu-text-muted)]"><%= [job.poster_name, job.location.presence].compact.join(" · ") %></span>
+                    </span>
+                  </a>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm text-[var(--pu-text-muted)]">No open jobs right now.</p>
+          <% end %>
+        </div>
+      </section>
+
+      <% if my_applications.any? %>
+        <section class="pu-card">
+          <div class="pu-card-body space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="font-semibold text-[var(--pu-text)]">Your applications</h2>
+              <a href="<%= resource_url_for(Hiring::JobApplication, parent: nil) %>" class="pu-btn pu-btn-sm pu-btn-ghost">View all</a>
+            </div>
+            <ul class="space-y-3">
+              <% my_applications.each do |application| %>
+                <li class="flex items-center gap-3">
+                  <span class="min-w-0 flex-1">
+                    <span class="block truncate text-sm font-medium text-[var(--pu-text)]"><%= application.job_post.title %></span>
+                    <span class="block truncate text-xs text-[var(--pu-text-muted)]"><%= application.job_post.company.display_name %></span>
+                  </span>
+                  <%= render "shared/status_badge", status: application.status %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </section>
+      <% end %>
+
+      <section class="pu-card">
+        <div class="pu-card-body space-y-4">
+          <div>
+            <h2 class="font-semibold text-[var(--pu-text)]"><%= percent == 100 ? "Your profile is complete" : "Complete your profile" %></h2>
+            <p class="text-sm text-[var(--pu-text-muted)]">Complete profiles show up higher in the directory.</p>
+          </div>
+          <%= render "shared/progress", percent: %>
+          <ul class="space-y-1">
+            <% items.each do |item| %>
+              <li>
+                <a href="<%= item_urls.fetch(item.key, edit_profile_url) %>" class="flex items-center gap-2 rounded-[var(--pu-radius-md)] px-2 py-1.5 text-sm hover:bg-[var(--pu-surface-alt)]">
+                  <% if item.done %>
+                    <%= render Phlex::TablerIcons::CircleCheck.new(class: "h-5 w-5 shrink-0 text-success-500") %>
+                    <span class="text-[var(--pu-text-muted)] line-through"><%= item.label %></span>
+                  <% else %>
+                    <%= render Phlex::TablerIcons::CircleDashed.new(class: "h-5 w-5 shrink-0 text-[var(--pu-text-subtle)]") %>
+                    <span class="text-[var(--pu-text)]"><%= item.label %></span>
+                  <% end %>
+                </a>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </section>
+
+      <section class="pu-card">
+        <div class="pu-card-body space-y-3">
+          <h2 class="font-semibold text-[var(--pu-text)]">Contact & links</h2>
+          <% links = [
+               [Phlex::TablerIcons::Mail, profile.contact_email, profile.contact_email.presence && "mailto:#{profile.contact_email}"],
+               [Phlex::TablerIcons::BrandGithub, profile.github_url, profile.github_url],
+               [Phlex::TablerIcons::BrandLinkedin, profile.linkedin_url, profile.linkedin_url],
+               [Phlex::TablerIcons::World, profile.website_url, profile.website_url]
+             ].select { |_, label, _| label.present? } %>
+          <% if links.any? %>
+            <ul class="space-y-2 text-sm">
+              <% links.each do |icon, label, href| %>
+                <li class="flex items-center gap-2 min-w-0">
+                  <%= render icon.new(class: "h-4 w-4 shrink-0 text-[var(--pu-text-subtle)]") %>
+                  <a href="<%= href %>" class="truncate text-primary-600 hover:underline dark:text-primary-400" rel="noopener" target="_blank"><%= label.sub(%r{\Ahttps?://}, "") %></a>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm text-[var(--pu-text-muted)]">No contact details yet.</p>
+          <% end %>
+          <p class="text-xs text-[var(--pu-text-subtle)]">Contact details visible to: <%= profile.contact_visibility.humanize.downcase %></p>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>

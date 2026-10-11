@@ -1,0 +1,31 @@
+<%# Connect / connected state for DevCongress Slack. Locals: user. %>
+<% identity = user.slack_identity %>
+<div class="dc-card">
+  <div class="pu-card-body flex flex-col gap-4 sm:flex-row sm:items-center">
+    <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-600 dark:bg-primary-900/30">
+      <%= render Phlex::TablerIcons::BrandSlack.new(class: "h-6 w-6") %>
+    </span>
+    <div class="min-w-0 flex-1">
+      <% if identity %>
+        <p class="font-semibold text-[var(--pu-text)]">Connected as <%= identity.info["name"].presence || "your Slack account" %></p>
+        <p class="text-sm text-[var(--pu-text-muted)]">Notifications you turn on below come as DMs from the DevCongress Connect app.</p>
+      <% else %>
+        <p class="font-semibold text-[var(--pu-text)]">DevCongress lives on Slack</p>
+        <p class="text-sm text-[var(--pu-text-muted)]">Join the community, then connect your account to get notifications as Slack DMs.</p>
+      <% end %>
+    </div>
+    <div class="flex shrink-0 flex-wrap gap-2">
+      <% if identity %>
+        <%= button_to "Disconnect", PortalPathsHelper.routes.dashboard_portal.slack_connection_path, method: :delete,
+              class: "pu-btn pu-btn-sm pu-btn-outline", form: {data: {turbo_confirm: "Disconnect Slack? Notifications you had on in Slack will come by email."}} %>
+      <% else %>
+        <% if Slack.invite_url %>
+          <%= link_to "Join Slack", Slack.invite_url, target: "_blank", rel: "noopener", class: "pu-btn pu-btn-sm pu-btn-outline" %>
+        <% end %>
+        <% if slack_sign_in? %>
+          <%= button_to "Connect Slack", rodauth(:user).omniauth_request_path(:slack), method: :post, data: {turbo: false}, class: "pu-btn pu-btn-sm pu-btn-primary" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

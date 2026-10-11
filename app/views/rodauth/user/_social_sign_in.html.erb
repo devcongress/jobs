@@ -1,0 +1,24 @@
+<%# "Continue with Google / GitHub / Slack", shown only for providers that have credentials configured. %>
+<% providers = rodauth.omniauth_providers.map(&:to_s) & %w[google github slack] %>
+<% if providers.any? %>
+  <div class="space-y-3">
+    <% providers.each do |provider| %>
+      <%= button_to rodauth.omniauth_request_path(provider), method: :post, data: {turbo: false},
+            class: "pu-btn pu-btn-md pu-btn-outline flex w-full items-center justify-center gap-2" do %>
+        <% case provider %>
+        <% when "google" %>
+          <%= render Phlex::TablerIcons::BrandGoogle.new(class: "h-5 w-5") %> Continue with Google
+        <% when "github" %>
+          <%= render Phlex::TablerIcons::BrandGithub.new(class: "h-5 w-5") %> Continue with GitHub
+        <% when "slack" %>
+          <%= render Phlex::TablerIcons::BrandSlack.new(class: "h-5 w-5") %> Continue with Slack
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="flex items-center gap-3 text-xs uppercase tracking-wide text-[var(--pu-text-subtle)]" role="separator">
+    <span class="h-px flex-1 bg-[var(--pu-border)]"></span>
+    or use your email
+    <span class="h-px flex-1 bg-[var(--pu-border)]"></span>
+  </div>
+<% end %>

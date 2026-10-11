@@ -1,0 +1,11 @@
+A first post needs review
+=========================
+
+<%= @company.display_name %><%= " (posting as an individual)" if @company.personal? %> just published their first <%= @job.kind_noun %>. First posts from new companies and individuals wait for an admin before they go public.
+
+  <%= @job.title %>
+  <%= [@job.poster_name, @job.type_label, @job.location.presence, @job.pay].compact.join(" · ") %>
+
+Review it here: <%= @review_url %>
+
+Approve to make it live for <%= Hiring::JobPost::VALIDITY_PERIOD.inspect %> and trust <%= @company.display_name %>, so their later posts publish straight away. Decline to send it back to drafts with a note.

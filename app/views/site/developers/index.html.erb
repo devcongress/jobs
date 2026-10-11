@@ -1,0 +1,50 @@
+<% content_for :title, "Developers" %>
+<% content_for :description, "Browse developers in the DevCongress community: skills, experience and availability." %>
+<% filtered = params.values_at(:q, :skill, :country, :availability, :remote).any?(&:present?) %>
+
+<section class="border-b-2 border-[#111]">
+  <div class="dc-container py-16 sm:py-20">
+    <p class="dc-eyebrow">The community</p>
+    <h1 class="dc-heading text-[clamp(2.5rem,6vw,4rem)]">Developers</h1>
+    <p class="mt-4 max-w-2xl text-[#555]">
+      <%= current_user ? "Everyone who's chosen to be visible to members or the public." : "Developers who've made their profiles public. Sign in to see members-only profiles too." %>
+    </p>
+
+    <%= form_with url: developers_directory_path, method: :get, class: "mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_auto] lg:items-end", data: {turbo_action: "advance"} do %>
+      <label class="block sm:col-span-2 lg:col-span-1">
+        <span class="dc-label">Search</span>
+        <input type="search" name="q" value="<%= params[:q] %>" placeholder="Name, skill, headline or city" class="dc-input">
+      </label>
+      <%= render "site/shared/filter_select", name: :skill, label: "Skill", all: "Any skill", choices: @skills.map { [_1.name, _1.slug] } %>
+      <%= render "site/shared/filter_select", name: :country, label: "Country", all: "Anywhere", choices: @countries %>
+      <%= render "site/shared/filter_select", name: :availability, label: "Availability", all: "Anyone", choices: [["Open to work", "looking"], ["Open to offers", "open"]] %>
+      <div class="flex items-center gap-4 lg:pb-2">
+        <label class="flex items-center gap-2 text-sm font-medium">
+          <input type="checkbox" name="remote" value="1" <%= "checked" if params[:remote] == "1" %> onchange="this.form.requestSubmit()" class="h-4 w-4 accent-[#e8117f]"> Remote OK
+        </label>
+        <button type="submit" class="dc-btn dc-btn-primary dc-btn-sm">Search</button>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<section class="dc-container py-12">
+  <div class="mb-6 flex items-center justify-between gap-4 text-sm text-[#555]">
+    <p><%= pluralize(@total, "developer") %><%= " match" if filtered %></p>
+    <% if filtered %><%= link_to "Clear filters", developers_directory_path, class: "dc-link" %><% end %>
+  </div>
+
+  <% if @developers.any? %>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <% @developers.each do |developer| %>
+        <%= render "home/developer_card", developer: %>
+      <% end %>
+    </div>
+    <%= render "site/shared/pagination" %>
+  <% else %>
+    <div class="dc-empty p-12">
+      <p class="dc-heading text-3xl">No one matches that yet.</p>
+      <p class="mt-2 text-[#555]">Try fewer filters<%= ", or sign in to see members-only profiles" unless current_user %>.</p>
+    </div>
+  <% end %>
+</section>

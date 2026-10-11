@@ -1,25 +1,83 @@
+# SQLite. Versions 3.8.0 and up are supported.
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem "sqlite3"
+#
 default: &default
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # Plutonium-tuned SQLite pragmas (pu:lite:tune).
+  # Rails 8.1+ already sets WAL, synchronous=NORMAL, foreign_keys,
+  # mmap=128MB and journal_size_limit by default; only deltas are added
+  # there. We intentionally do NOT set SQLite's internal busy pragma —
+  # Rails routes the `timeout:` key to the sqlite3 gem's constant-poll
+  # busy_handler_timeout, which has better tail-latency than SQLite's
+  # backoff.
+  pragmas:
+    cache_size: -64000           # 64 MB page cache (default ~2 MB is too small)
+    temp_store: 2                # MEMORY — sorts/temp indexes stay off disk
+    mmap_size: 536870912         # 512 MB (override the 128 MB default)
+    wal_autocheckpoint: 10000    # checkpoint every ~40 MB of WAL, fewer pauses
+  adapter: sqlite3
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-  username: <%= ENV["POSTGRES_USER"] || ENV["JOBS_DB_USERNAME"] %>
-  password: <%= ENV["POSTGRES_PASSWORD"] || ENV["JOBS_DB_PASSWORD"] %>
-  host:  <%= ENV["POSTGRES_HOST"] || 'localhost' %>
-  port: 5432
+
+rails_pulse: &rails_pulse
+  <<: *default
+  migrations_paths: db/rails_pulse_migrate
+  database: storage/<%= Rails.env %>-rails_pulse.sqlite3
+  schema_dump: false
+
+errors: &errors
+  <<: *default
+  migrations_paths: db/errors_migrate
+  database: storage/<%= Rails.env %>-errors.sqlite3
+
+cable: &cable
+  <<: *default
+  migrations_paths: db/cable_migrate
+  database: storage/<%= Rails.env %>-cable.sqlite3
+
+cache: &cache
+  <<: *default
+  migrations_paths: db/cache_migrate
+  database: storage/<%= Rails.env %>-cache.sqlite3
+
+queue: &queue
+  <<: *default
+  migrations_paths: db/queue_migrate
+  database: storage/<%= Rails.env %>-queue.sqlite3
 
 development:
-  <<: *default
-  database: <%= ENV["POSTGRES_DB"] || 'jobs_development' %>
+  primary:
+    <<: *default
+    database: storage/development.sqlite3
+  queue: *queue
+  cache: *cache
+  cable: *cable
+  errors: *errors
+  rails_pulse: *rails_pulse
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: <%= ENV["POSTGRES_DB"] || 'jobs_test' %>
+  primary:
+    <<: *default
+    database: storage/test.sqlite3
+  queue: *queue
+  cache: *cache
+  cable: *cable
+  errors: *errors
+  rails_pulse: *rails_pulse
 
-# We use Heroku's Postgres service in production.
-# Easier to configure with the $DATABASE_URL env var
-# they set than to build using username, etc.
+# Store production database in the storage/ directory, which by default
+# is mounted as a persistent Docker volume in config/deploy.yml.
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary:
+    <<: *default
+    database: storage/production.sqlite3
+  queue: *queue
+  cache: *cache
+  cable: *cable
+  errors: *errors
+  rails_pulse: *rails_pulse

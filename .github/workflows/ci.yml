@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ master ]
+
+jobs:
+  scan_ruby:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+      
+      - name: Scan for known security vulnerabilities in gems used
+        run: bin/bundler-audit
+      
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Lint code for consistent style
+        run: bundle exec standardrb --format github
+
+  test:
+    runs-on: ubuntu-latest
+
+    # services:
+    #  redis:
+    #    image: valkey/valkey:8
+    #    ports:
+    #      - 6379:6379
+    #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libvips node-gyp
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      # package.json pins yarn 4 via packageManager; Corepack provides it.
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: yarn
+
+      - name: Install JavaScript dependencies
+        run: yarn install --immutable
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          # REDIS_URL: redis://localhost:6379/0
+        run: bin/rails db:test:prepare test

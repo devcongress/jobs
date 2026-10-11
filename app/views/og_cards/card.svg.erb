@@ -1,0 +1,42 @@
+<%
+  avatar = card.avatar
+  text_x = avatar ? 312 : 96
+  text_width = 1090 - text_x
+  title_lines = OgCard::Base.wrap(card.title, style: :title, width: text_width, lines: 2)
+  body_lines = OgCard::Base.wrap(card.body, style: :body, width: text_width, lines: (title_lines.size == 1) ? 2 : 1)
+  y = 290
+%>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="<%= OgCard::Base::WIDTH %>" height="<%= OgCard::Base::HEIGHT %>" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F5F2E8"/>
+  <rect x="62" y="62" width="1090" height="520" rx="28" fill="#E8117F"/>
+  <rect x="48" y="48" width="1090" height="520" rx="28" fill="#FFFFFF" stroke="#111111" stroke-width="4"/>
+  <image x="96" y="92" width="252" height="40" xlink:href="<%= OgCard::Base.wordmark_data_uri %>"/>
+  <text x="1090" y="120" text-anchor="end" font-family="Inter" font-weight="700" font-size="20" fill="#55524B">connect.devcongress.org</text>
+  <% if avatar %>
+    <% if avatar.shape == :square %>
+      <rect x="96" y="190" width="176" height="176" rx="28" fill="<%= avatar.color %>"/>
+    <% else %>
+      <circle cx="184" cy="278" r="88" fill="<%= avatar.color %>"/>
+    <% end %>
+    <text x="184" y="300" text-anchor="middle" font-family="Inter" font-weight="700" font-size="64" fill="#FFFFFF"><%= avatar.initials %></text>
+  <% end %>
+  <% if card.eyebrow %>
+    <text x="<%= text_x %>" y="212" font-family="Inter" font-weight="700" font-size="22" letter-spacing="2" fill="#D10F72"><%= card.eyebrow.upcase %></text>
+  <% end %>
+  <% title_lines.each_with_index do |line, i| %>
+    <% y = 290 + i * 72 %>
+    <text x="<%= text_x %>" y="<%= y %>" font-family="DM Serif Display" font-size="64" fill="#111111"><%= line %></text>
+  <% end %>
+  <% if card.subtitle %>
+    <% y += 50 %>
+    <text x="<%= text_x %>" y="<%= y %>" font-family="Inter" font-size="30" fill="#55524B"><%= OgCard::Base.wrap(card.subtitle, style: :subtitle, width: text_width).first %></text>
+  <% end %>
+  <% body_lines.each do |line| %>
+    <% y += 42 %>
+    <text x="<%= text_x %>" y="<%= y %>" font-family="Inter" font-size="28" fill="#111111"><%= line %></text>
+  <% end %>
+  <% if card.footer %>
+    <line x1="96" y1="490" x2="1090" y2="490" stroke="#111111" stroke-width="2"/>
+    <text x="96" y="536" font-family="Inter" font-weight="700" font-size="26" fill="#111111"><%= OgCard::Base.wrap(card.footer, style: :footer, width: 994).first %></text>
+  <% end %>
+</svg>

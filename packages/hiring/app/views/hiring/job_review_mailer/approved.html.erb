@@ -1,0 +1,10 @@
+<% noun = @job.kind_noun %>
+<% content_for :preheader, "It's public now, and your next posts skip review." %>
+<%= email_heading "Your #{noun} is live" %>
+<%= email_paragraph "Good news: we approved your #{noun} and it's now on the DevCongress Connect board." %>
+<%= render "hiring/mailer/job_panel", job: @job %>
+<%= email_button "See it on the board", @job_url %>
+<%= email_paragraph do %>
+  It stays up until <strong><%= @job.expires_at.to_date.to_fs(:long) %></strong>, and you can renew it from your <%= email_link "dashboard", @dashboard_url %>. From now on, what you post<%= " for #{@company.display_name}" unless @company.personal? %> goes live straight away.
+<% end %>
+<% content_for :footer_note, @company.personal? ? "You're getting this because you posted on DevCongress Connect." : "You're getting this because you're a member of #{@company.display_name} on DevCongress Connect." %>

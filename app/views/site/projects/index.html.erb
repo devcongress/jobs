@@ -1,0 +1,49 @@
+<% content_for :title, "Projects" %>
+<% content_for :description, "Things DevCongress developers have built, and who built them." %>
+<% filtered = params.values_at(:q, :skill).any?(&:present?) %>
+
+<section class="border-b-2 border-[#111]">
+  <div class="dc-container py-16 sm:py-20">
+    <p class="dc-eyebrow">Show the work</p>
+    <h1 class="dc-heading text-[clamp(2.5rem,6vw,4rem)]">Projects</h1>
+    <p class="mt-4 max-w-2xl text-[#555]">
+      Things developers in the community have built. Everyone listed on a project has confirmed they worked on it.
+    </p>
+
+    <%= form_with url: public_projects_path, method: :get, class: "mt-8 grid grid-cols-1 gap-4 sm:grid-cols-[2fr_1fr_auto] sm:items-end", data: {turbo_action: "advance"} do %>
+      <label class="block">
+        <span class="dc-label">Search</span>
+        <input type="search" name="q" value="<%= params[:q] %>" placeholder="Title, summary or stack" class="dc-input">
+      </label>
+      <%= render "site/shared/filter_select", name: :skill, label: "Stack", all: "Any stack", choices: @skills.map { [_1.name, _1.slug] } %>
+      <button type="submit" class="dc-btn dc-btn-primary dc-btn-sm">Search</button>
+    <% end %>
+  </div>
+</section>
+
+<section class="dc-container py-12">
+  <div class="mb-6 flex items-center justify-between gap-4 text-sm text-[#555]">
+    <p><%= pluralize(@total, "project") %><%= " match" if filtered %></p>
+    <% if filtered %><%= link_to "Clear filters", public_projects_path, class: "dc-link" %><% end %>
+  </div>
+
+  <% if @projects.any? %>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <% @projects.each do |project| %>
+        <%= render "site/projects/project_card", project: %>
+      <% end %>
+    </div>
+    <%= render "site/shared/pagination" %>
+  <% else %>
+    <div class="dc-empty p-12">
+      <p class="dc-heading text-3xl"><%= filtered ? "Nothing matches that yet." : "No projects yet." %></p>
+      <p class="mt-2 text-[#555]">
+        <% if current_user&.developer_profile %>
+          Built something? <%= link_to "Add a project", developer_portal_new_project_path(current_user.developer_profile), class: "dc-link" %>.
+        <% else %>
+          <%= filtered ? "Try fewer filters" : "Check back soon" %><%= ", or sign in to see members-only projects" unless current_user %>.
+        <% end %>
+      </p>
+    </div>
+  <% end %>
+</section>

@@ -1,0 +1,17 @@
+<% content_for :preheader, @connected ? "You follow each other now." : "Follow them back to connect." %>
+<%= email_heading(@connected ? "You're connected" : "New follower") %>
+<%= email_paragraph do %>
+  <% if @connected %>
+    <strong><%= @follower.name %></strong> followed you back, so you're now connected. Connections can see contact details you've shared with them and endorse each other's skills.
+  <% else %>
+    <strong><%= @follower.name %></strong> started following you. Follow them back and you'll be connected.
+  <% end %>
+<% end %>
+<%= email_panel do %>
+  <%= email_panel_title @follower.name, [@follower.headline.presence, @follower.location.presence].compact.join(" · ") %>
+<% end %>
+<%= email_button(@connected ? "See their profile" : "See their profile and follow back", @follower_url) %>
+<%= email_paragraph do %>
+  Manage who you follow on your <%= email_link "network page", @network_url %>.
+<% end %>
+<% content_for :footer_note, "You're getting this because you have a developer profile on DevCongress Connect." %>

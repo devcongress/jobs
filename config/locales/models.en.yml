@@ -1,0 +1,29 @@
+en:
+  activerecord:
+    models:
+      developers/profile:
+        one: Developer profile
+        other: Developer profiles
+      developers/experience:
+        one: Experience
+        other: Experience
+      hiring/job_post:
+        one: Post
+        other: Posts
+      hiring/job_application:
+        one: Application
+        other: Applications
+      developers/profile_skill:
+        one: Skill
+        other: Skills
+    attributes:
+      developers/profile:
+        experiences: Experience
+        profile_skills: Skills
+      hiring/job_post:
+        employment_type: Type
+        pay_period: Pay is
+        salary_min: From
+        salary_max: To
+        salary_currency: Currency
+        starts_on: Start date

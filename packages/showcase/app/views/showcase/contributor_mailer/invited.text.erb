@@ -1,0 +1,11 @@
+You've been credited on a project
+=================================
+
+<%= @owner.name %> added you to <%= @project.title %><%= " as #{@contributor.role}" if @contributor.role.present? %>.
+<% if @project.summary.present? %>
+<%= @project.summary %>
+<% end %>
+
+Confirm it if you worked on it, and the project will show on your profile and list you as a contributor. If you didn't, decline it and you'll be removed.
+
+Confirm or decline: <%= @confirm_url %>

@@ -1,0 +1,29 @@
+<%= render Plutonium::UI::Layout::Topbar.new do |bar| %>
+  <% bar.with_action do %>
+    <%= render Plutonium::UI::ColorModeSelector.new %>
+  <% end %>
+
+  <% bar.with_action do %>
+    <%=
+      render Plutonium::UI::NavUser.new(
+        name: nil,
+        email: current_user.try(:email) || current_user,
+        record: (current_user if current_user.respond_to?(:id))
+      ) do |nav|
+        if try(:profile_url)
+          nav.with_section do |section|
+            section.with_link(label: "Profile", href: profile_url) do |link|
+              link.with_leading do
+                render Phlex::TablerIcons::User.new(class: "mr-2 text-gray-400 w-4 h-4")
+              end
+            end
+          end
+        end
+
+        nav.with_section do |section|
+          section.with_link(label: "Sign out", href: try(:logout_url) || "#", class: "rounded-b-lg", data: {turbo: false})
+        end
+      end
+    %>
+  <% end %>
+<% end %>

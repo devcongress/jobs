@@ -1,0 +1,9 @@
+<% content_for :title, "Create your developer profile" %>
+
+<div class="space-y-1">
+  <h1 class="font-display text-3xl text-[var(--pu-text)]">Create your developer profile</h1>
+  <p class="text-sm text-[var(--pu-text-muted)]">Add skills, experience and projects once it's created.</p>
+</div>
+
+<%= render Forms::DeveloperProfileSetupForm.new(@profile, action: developer_profile_setup_path, method: :post,
+      submit_label: "Create profile", cancel_url: home_dashboard_path) %>

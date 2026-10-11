@@ -1,0 +1,17 @@
+<% category = NotificationOptOut::CATEGORIES.fetch(@category) %>
+<% things = "#{category[:label].downcase} #{NotificationOptOut::CHANNELS.fetch(@channel)}" %>
+<% content_for :title, "Notification settings" %>
+<% content_for :noindex, true %>
+
+<section class="dc-container max-w-2xl py-20 sm:py-28">
+  <p class="dc-eyebrow">Notification settings</p>
+  <% if @user.wants_notification?(@category, via: @channel) %>
+    <h1 class="dc-heading text-4xl">Turn off <%= things %>?</h1>
+    <p class="mt-4 text-[#555]">We'll stop <%= (@channel == "slack") ? "sending Slack DMs to" : "emailing" %> <strong><%= @user.email %></strong> about this. <%= category[:description] %></p>
+    <%= button_to "Turn them off", unsubscribe_path(token: params[:token]), class: "dc-btn dc-btn-primary mt-8", form: {data: {turbo: false}} %>
+  <% else %>
+    <h1 class="dc-heading text-4xl">You won't get <%= things %>.</h1>
+    <p class="mt-4 text-[#555]">We've stopped <%= (@channel == "slack") ? "sending Slack DMs to" : "emailing" %> <strong><%= @user.email %></strong> about this. Account and security emails still come through.</p>
+  <% end %>
+  <p class="mt-8 text-sm text-[#555]">Change any notification setting from <%= link_to "your notification settings", notification_settings_dashboard_path, class: "underline" %> (you'll need to sign in).</p>
+</section>

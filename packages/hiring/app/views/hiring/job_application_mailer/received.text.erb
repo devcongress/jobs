@@ -1,0 +1,16 @@
+New applicant
+=============
+
+<%= @profile.name %> applied for <%= @job.title %>.
+<% if @profile.headline.present? %>
+<%= @profile.headline %>
+<% end -%>
+<% if @application.cover_note.present? %>
+
+Their note:
+
+<%= truncate(@application.cover_note, length: 600) %>
+<% end %>
+
+Review the application: <%= @application_url %>
+Full profile: <%= @profile_url %>

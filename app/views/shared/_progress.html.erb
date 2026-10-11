@@ -1,0 +1,6 @@
+<div class="flex items-center gap-3">
+  <div class="h-2 flex-1 overflow-hidden rounded-full bg-[var(--pu-surface-alt)]" role="progressbar" aria-valuenow="<%= percent %>" aria-valuemin="0" aria-valuemax="100" aria-label="Profile completeness">
+    <div class="h-full rounded-full <%= percent == 100 ? "bg-success-500" : "bg-primary-600" %>" style="width: <%= percent %>%"></div>
+  </div>
+  <span class="text-sm font-medium tabular-nums text-[var(--pu-text-muted)]"><%= percent %>%</span>
+</div>

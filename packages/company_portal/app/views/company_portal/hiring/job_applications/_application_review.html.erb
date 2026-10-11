@@ -1,0 +1,180 @@
+<%# The hiring team's view of one application. Rendered by
+    CompanyPortal::Hiring::JobApplicationDefinition::ShowPage. %>
+<% application = resource_record! %>
+<% profile = application.profile %>
+<% job = application.job_post %>
+<% experiences = profile.experiences.order(started_on: :desc).limit(4) %>
+<% skills = profile.skills.order(:name) %>
+<% notes = application.notes.includes(author: :developer_profile).reverse %>
+<% links = {"Website" => profile.website_url, "GitHub" => profile.github_url, "LinkedIn" => profile.linkedin_url, "X" => profile.x_url}.compact_blank %>
+<% author_name = ->(user) { user.nil? ? "Someone" : (user == profile.user ? profile.name : (user.developer_profile&.name || user.email)) } %>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+  <div class="min-w-0 space-y-6">
+    <section class="dc-card" aria-labelledby="applicant-heading">
+      <div class="pu-card-body space-y-5">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+          <%= render InitialsAvatar.new(name: profile.name, seed: profile.handle, size: :xl) %>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 id="applicant-heading" class="font-display text-2xl text-[var(--pu-text)]"><%= profile.name %></h2>
+              <%= render "shared/availability_badge", profile: %>
+            </div>
+            <% if profile.headline.present? %>
+              <p class="mt-1 text-[var(--pu-text-muted)]"><%= profile.headline %></p>
+            <% end %>
+            <p class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-[var(--pu-text-muted)]">
+              <% if profile.location.present? %><span><%= profile.location %><%= " · open to remote" if profile.remote_ok? %></span><% end %>
+              <% if profile.seniority.present? %><span><%= profile.seniority.humanize %></span><% end %>
+              <% if profile.years_experience.present? %><span><%= pluralize(profile.years_experience, "year") %> experience</span><% end %>
+            </p>
+          </div>
+          <% if profile.visible_to?(current_user) %>
+            <a href="<%= main_app.developer_page_path(handle: profile.handle) %>" target="_blank" rel="noopener" class="pu-btn pu-btn-sm pu-btn-secondary shrink-0">Full profile</a>
+          <% end %>
+        </div>
+
+        <dl class="grid grid-cols-1 gap-4 border-t border-[var(--pu-border)] pt-4 text-sm sm:grid-cols-2">
+          <div>
+            <dt class="text-[var(--pu-text-subtle)]">Email</dt>
+            <dd><a class="font-medium text-primary-600 hover:underline dark:text-primary-400" href="mailto:<%= application.applicant_email %>"><%= application.applicant_email %></a></dd>
+          </div>
+          <% if profile.phone.present? %>
+            <div>
+              <dt class="text-[var(--pu-text-subtle)]">Phone</dt>
+              <dd><a class="font-medium text-[var(--pu-text)] hover:underline" href="tel:<%= profile.phone %>"><%= profile.phone %></a></dd>
+            </div>
+          <% end %>
+          <% if links.any? %>
+            <div class="sm:col-span-2">
+              <dt class="text-[var(--pu-text-subtle)]">Links</dt>
+              <dd class="mt-1 flex flex-wrap gap-2">
+                <% links.each do |label, url| %>
+                  <a href="<%= url %>" target="_blank" rel="noopener nofollow" class="pu-badge pu-badge-neutral hover:underline"><%= label %></a>
+                <% end %>
+              </dd>
+            </div>
+          <% end %>
+        </dl>
+      </div>
+    </section>
+
+    <section class="pu-card" aria-labelledby="application-heading">
+      <div class="pu-card-body space-y-5">
+        <h3 id="application-heading" class="font-semibold text-[var(--pu-text)]">Application</h3>
+
+        <div>
+          <p class="text-sm text-[var(--pu-text-subtle)]">CV</p>
+          <% if application.resume.attached? %>
+            <a href="<%= private_file_link(application.resume) %>" target="_blank" rel="noopener"
+               class="mt-1 inline-flex items-center gap-2 rounded-[var(--pu-radius-lg)] border border-[var(--pu-border)] px-3 py-2 text-sm font-medium text-[var(--pu-text)] hover:bg-[var(--pu-surface-alt)]">
+              <%= render Phlex::TablerIcons::FileText.new(class: "h-5 w-5 text-primary-600") %>
+              <%= application.resume.filename %>
+              <span class="text-[var(--pu-text-subtle)]"><%= number_to_human_size(application.resume.file.size) %></span>
+            </a>
+          <% else %>
+            <p class="mt-1 text-sm text-[var(--pu-text-muted)]">No CV attached.</p>
+          <% end %>
+        </div>
+
+        <div>
+          <p class="text-sm text-[var(--pu-text-subtle)]">Cover note</p>
+          <% if application.cover_note.present? %>
+            <div class="mt-1 whitespace-pre-line text-[var(--pu-text)]"><%= application.cover_note %></div>
+          <% else %>
+            <p class="mt-1 text-sm text-[var(--pu-text-muted)]">No cover note.</p>
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+    <% if skills.any? || experiences.any? %>
+      <section class="pu-card" aria-labelledby="background-heading">
+        <div class="pu-card-body space-y-5">
+          <h3 id="background-heading" class="font-semibold text-[var(--pu-text)]">Background</h3>
+          <% if skills.any? %>
+            <div class="flex flex-wrap gap-2">
+              <% skills.each do |skill| %>
+                <span class="pu-badge pu-badge-neutral"><%= skill.name %></span>
+              <% end %>
+            </div>
+          <% end %>
+          <% if experiences.any? %>
+            <ol class="space-y-3">
+              <% experiences.each do |experience| %>
+                <li>
+                  <p class="font-medium text-[var(--pu-text)]"><%= experience.title %> · <%= experience.company_name %></p>
+                  <p class="text-sm text-[var(--pu-text-muted)]">
+                    <%= experience.started_on.strftime("%b %Y") %> – <%= experience.ended_on ? experience.ended_on.strftime("%b %Y") : "present" %>
+                  </p>
+                </li>
+              <% end %>
+            </ol>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+  </div>
+
+  <aside class="space-y-6">
+    <section class="pu-card" aria-labelledby="stage-heading">
+      <div class="pu-card-body space-y-4">
+        <h3 id="stage-heading" class="sr-only">Stage</h3>
+        <div class="flex items-center justify-between gap-3">
+          <%= render "shared/status_badge", status: application.status, label: application.stage_label %>
+          <span class="text-sm text-[var(--pu-text-subtle)]">since <%= time_ago_in_words(application.status_changed_at || application.created_at) %> ago</span>
+        </div>
+        <div>
+          <p class="text-sm text-[var(--pu-text-subtle)]">Team rating</p>
+          <p class="text-xl tracking-wider text-amber-500" aria-label="<%= application.rating ? "#{application.rating} out of 5" : "Not rated" %>">
+            <%= application.rating_stars || "☆☆☆☆☆" %>
+          </p>
+        </div>
+        <div>
+          <p class="text-sm text-[var(--pu-text-subtle)]">Job</p>
+          <a href="<%= resource_url_for(job, parent: nil) %>" class="font-medium text-[var(--pu-text)] hover:underline"><%= job.title %></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="pu-card" aria-labelledby="activity-heading">
+      <div class="pu-card-body">
+        <h3 id="activity-heading" class="mb-1 font-semibold text-[var(--pu-text)]">Activity</h3>
+        <p class="mb-4 text-xs text-[var(--pu-text-subtle)]">Only your team can see this.</p>
+        <ol class="space-y-5">
+          <% notes.each do |note| %>
+            <li class="flex gap-3">
+              <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full <%= note.note? ? "bg-primary-500" : "bg-gray-400" %>" aria-hidden="true"></span>
+              <div class="min-w-0 flex-1">
+              <% if note.note? %>
+                <p class="text-sm"><span class="font-semibold text-[var(--pu-text)]"><%= author_name.call(note.author) %></span> <span class="text-[var(--pu-text-subtle)]">added a note</span></p>
+                <div class="mt-1 whitespace-pre-line rounded-[var(--pu-radius-md)] bg-[var(--pu-surface-alt)] px-3 py-2 text-sm text-[var(--pu-text)]"><%= note.body %></div>
+              <% else %>
+                <p class="text-sm text-[var(--pu-text)]">
+                  <% if note.to_status == "withdrawn" %>
+                    <span class="font-semibold"><%= profile.name %></span> withdrew
+                  <% else %>
+                    <span class="font-semibold"><%= author_name.call(note.author) %></span>
+                    moved them to <span class="font-semibold"><%= Hiring::JobApplication::STAGE_LABELS.fetch(note.to_status, note.to_status) %></span>
+                  <% end %>
+                </p>
+                <% if note.body.present? %>
+                  <p class="mt-1 text-sm text-[var(--pu-text-muted)]">Message sent: “<%= note.body %>”</p>
+                <% end %>
+              <% end %>
+              <p class="mt-1 text-xs text-[var(--pu-text-subtle)]" title="<%= note.created_at.to_fs(:long) %>"><%= time_ago_in_words(note.created_at) %> ago</p>
+              </div>
+            </li>
+          <% end %>
+          <li class="flex gap-3">
+            <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500" aria-hidden="true"></span>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm"><span class="font-semibold text-[var(--pu-text)]"><%= profile.name %></span> <span class="text-[var(--pu-text-subtle)]">applied</span></p>
+              <p class="mt-1 text-xs text-[var(--pu-text-subtle)]" title="<%= application.created_at.to_fs(:long) %>"><%= time_ago_in_words(application.created_at) %> ago</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </aside>
+</div>

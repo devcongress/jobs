@@ -1,1 +1,10 @@
 <%= yield %>
+
+--
+<% if @unsubscribe_url -%>
+Turn off <%= @email_category[:label].downcase %> emails: <%= @unsubscribe_url %>
+Notification settings: <%= @notification_settings_url %>
+
+<% end -%>
+DevCongress Connect, where the DevCongress community connects
+<%= root_url %>

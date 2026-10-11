@@ -1,0 +1,23 @@
+<% profile = current_user.developer_profile %>
+<%= render Plutonium::UI::Layout::IconRail.new(
+      menu: Phlexi::Menu::Builder.new do |m|
+        m.item "Home", url: root_path, icon: Phlex::TablerIcons::Home
+
+        if profile
+          m.item "Developer profile", url: developer_portal_home_path(profile), icon: Phlex::TablerIcons::Id
+        else
+          m.item "Developer profile", url: new_developer_profile_path, icon: Phlex::TablerIcons::Id
+        end
+
+        m.item "Companies", icon: Phlex::TablerIcons::Building do |n|
+          current_user.companies.order(:name).each do |company|
+            n.item company.display_name, url: company_portal_home_path(company)
+          end
+          n.item "Set up a company", url: new_company_path
+        end
+      end
+    ) do |rail| %>
+  <% rail.with_brand do %>
+    <%= resource_logo_tag(classname: "h-10 w-10") %>
+  <% end %>
+<% end %>

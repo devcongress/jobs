@@ -1,0 +1,16 @@
+<% if @connected %>
+You're connected
+================
+
+<%= @follower.name %> followed you back, so you're now connected. Connections can see contact details you've shared with them and endorse each other's skills.
+<% else %>
+New follower
+============
+
+<%= @follower.name %> started following you. Follow them back and you'll be connected.
+<% end %>
+
+<%= @follower.name %><%= " · #{@follower.headline}" if @follower.headline.present? %>
+Profile: <%= @follower_url %>
+
+Manage who you follow: <%= @network_url %>

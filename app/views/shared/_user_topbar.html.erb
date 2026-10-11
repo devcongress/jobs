@@ -1,0 +1,36 @@
+<%# Topbar shared by the dashboard, developer and company portals. %>
+<%= render Plutonium::UI::Layout::Topbar.new do |bar| %>
+  <% bar.with_breadcrumbs do %>
+    <%= render ContextSwitcher.new(user: current_user, current: context) %>
+  <% end %>
+
+  <% bar.with_action do %>
+    <%= render Plutonium::UI::ColorModeSelector.new %>
+  <% end %>
+
+  <% bar.with_action do %>
+    <%=
+      render Plutonium::UI::NavUser.new(
+        name: current_user.developer_profile&.name,
+        email: current_user.email,
+        record: current_user
+      ) do |nav|
+        nav.with_section do |section|
+          section.with_link(label: "Home", href: home_dashboard_path) do |link|
+            link.with_leading { render Phlex::TablerIcons::Home.new(class: "mr-2 text-[var(--pu-text-subtle)] w-4 h-4") }
+          end
+          section.with_link(label: "Change password", href: rodauth(:user).change_password_path) do |link|
+            link.with_leading { render Phlex::TablerIcons::Settings.new(class: "mr-2 text-[var(--pu-text-subtle)] w-4 h-4") }
+          end
+          section.with_link(label: "Notification settings", href: notification_settings_dashboard_path) do |link|
+            link.with_leading { render Phlex::TablerIcons::Bell.new(class: "mr-2 text-[var(--pu-text-subtle)] w-4 h-4") }
+          end
+        end
+
+        nav.with_section do |section|
+          section.with_link(label: "Sign out", href: rodauth(:user).logout_path, class: "rounded-b-lg", data: {turbo: false})
+        end
+      end
+    %>
+  <% end %>
+<% end %>

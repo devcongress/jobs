@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+# Nothing to prepare here: the Litestream restore and db:prepare run once per
+# deploy in .kamal/hooks/pre-deploy, before any container of the new version
+# boots. jemalloc is preloaded through LD_PRELOAD in the Dockerfile.
+
+exec "${@}"

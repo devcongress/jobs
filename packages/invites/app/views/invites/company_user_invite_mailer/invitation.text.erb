@@ -1,0 +1,19 @@
+<% company = @invite.entity.to_label -%>
+<% inviter = @invite.invited_by.try(:developer_profile)&.name || @invite.invited_by.email -%>
+Join <%= company %> on DevCongress Connect
+<%= "=" * "Join #{company} on DevCongress Connect".length %>
+
+Hi there,
+
+<%= inviter %> invited you to join <%= company %> as <%= @invite.role == "owner" ? "an owner" : "a #{@invite.role}" %>. You'll be able to post jobs and review applicants together.
+
+Accept the invitation:
+<%= @invitation_url %>
+<% if @invite.expires_at.present? %>
+
+The invitation expires on <%= @invite.expires_at.to_date.to_fs(:long) %>.
+<% end %>
+
+New to DevCongress Connect? You'll create an account with this email address when you accept.
+
+Not expecting this? You can ignore this email; nothing happens unless you accept.

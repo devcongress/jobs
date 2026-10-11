@@ -1,0 +1,120 @@
+{
+  "planPath": "docs/superpowers/plans/2026-10-08-slack-integration.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Slack config, API client and test fake",
+      "status": "completed",
+      "description": "See plan section 'Task 1: Slack config, API client and test fake'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: Job post Slack columns and message rendering",
+      "status": "completed",
+      "description": "See plan section 'Task 2: Job post Slack columns and message rendering'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "subject": "Task 3: Sync jobs to #jobs",
+      "status": "completed",
+      "description": "See plan section 'Task 3: Sync jobs to #jobs'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "subject": "Task 4: Expiry sweep and Discuss in #jobs",
+      "status": "completed",
+      "description": "See plan section 'Task 4: Expiry sweep and Discuss in #jobs'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "subject": "Task 5: Notification opt-outs with a channel",
+      "status": "completed",
+      "description": "See plan section 'Task 5: Notification opt-outs with a channel'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 6: Sign in with Slack",
+      "status": "completed",
+      "description": "See plan section 'Task 6: Sign in with Slack'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "subject": "Task 7: Connect and disconnect Slack",
+      "status": "completed",
+      "description": "See plan section 'Task 7: Connect and disconnect Slack'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": 7,
+      "subject": "Task 8: Notification settings page",
+      "status": "completed",
+      "description": "See plan section 'Task 8: Notification settings page'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        6
+      ]
+    },
+    {
+      "id": 8,
+      "subject": "Task 9: Point people to Slack",
+      "status": "completed",
+      "description": "See plan section 'Task 9: Point people to Slack'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        7
+      ]
+    },
+    {
+      "id": 9,
+      "subject": "Task 10: SlackDm base and delivery job",
+      "status": "completed",
+      "description": "See plan section 'Task 10: SlackDm base and delivery job'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        0,
+        4
+      ]
+    },
+    {
+      "id": 10,
+      "subject": "Task 11: DMs for each notification",
+      "status": "completed",
+      "description": "See plan section 'Task 11: DMs for each notification'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        9
+      ]
+    },
+    {
+      "id": 11,
+      "subject": "Task 12: Full suite and spec sync",
+      "status": "completed",
+      "description": "See plan section 'Task 12: Full suite and spec sync'.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    }
+  ],
+  "lastUpdated": "2026-10-08T20:29:16.380267+00:00"
+}

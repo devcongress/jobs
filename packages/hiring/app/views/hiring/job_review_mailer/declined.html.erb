@@ -1,0 +1,11 @@
+<% content_for :preheader, "A reviewer left a note. Update your post and publish again." %>
+<%= email_heading "A few changes first" %>
+<%= email_paragraph do %>
+  Thanks for posting <strong><%= @job.title %></strong>. Before it goes public, our reviewer asked for some changes, so it's back in your drafts.
+<% end %>
+<%= email_panel do %>
+  <div style="margin-bottom:6px;font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:<%= EmailHelper::MUTED %>;">Note from the reviewer</div>
+  <%= simple_format @reason, {style: "margin:0 0 8px;"}, wrapper_tag: "div" %>
+<% end %>
+<%= email_button "Edit and publish again", @edit_url %>
+<% content_for :footer_note, @company.personal? ? "You're getting this because you posted on DevCongress Connect." : "You're getting this because you're a member of #{@company.display_name} on DevCongress Connect." %>

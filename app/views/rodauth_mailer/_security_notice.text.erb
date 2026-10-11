@@ -1,0 +1,11 @@
+<%= title %>
+<%= "=" * title.length %>
+
+Hi <%= @first_name.presence || "there" %>,
+
+The password for <%= @account.email %> on <%= @product_name %> was <%= action %> on <%= Time.current.utc.strftime("%-d %B %Y at %H:%M UTC") %>.
+
+If this was you, there's nothing else to do.
+
+Wasn't you? Reset your password now so nobody else can use your account:
+<%= @reset_request_url %>

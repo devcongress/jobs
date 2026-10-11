@@ -1,0 +1,122 @@
+minimum_version: 2.3.0
+
+# Name of your application. Used to uniquely configure containers.
+service: devcongress_connect
+
+# Name of the container image.
+image: radioactive-labs/devcongress_connect
+
+# The job and litestream roles sit behind no proxy healthcheck, so Kamal calls
+# them booted once they have stayed up this long (default 7s). A worker that dies
+# while Rails is still loading has to fail the deploy, not slip past it.
+readiness_delay: 60
+
+# Headroom over the 30s default for an eager-loaded boot on a busy shared host.
+# Restore and db:prepare run before boot, in .kamal/hooks/pre-deploy.
+deploy_timeout: 60
+
+# Deploy to these servers. Every role shares the SQLite files on the storage
+# volume, so they must all stay on this one host.
+servers:
+  web:
+    - 95.216.244.221
+  # Solid Queue supervisor: workers, dispatcher and the recurring.yml scheduler.
+  # Its own process rather than SOLID_QUEUE_IN_PUMA, so jobs never hold web
+  # threads. Never set both: that runs two schedulers against one queue.
+  job:
+    hosts:
+      - 95.216.244.221
+    cmd: bin/jobs
+  # Continuous replication of the primary database to S3 (config/litestream.yml).
+  litestream:
+    hosts:
+      - 95.216.244.221
+    cmd: bin/litestream
+
+# connect.devcongress.org is a DNS-only (grey cloud) record pointing straight at
+# the server, so kamal-proxy gets a Let's Encrypt certificate over HTTP-01.
+# Proxying it through Cloudflare would intercept the challenge; switch to an
+# Origin CA certificate first (see universal_chatbot's deploy.yml) if you do.
+proxy:
+  ssl: true
+  host: connect.devcongress.org
+  app_port: 80
+
+# Credentials for your image host.
+registry:
+  server: ghcr.io
+  username: thedumbtechguy
+
+  # Always use an access token rather than real password (pulled from .kamal/secrets).
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+# Configure the image builder.
+builder:
+  arch: amd64
+
+# Inject ENV variables into containers (secrets come from .kamal/secrets).
+#
+# The values read from ENV here are not secret but differ per deployment. They
+# come from .env.production, which bin/deploy loads. Run plain bin/kamal without
+# it only for commands that don't push env (logs, console, shell).
+env:
+  clear:
+    RAILS_DEFAULT_URL: "https://connect.devcongress.org"
+    MAIL_FROM: "DevCongress Connect <no-reply@connect.devcongress.org>"
+
+    LITESTREAM_REPLICA_BUCKET: "<%= ENV["LITESTREAM_REPLICA_BUCKET"] %>"
+    LITESTREAM_REPLICA_REGION: "<%= ENV["LITESTREAM_REPLICA_REGION"] %>"
+    # Only for S3-compatible stores that aren't AWS (R2, Spaces, Hetzner...).
+    LITESTREAM_REPLICA_ENDPOINT: "<%= ENV["LITESTREAM_REPLICA_ENDPOINT"] %>"
+
+    # Social sign-in. Each provider shows up only when its id and secret are set.
+    GOOGLE_CLIENT_ID: "<%= ENV["GOOGLE_CLIENT_ID"] %>"
+    GITHUB_CLIENT_ID: "<%= ENV["GITHUB_CLIENT_ID"] %>"
+
+    # Slack. Sign-in needs the id, secret and team; posts and DMs need the bot token.
+    SLACK_CLIENT_ID: "<%= ENV["SLACK_CLIENT_ID"] %>"
+    SLACK_TEAM_ID: "<%= ENV["SLACK_TEAM_ID"] %>"
+    SLACK_JOBS_CHANNEL_ID: "<%= ENV["SLACK_JOBS_CHANNEL_ID"] %>"
+    SLACK_INVITE_URL: "<%= ENV["SLACK_INVITE_URL"] %>"
+    SLACK_WORKSPACE_URL: "<%= ENV["SLACK_WORKSPACE_URL"] %>"
+
+    # Log everything from Rails
+    # RAILS_LOG_LEVEL: debug
+  secret:
+    - RAILS_MASTER_KEY
+    - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+    - ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+    - ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
+    - RESEND_API_KEY
+    - LITESTREAM_ACCESS_KEY_ID
+    - LITESTREAM_SECRET_ACCESS_KEY
+    - GOOGLE_CLIENT_SECRET
+    - GITHUB_CLIENT_SECRET
+    - SLACK_CLIENT_SECRET
+    - SLACK_BOT_TOKEN
+
+# Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
+# "bin/kamal logs -r job" will tail logs from the first server in the job section.
+aliases:
+  apps: server exec docker exec kamal-proxy kamal-proxy list
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
+  dbc: app exec --interactive --reuse "bin/rails dbconsole"
+
+# Use a different ssh user than root
+ssh:
+  user: kamal
+  keys: [~/.ssh/kamal_fayaworks]
+
+# SQLite databases, Litestream's local state and Shrine uploads
+# (storage/uploads). Litestream replicates only the primary database; uploads
+# live solely on this host.
+volumes:
+  - "/storage/devcongress_connect:/rails/storage"
+
+# Bridge fingerprinted assets, like JS and CSS, between versions to avoid
+# hitting 404 on in-flight requests. Combines all files from new and old
+# version inside the asset_path.
+asset_path: /rails/public/assets

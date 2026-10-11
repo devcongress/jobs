@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= content_for(:title) || "DevCongress Connect" %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+</head>
+<body class="antialiased pu-min-h-viewport bg-[var(--pu-body)]">
+  <main class="pu-min-h-viewport flex flex-col items-center justify-center gap-8 px-4 py-10 mx-auto">
+    <a href="/"><%= image_tag "brand/devcongress-wordmark.png", alt: "DevCongress", class: "h-8 w-auto" %></a>
+    <div class="dc-card w-full sm:max-w-lg">
+      <div class="p-6 space-y-6 sm:p-8">
+        <%= yield %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<% content_for :preheader, "Too many failed sign-ins locked your account." %>
+<%= email_heading "Unlock your account" %>
+<%= render "greeting" %>
+<%= email_paragraph do %>
+  Your <%= @product_name %> account (<strong><%= @account.email %></strong>) was locked after too many failed sign-in attempts. If you asked to unlock it, use the button below.
+<% end %>
+<%= email_button "Unlock my account", @url %>
+<%= email_muted "The link expires in 24 hours." %>
+<%= email_link_fallback @url %>
+<% content_for :footer_note, "Didn't try to sign in? Someone may be guessing your password. Leave the account locked and tell the other admins." %>

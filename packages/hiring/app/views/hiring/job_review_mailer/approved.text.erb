@@ -1,0 +1,9 @@
+Your <%= @job.kind_noun %> is live
+=================
+
+Good news: we approved your <%= @job.kind_noun %> and it's now on the DevCongress Connect board.
+
+  <%= @job.title %>
+  <%= @job_url %>
+
+It stays up until <%= @job.expires_at.to_date.to_fs(:long) %>, and you can renew it from your dashboard (<%= @dashboard_url %>). From now on, what you post<%= " for #{@company.display_name}" unless @company.personal? %> goes live straight away.

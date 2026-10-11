@@ -1,0 +1,505 @@
+/* Base styles for Plutonium's form widgets, bundled instead of loaded from a
+   CDN (see SelfHostedAssets). They come first so Plutonium's theme wins. */
+@import "easymde/dist/easymde.min.css";
+@import "flatpickr/dist/flatpickr.min.css";
+@import "intl-tel-input/build/css/intlTelInput.min.css";
+@import "@uppy/core/dist/style.min.css";
+@import "@uppy/dashboard/dist/style.min.css";
+@import "@uppy/image-editor/dist/style.min.css";
+
+@import "gem:plutonium/src/css/plutonium.css";
+
+@import "tailwindcss";
+@config '../../../tailwind.config.js';
+
+/* Plutonium offsets <main> for a pinned (expanded) icon rail but not the fixed
+   topbar or form footer, which then sit underneath the rail. Match them up. */
+@media (min-width: 1024px) {
+  html.pu-rail-pinned:not(.pu-no-rail) .pu-topbar,
+  html.pu-rail-pinned:not(.pu-no-rail) .pu-sticky-footer {
+    left: 14rem !important;
+  }
+}
+
+/* The topbar and the table's sticky pagination footer are both z-30, and the
+   footer comes later in the page, so it painted over the topbar's dropdowns
+   (the context switcher). Lift the topbar a level; the filter drawer (z-40
+   backdrop, z-50 panel) still covers it. */
+.pu-topbar {
+  z-index: 35;
+}
+
+/* intl-tel-input's bundled CSS points at ../img/*, which doesn't exist once
+   it's inlined here. Serve the images through the asset pipeline instead. */
+:root {
+  --iti-path-flags-1x: url("intl-tel-input/flags.webp");
+  --iti-path-flags-2x: url("intl-tel-input/flags@2x.webp");
+  --iti-path-globe-1x: url("intl-tel-input/globe.webp");
+  --iti-path-globe-2x: url("intl-tel-input/globe@2x.webp");
+}
+
+/* EasyMDE's toolbar uses Font Awesome 4 icons, which Plutonium loads from a
+   CDN (dropped by SelfHostedAssets). Self-host the font (SIL OFL, from
+   font-awesome@4.7.0) with just the classes the toolbar uses. */
+@font-face {
+  font-family: "FontAwesome";
+  font-style: normal;
+  font-weight: normal;
+  font-display: block;
+  src: url("fontawesome-4.7.0.woff2") format("woff2");
+}
+.editor-toolbar .fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.editor-toolbar .fa-arrows-alt:before { content: "\f0b2"; }
+.editor-toolbar .fa-bold:before { content: "\f032"; }
+.editor-toolbar .fa-code:before { content: "\f121"; }
+.editor-toolbar .fa-columns:before { content: "\f0db"; }
+.editor-toolbar .fa-eraser:before { content: "\f12d"; }
+.editor-toolbar .fa-eye:before { content: "\f06e"; }
+.editor-toolbar .fa-header:before { content: "\f1dc"; }
+.editor-toolbar .fa-image:before { content: "\f03e"; }
+.editor-toolbar .fa-italic:before { content: "\f033"; }
+.editor-toolbar .fa-link:before { content: "\f0c1"; }
+.editor-toolbar .fa-list-ol:before { content: "\f0cb"; }
+.editor-toolbar .fa-list-ul:before { content: "\f0ca"; }
+.editor-toolbar .fa-minus:before { content: "\f068"; }
+.editor-toolbar .fa-question-circle:before { content: "\f059"; }
+.editor-toolbar .fa-quote-left:before { content: "\f10d"; }
+.editor-toolbar .fa-repeat:before { content: "\f01e"; }
+.editor-toolbar .fa-strikethrough:before { content: "\f0cc"; }
+.editor-toolbar .fa-table:before { content: "\f0ce"; }
+.editor-toolbar .fa-undo:before { content: "\f0e2"; }
+
+/* ---------------------------------------------------------------------------
+   DevCongress brand (devcongress.org): cream paper, ink, hot pink, yellow.
+   Fonts are self-hosted (SIL OFL) from app/assets/fonts.
+   ------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "DM Serif Display";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("dm-serif-display-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Serif Display";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url("dm-serif-display-latin-400-italic.woff2") format("woff2");
+}
+
+/* Light: cream body, white cards, warm borders, ink text. */
+:root {
+  --dc-ink: #111111;
+  --dc-pink: #e8117f;
+  --dc-yellow: #f5e642;
+  --pu-body: #f5f2e8;
+  --pu-surface: #fbfaf5;
+  --pu-surface-alt: #efebdd;
+  --pu-border: #e0ddd4;
+  --pu-border-muted: #ece9df;
+  --pu-border-strong: #c9c5b8;
+  --pu-text: #111111;
+  --pu-text-muted: #555555;
+  --pu-text-subtle: #6b6b6b;
+  --pu-card-border: #e0ddd4;
+  --pu-input-border: #d6d2c6;
+}
+
+/* Dark: Plutonium's slate surfaces, restated because the :root overrides
+   above would otherwise leak into dark mode. */
+.dark {
+  --dc-ink: #f8fafc;
+  --pu-body: #0f172a;
+  --pu-surface: #1e293b;
+  --pu-surface-alt: #0f172a;
+  --pu-border: #334155;
+  --pu-border-muted: #1e293b;
+  --pu-border-strong: #475569;
+  --pu-text: #f8fafc;
+  --pu-text-muted: #94a3b8;
+  --pu-text-subtle: #94a3b8;
+  --pu-card-border: #334155;
+  --pu-input-border: #475569;
+}
+
+body {
+  font-family: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Pill buttons, like devcongress.org. */
+.pu-btn {
+  border-radius: 9999px;
+}
+
+/* The site's signature card: ink border with an offset pink shadow. */
+.dc-card {
+  background: var(--pu-card-bg);
+  border: 2px solid var(--dc-ink);
+  border-radius: var(--pu-radius-lg);
+  box-shadow: 6px 6px 0 var(--dc-pink);
+}
+
+/* Yellow highlight band, as in the site's "community highlight" panel. */
+.dc-highlight {
+  background: var(--dc-yellow);
+  color: #111111;
+}
+
+/* Scrolling roles band on the landing page (paused for reduced motion). */
+@keyframes dc-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.dc-marquee {
+  animation: dc-marquee 35s linear infinite;
+}
+.dc-marquee:hover { animation-play-state: paused; }
+.dc-marquee:hover .dc-pill { background: var(--dc-pink); border-color: var(--dc-pink); color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .dc-marquee { animation: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Public site components, ported from devcongress.org's own stylesheet so the
+   marketing pages share its tokens, buttons, cards, nav and footer. In the
+   components layer, so Tailwind utilities can still adjust them per use.
+   ------------------------------------------------------------------------- */
+:root {
+  --dc-bg: #f5f2e8;
+  --dc-white: #ffffff;
+  --dc-black: #111111;
+  --dc-pink-light: #fce7f3;
+  --dc-yellow-bg: #fefce8;
+  --dc-border-light: #e0ddd4;
+  --dc-text-mid: #555555;
+  --dc-text-muted: #888888;
+  --dc-max-w: 1200px;
+  --dc-pad: clamp(1.25rem, 5vw, 4rem);
+  --dc-section: clamp(4rem, 8vw, 7rem);
+  --dc-shadow: 3px 3px 0 var(--dc-black);
+}
+
+@layer components {
+  .dc-container {
+    width: 100%;
+    max-width: var(--dc-max-w);
+    padding-inline: var(--dc-pad);
+    margin-inline: auto;
+  }
+  .dc-section { padding-block: var(--dc-section); }
+
+  .dc-eyebrow {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dc-text-muted);
+  }
+  .dc-heading {
+    font-family: "DM Serif Display", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--dc-black);
+  }
+  .dc-h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); }
+
+  /* Buttons: thick ink outline, lift with a hard shadow on hover. */
+  .dc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    border: 3px solid var(--dc-black);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s, background-color 0.15s;
+  }
+  .dc-btn:not(:disabled):hover { box-shadow: var(--dc-shadow); transform: translate(-2px, -2px); }
+  .dc-btn:not(:disabled):active { box-shadow: none; transform: translate(0); }
+  .dc-btn-primary { background: var(--dc-pink); color: #fff; }
+  .dc-btn-yellow { background: var(--dc-yellow); color: var(--dc-black); }
+  .dc-btn-outline { background: transparent; color: var(--dc-black); }
+  .dc-btn-outline:hover { background: var(--dc-white); }
+  .dc-btn-white { background: var(--dc-white); color: var(--dc-black); }
+  .dc-btn-sm { padding-inline: 1rem; }
+  .dc-btn-lg { padding: 1rem 4rem; font-size: 1.125rem; }
+  .dc-btn-xl { padding: 1.5rem 6rem; font-size: 1.125rem; }
+  @media (width <= 640px) {
+    .dc-btn-lg, .dc-btn-xl { width: min(100%, 19rem); min-height: 46px; padding: 0.75rem 2rem; font-size: 1rem; }
+  }
+
+  /* Cards: white, ink border; linked cards lift on hover. */
+  .dc-box {
+    background: var(--dc-white);
+    border: 2px solid var(--dc-black);
+    border-radius: 8px;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  a.dc-box:hover { box-shadow: var(--dc-shadow); transform: translate(-2px, -2px); }
+  .dc-empty {
+    border: 2px dashed #c9c5b8;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--dc-text-mid);
+  }
+
+  /* Small status badge with a leading dot. */
+  .dc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 3px 0.75rem;
+    border: 1.5px solid;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .dc-badge::before { content: "●"; font-size: 6px; }
+
+  /* Outlined pill: role band, skill chips, kind tabs. */
+  .dc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid var(--dc-black);
+    border-radius: 9999px;
+    background: var(--dc-white);
+    color: var(--dc-black);
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  }
+  a.dc-pill:hover { background: var(--dc-yellow); }
+  .dc-pill-sm { padding: 0.35rem 1rem; }
+  .dc-pill[aria-current="page"] { background: var(--dc-black); border-color: var(--dc-black); color: #fff; }
+
+  /* "Learn more →" style text link. */
+  .dc-link { color: var(--dc-pink); font-size: 0.875rem; font-weight: 600; transition: opacity 0.15s; }
+  .dc-link:hover { opacity: 0.7; }
+
+  .dc-input {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 2px solid var(--dc-black);
+    border-radius: 8px;
+    background: var(--dc-white);
+    font-size: 0.875rem;
+  }
+  .dc-input:focus { outline: 2px solid var(--dc-pink); outline-offset: 1px; }
+  .dc-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dc-text-muted);
+  }
+
+  /* Numbered list with ink rules, as in the site's mission list. */
+  .dc-numbered { border-top: 2px solid var(--dc-black); }
+  .dc-numbered > li {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 1.5rem;
+    padding-block: 2rem;
+    border-bottom: 2px solid var(--dc-black);
+    transition: background-color 0.15s;
+  }
+  .dc-numbered > li:hover { background: var(--dc-yellow-bg); }
+  /* The site sets these in the serif at bold, with a pink keyword. */
+  .dc-numbered-title {
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--dc-black);
+  }
+  .dc-numbered-num {
+    padding-top: 2px;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.375rem;
+    line-height: 1.2;
+    color: var(--dc-pink);
+  }
+
+  /* Navbar */
+  .dc-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--dc-bg);
+    border-bottom: 2px solid var(--dc-black);
+  }
+  .dc-navbar-inner { display: flex; align-items: center; gap: 1.5rem; height: 68px; }
+  .dc-nav-links { display: flex; align-items: center; gap: 2rem; margin-left: 1rem; margin-right: auto; }
+  .dc-nav-link { position: relative; font-size: 0.875rem; font-weight: 500; color: var(--dc-text-mid); transition: color 0.15s; }
+  .dc-nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 2px;
+    background: var(--dc-pink);
+    transform: scaleX(0);
+    transform-origin: 0;
+    transition: transform 0.2s;
+  }
+  .dc-nav-link:hover, .dc-nav-link[aria-current="page"] { color: var(--dc-black); }
+  .dc-nav-link:hover::after, .dc-nav-link[aria-current="page"]::after { transform: scaleX(1); }
+  .dc-nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+  .dc-burger {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    padding: 0.5rem;
+  }
+  .dc-burger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--dc-black);
+    transition: opacity 0.12s, transform 0.15s;
+  }
+  .dc-burger[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
+  .dc-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .dc-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .dc-mobile-menu { display: none; padding: 1.5rem var(--dc-pad); background: var(--dc-white); border-top: 2px solid var(--dc-black); }
+  .dc-mobile-menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--dc-border-light);
+  }
+  .dc-mobile-menu nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    font-weight: 600;
+  }
+  .dc-mobile-menu nav a::after { content: "→"; color: var(--dc-pink); font-size: 1.125rem; font-weight: 700; }
+  .dc-mobile-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+  .dc-mobile-actions .dc-btn { width: 100%; }
+  @media (width <= 960px) {
+    .dc-nav-links, .dc-nav-actions { display: none; }
+    .dc-burger { display: flex; }
+    .dc-mobile-menu {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: opacity 0.2s cubic-bezier(.16, 1, .3, 1), transform 0.2s cubic-bezier(.16, 1, .3, 1), visibility 0s linear 0.2s;
+    }
+    .dc-mobile-menu.is-open {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+      transition-delay: 0s;
+      box-shadow: 0 14px 24px #11111129;
+    }
+  }
+
+  /* Footer: near-black with a warm glow, yellow labels, pill links. */
+  .dc-footer {
+    position: relative;
+    overflow: hidden;
+    color: #f5f5f5;
+    background: radial-gradient(1200px 320px at 20% -10%, #ffd96624, #0000 60%), linear-gradient(#0f0f11 0%, #070708 100%);
+    border-top: 2px solid var(--dc-black);
+  }
+  .dc-footer-body { display: grid; grid-template-columns: 1fr; gap: 3rem; padding-block: 6rem; }
+  @media (width >= 860px) {
+    .dc-footer-body { grid-template-columns: 1.15fr 1.75fr 1.1fr; column-gap: 2rem; }
+  }
+  .dc-footer-brand { display: flex; flex-direction: column; gap: 1.5rem; max-width: 40ch; }
+  .dc-footer-brand img { border-radius: 4px; box-shadow: 0 8px 18px #00000059; }
+  .dc-footer-tagline { color: #b6bbc5; line-height: 1.65; }
+  .dc-footer-label {
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dc-yellow);
+  }
+  .dc-footer-links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .dc-footer-chip {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 36px;
+    padding: 8px 14px;
+    border: 1px solid #303236;
+    border-radius: 9999px;
+    background: #ffffff08;
+    color: #b4bac6;
+    font-size: 0.75rem;
+    transition: color 0.16s, border-color 0.16s, background-color 0.16s, transform 0.16s;
+  }
+  .dc-footer-chip:hover { color: #fff; background: #ffd96624; border-color: #8a6f2d; transform: translateY(-1px); }
+  .dc-footer-chip:focus-visible { outline: 2px solid var(--dc-yellow); outline-offset: 2px; }
+  .dc-footer-bottom { padding-block: 1rem; background: #0000003d; border-top: 1px solid #22252b; }
+  .dc-footer-bottom-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: #8a8f99;
+  }
+  .dc-footer-bottom-inner a { color: #8a8f99; transition: color 0.15s; }
+  .dc-footer-bottom-inner a:hover { color: #d7dbe2; }
+}

@@ -1,0 +1,13 @@
+<% poster = @company.personal? ? "#{@company.display_name} (posting as an individual)" : @company.display_name %>
+<% content_for :preheader, "#{@company.display_name}'s first post is waiting for you." %>
+<%= email_heading "A first post needs review" %>
+<%= email_paragraph do %>
+  <strong><%= poster %></strong> just published their first <%= @job.kind_noun %>. First posts from new companies and individuals wait for an admin before they go public.
+<% end %>
+<%= render "hiring/mailer/job_panel", job: @job %>
+<%= email_button "Review the #{@job.kind_noun}", @review_url %>
+<%= email_muted do %>
+  <strong>Approve</strong> to make it live for <%= Hiring::JobPost::VALIDITY_PERIOD.inspect %> and trust <%= @company.display_name %>, so their later posts publish straight away.
+  <strong>Decline</strong> to send it back to drafts with a note.
+<% end %>
+<% content_for :footer_note, "You're getting this because you're a DevCongress Connect admin." %>

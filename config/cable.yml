@@ -1,10 +1,18 @@
+default: &default
+  adapter: solid_cable
+  polling_interval: 1.second
+  keep_messages_around_for: 1.day
+  connects_to:
+    database:
+      writing: cable
+
 development:
-  adapter: async
+  <<: *default
+  silence_polling: true
 
 test:
-  adapter: async
+  <<: *default
 
 production:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: dcjobs_production
+  <<: *default
+  polling_interval: 0.1.seconds

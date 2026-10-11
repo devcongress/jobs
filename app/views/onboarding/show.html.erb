@@ -1,0 +1,8 @@
+<% content_for :title, "Welcome" %>
+
+<div class="space-y-1">
+  <h1 class="font-display text-3xl text-[var(--pu-text)]">Welcome! What brings you here?</h1>
+  <p class="text-sm text-[var(--pu-text-muted)]">Pick one or both. You can add the other later from your dashboard.</p>
+</div>
+
+<%= render Forms::OnboardingForm.new(@onboarding, action: onboarding_path, method: :post, submit_label: "Get started") %>

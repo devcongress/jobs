@@ -1,0 +1,6 @@
+<% label, variant = {
+     "looking" => ["Open to work", "pu-badge-success"],
+     "open" => ["Open to offers", "pu-badge-info"],
+     "not_looking" => ["Not looking", "pu-badge-neutral"]
+   }.fetch(profile.availability) %>
+<span class="pu-badge <%= variant %>"><%= label %></span>

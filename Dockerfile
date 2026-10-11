@@ -1,32 +1,91 @@
-FROM ruby:2.6.1
+# syntax=docker/dockerfile:1
+# check=error=true
 
-# Install basic packages
-RUN apt-get update -qq && apt-get install -y build-essential nodejs
+# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
+# docker build -t dev_registry .
+# docker run -d -p 80:80 --env-file .env.production --name dev_registry dev_registry
 
-# rake postgres dependencies
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main 10.6" > /etc/apt/sources.list.d/pgdg.list
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-RUN apt-get update
-# libpq-dev is required for the pg gem
-RUN apt-get install -y libpq-dev postgresql-client-10
+# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
-# Set working directory for project
-WORKDIR /app
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
+ARG RUBY_VERSION=3.3.6
+FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
-# Import Gemfile
+# Rails app lives here
+WORKDIR /rails
+
+# Install base packages
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
+    ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Set production environment variables and enable jemalloc for reduced memory usage and latency.
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development" \
+    LD_PRELOAD="/usr/local/lib/libjemalloc.so"
+
+# Throw-away build stage to reduce size of final image
+FROM base AS build
+
+# Install packages needed to build gems and node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libvips libyaml-dev node-gyp pkg-config python-is-python3 && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Install JavaScript dependencies
+ARG NODE_VERSION=24.15.0
+ENV PATH=/usr/local/node/bin:$PATH \
+    COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    corepack enable && \
+    rm -rf /tmp/node-build-master
+
+# Install application gems
+COPY vendor/* ./vendor/
 COPY Gemfile Gemfile.lock ./
 
-EXPOSE 3000
-ENV RAILS_ENV=development
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
+    bundle exec bootsnap precompile -j 1 --gemfile
 
-# Import entrypoint script
-COPY ./entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Install node modules
+COPY package.json yarn.lock .yarnrc.yml ./
+RUN yarn install --immutable
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["bundle", "exec", "rails s -p 3000 -b 0.0.0.0"]
+# Copy application code
+COPY . .
 
-ENV BUNDLE_PATH=/bundle \
-    GEM_HOME=/bundle \
-    BUNDLE_JOBS=4
-ENV PATH="${GEM_HOME}/:${PATH}"
+# Precompile bootsnap code for faster boot times.
+# -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
+RUN bundle exec bootsnap precompile -j 1 app/ lib/
+
+# Precompiling assets for production without requiring real secrets
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+
+
+RUN rm -rf node_modules
+
+
+# Final stage for app image
+FROM base
+
+# Run and own only the runtime files as a non-root user for security
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
+USER 1000:1000
+
+# Copy built artifacts: gems, application
+COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
+COPY --chown=rails:rails --from=build /rails /rails
+
+# Entrypoint prepares the database.
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+
+# Start server via Thruster by default, this can be overwritten at runtime
+EXPOSE 80
+CMD ["./bin/thrust", "./bin/rails", "server"]

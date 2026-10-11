@@ -1,0 +1,233 @@
+<% content_for :description, "Developers, jobs and the people behind them in the DevCongress community. Find developers, post jobs and gigs, and share what you've built." %>
+<% structured_data StructuredData::Site.new(view: self).to_h %>
+<% signed_in = current_user.present? %>
+<% join_path = signed_in ? "/dashboard" : rodauth(:user).create_account_path %>
+<% roles = ["Backend Engineer", "Frontend Developer", "Mobile Developer", "Product Designer", "Data Scientist", "DevOps Engineer", "Tech Lead", "QA Engineer", "Founder", "Product Manager", "ML Engineer", "Security Engineer"] %>
+
+<%# Hero %>
+<section class="dc-container grid grid-cols-1 items-center gap-12 pt-[clamp(3rem,6vw,5rem)] lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+  <div>
+    <span class="dc-eyebrow">DevCongress Connect</span>
+    <h1 class="dc-heading mb-6 text-[clamp(2.5rem,6vw,4.5rem)] tracking-[-0.01em]">
+      Africa's builders, <span class="text-[var(--dc-pink)]">in one place</span>.
+    </h1>
+    <p class="mb-10 max-w-xl text-lg text-[var(--dc-text-mid)]">
+      A profile for every developer in the community: what you know, what you've shipped, and whether you're
+      open to work. Companies come here to hire.
+    </p>
+    <div class="flex flex-wrap gap-3 sm:gap-4">
+      <%= link_to (signed_in ? "Go to your dashboard" : "Create your profile"), join_path, class: "dc-btn dc-btn-primary dc-btn-lg sm:px-10" %>
+      <a href="#companies" class="dc-btn dc-btn-outline dc-btn-lg sm:px-10">I'm hiring</a>
+    </div>
+    <p class="mt-6 text-sm text-[var(--dc-text-muted)]">Free, always. No paywalls, no gatekeeping.</p>
+  </div>
+
+  <%# Live panel: the newest listed developers %>
+  <div class="overflow-hidden rounded-2xl border-4 border-[#111] bg-white shadow-[8px_8px_0_var(--dc-pink)]">
+    <div class="flex items-center justify-between gap-4 border-b-4 border-[#111] bg-[var(--dc-yellow)] px-5 py-3">
+      <span class="text-sm font-semibold"><%= dev_mark("connect") %> — newest builders</span>
+      <span class="text-xs font-semibold tracking-[0.06em] text-[var(--dc-pink)]">● Live</span>
+    </div>
+    <div class="space-y-3 bg-[var(--dc-bg)] p-5">
+      <% if @newest.any? %>
+        <% @newest.each do |developer| %>
+          <% if developer.visible_to?(current_user) %>
+            <%= render "home/developer_card", developer: %>
+          <% else %>
+            <%= render "home/private_developer_card", developer: %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <p class="py-10 text-center text-[var(--dc-text-mid)]">Be the first builder on Connect.</p>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# Stats %>
+<div class="py-12 sm:py-24">
+  <ul class="dc-container grid grid-cols-1 gap-8 sm:grid-cols-3">
+    <% [
+         [@stats[:developers], "Developers listed", "Searchable profiles with skills and experience."],
+         [@stats[:companies], "Companies", "Teams hiring from the community."],
+         [@stats[:open_jobs], "Open jobs", "Live roles you can apply to today."]
+       ].each do |count, label, body| %>
+      <li class="dc-box flex flex-col gap-2 p-8 shadow-[6px_6px_0_var(--dc-pink)]">
+        <span class="dc-heading text-[clamp(3.5rem,8vw,5rem)] leading-none tracking-[-0.02em] text-[var(--dc-pink)]"><%= number_with_delimiter(count) %></span>
+        <span class="text-[1.375rem] font-bold leading-snug"><%= label %></span>
+        <p class="text-[var(--dc-text-muted)]"><%= body %></p>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<%# The two audiences, with the roles band between them %>
+<% [
+     {
+       id: "developers",
+       eyebrow: "For developers",
+       title: safe_join(["Get found for the work you ", tag.span("actually", class: "text-[var(--dc-pink)]"), " do."]),
+       body: "Your profile is your CV, portfolio and network in one place, written by you and seen by the companies hiring in the community.",
+       cta: [signed_in ? "Open your dashboard" : "Create your profile", join_path],
+       steps: [
+         [["Make a profile that shows what you ", "actually know", "."], "Skills with years and level, your experience, and your links. Say if you're looking."],
+         [["Show the work, and credit the people you ", "built it with", "."], "Add projects and tag your collaborators. They confirm before it shows."],
+         [["Follow builders and ", "connect", " with the ones who follow back."], "Connections can endorse each other's skills, and see contact details you share with them."],
+         [["Apply to jobs and gigs in ", "one click", "."], "Send your profile to companies, and track every application from your dashboard."]
+       ]
+     },
+     {
+       id: "companies",
+       eyebrow: "For companies and clients",
+       title: safe_join(["Hire from a community that ", tag.span("ships", class: "text-[var(--dc-pink)]"), "."]),
+       body: "Post a role, a freelance gig or an internship, and hear from developers whose skills and work you can see up front.",
+       cta: [signed_in ? "Set up a company" : "Start hiring", signed_in ? "/setup/company/new" : join_path],
+       steps: [
+         [["Hire as a company, or post a gig ", "as yourself", "."], "Set up a company and invite recruiters, or post under your own name."],
+         [["Post a job, a gig or an ", "internship", "."], "Take applications here, link to your own page, or both."],
+         [["Review applicants and ", "hire", " from the community."], "Move people through reviewing, shortlisted and hired, and see their work up front."]
+       ]
+     }
+   ].each_with_index do |audience, index| %>
+  <% if index == 1 %>
+    <div class="overflow-hidden border-y-2 border-[#111] bg-[var(--dc-yellow)] py-6" aria-hidden="true">
+      <div class="dc-marquee flex w-max gap-3">
+        <% (roles * 2).each do |role| %>
+          <span class="dc-pill"><%= role %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <section class="dc-section" id="<%= audience[:id] %>">
+    <div class="dc-container grid grid-cols-1 gap-12 lg:grid-cols-[5fr_7fr] lg:items-start lg:gap-32">
+      <div class="flex flex-col gap-6 lg:sticky lg:top-[88px]">
+        <div>
+          <span class="dc-eyebrow"><%= audience[:eyebrow] %></span>
+          <h2 class="dc-heading text-[clamp(1.75rem,3vw,2.5rem)] leading-snug"><%= audience[:title] %></h2>
+        </div>
+        <p class="text-[var(--dc-text-mid)]"><%= audience[:body] %></p>
+        <%= link_to audience[:cta].first, audience[:cta].last, class: "dc-btn dc-btn-primary dc-btn-lg self-start" %>
+      </div>
+      <ol class="dc-numbered">
+        <% audience[:steps].each_with_index do |(step, body), number| %>
+          <li>
+            <span class="dc-numbered-num"><%= format("%02d", number + 1) %></span>
+            <div class="flex flex-col gap-2">
+              <h3 class="dc-numbered-title"><%= step.first %><span class="text-[var(--dc-pink)]"><%= step.second %></span><%= step.third %></h3>
+              <p class="text-sm text-[var(--dc-text-mid)]"><%= body %></p>
+            </div>
+          </li>
+        <% end %>
+      </ol>
+    </div>
+  </section>
+<% end %>
+
+<%# Jobs %>
+<section class="dc-section border-t-2 border-[#111]" id="jobs">
+  <div class="dc-container">
+    <div class="mb-12 flex flex-col gap-2">
+      <span class="dc-eyebrow">Hiring now</span>
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <h2 class="dc-heading dc-h2">Latest jobs & gigs</h2>
+        <%= link_to "See all jobs", public_jobs_path, class: "dc-btn dc-btn-outline" %>
+      </div>
+      <p class="text-[var(--dc-text-mid)]">Roles, freelance gigs and internships from the community.</p>
+    </div>
+    <% if @jobs.any? %>
+      <ul class="space-y-4">
+        <% @jobs.each do |job| %>
+          <li><%= render "site/jobs/job_card", job: %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="dc-empty p-10">No open jobs yet. Hiring? Post the first one.</p>
+    <% end %>
+  </div>
+</section>
+
+<%# Skills and more developers %>
+<section class="dc-section border-t-2 border-[#111] bg-white">
+  <div class="dc-container grid grid-cols-1 gap-16 lg:grid-cols-2">
+    <div>
+      <span class="dc-eyebrow">The community knows</span>
+      <h2 class="dc-heading dc-h2">Top skills</h2>
+      <% if @top_skills.any? %>
+        <div class="mt-10 flex flex-wrap gap-2.5">
+          <% @top_skills.each do |(name, slug), count| %>
+            <%= link_to developers_directory_path(skill: slug), class: "dc-pill dc-pill-sm" do %>
+              <%= name %> <span class="text-[var(--dc-pink)]"><%= count %></span>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="mt-10 text-[var(--dc-text-mid)]">Skills appear here as developers add them.</p>
+      <% end %>
+    </div>
+    <div>
+      <span class="dc-eyebrow">The people</span>
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <h2 class="dc-heading dc-h2">More builders</h2>
+        <%= link_to "All developers →", developers_directory_path, class: "dc-link" %>
+      </div>
+      <% if @more_developers.any? %>
+        <div class="mt-10 space-y-4">
+          <% @more_developers.each do |developer| %>
+            <%= render "home/developer_card", developer: %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="mt-10 text-[var(--dc-text-mid)]">Browse everyone who's listed in the developer directory.</p>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# Projects %>
+<% if @projects.any? %>
+  <section class="dc-section border-t-2 border-[#111]" id="projects">
+    <div class="dc-container">
+      <div class="mb-16 flex flex-col gap-2">
+        <span class="dc-eyebrow">Show the work</span>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 class="dc-heading dc-h2">Recent projects</h2>
+          <%= link_to "All projects", public_projects_path, class: "dc-btn dc-btn-outline" %>
+        </div>
+        <p class="text-[var(--dc-text-mid)]">Things DevCongress developers have built, and who built them.</p>
+      </div>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <% @projects.each do |project| %>
+          <%= render "site/projects/project_card", project: %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<%# Closing CTA %>
+<section class="dc-section border-t-2 border-[#111] bg-[linear-gradient(180deg,var(--dc-yellow)_0%,#f7d96d_100%)]">
+  <div class="dc-container grid grid-cols-1 gap-16 md:grid-cols-2 md:items-start md:gap-32">
+    <div class="flex max-w-[560px] flex-col gap-6">
+      <h2 class="dc-heading text-[clamp(2.2rem,5vw,3.6rem)]">Builders helping builders, since 2015.</h2>
+      <p class="max-w-[52ch] text-lg text-[var(--dc-text-mid)]">
+        Connect is part of DevCongress, Africa's home for builders. No paywalls, no gatekeeping: just a place to
+        show what you've built and find the people to build the next thing with.
+      </p>
+      <div class="flex flex-col items-start gap-3">
+        <%= link_to (signed_in ? "Go to your dashboard" : "Join Connect"), join_path, class: "dc-btn dc-btn-primary dc-btn-lg" %>
+        <span class="text-xs tracking-[0.02em] text-[var(--dc-text-mid)]">Free for developers and companies.</span>
+      </div>
+    </div>
+    <div class="dc-box overflow-hidden bg-[#fff9e8] p-6">
+      <p class="border-b-2 border-[#111] pb-4 text-xs font-bold uppercase tracking-[0.1em]">On Connect you can</p>
+      <ol class="flex flex-col gap-3 pt-4">
+        <% ["Build a profile companies can find", "Credit the people you built with", "Connect and endorse each other's skills", "Post and apply for jobs, gigs and internships"].each_with_index do |item, index| %>
+          <li class="flex items-center gap-4 rounded border-2 border-[#111] bg-white p-4 text-sm font-semibold transition hover:-translate-y-px hover:bg-[#fff0ce]">
+            <span class="dc-heading shrink-0 text-[1.375rem] leading-none text-[var(--dc-pink)]"><%= format("%02d", index + 1) %></span>
+            <span class="leading-snug"><%= item %></span>
+          </li>
+        <% end %>
+      </ol>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,213 @@
+<% profile = @profile %>
+<% content_for :title, "#{profile.name} (@#{profile.handle})" %>
+<% content_for :description, [profile.headline, profile.location].compact_blank.join(" · ").presence || "#{profile.name} on DevCongress Connect" %>
+<% content_for :noindex, true unless profile.visible_to_everyone? %>
+<% if profile.visible_to?(nil) %>
+  <% content_for :og_type, "profile" %>
+  <% og_card OgCard::Developer.new(profile) %>
+  <% structured_data StructuredData::DeveloperProfile.new(profile, view: self).to_h %>
+<% end %>
+<% contact_visible = profile.contact_visible_to?(current_user) %>
+<% slack_identity = profile.user.slack_identity %>
+<% links = [
+     [Phlex::TablerIcons::BrandGithub, profile.github_url],
+     [Phlex::TablerIcons::BrandLinkedin, profile.linkedin_url],
+     [Phlex::TablerIcons::BrandX, profile.x_url],
+     [Phlex::TablerIcons::BrandSlack, (slack_identity && Slack.workspace_url && "#{Slack.workspace_url}/team/#{slack_identity.uid}")],
+     [Phlex::TablerIcons::World, profile.website_url]
+   ].select { |_, url| url.present? } %>
+
+<div class="dc-container max-w-5xl py-10">
+  <% if @own %>
+    <div class="mb-6 flex flex-col gap-3 rounded-lg border-2 border-[#111] bg-[#f5e642] px-5 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+      <span>
+        This is your profile.
+        <% if profile.visible_to_hidden? %>It's <strong>hidden</strong>: only you can see it.
+        <% elsif profile.visible_to_members? %>It's visible to <strong>signed-in members</strong> only.
+        <% else %>It's <strong>public</strong>.<% end %>
+      </span>
+      <%= link_to "Edit profile", developer_portal_edit_profile_path(profile), class: "shrink-0 dc-btn dc-btn-white dc-btn-sm" %>
+    </div>
+  <% end %>
+
+  <section class="overflow-hidden rounded-2xl border-2 border-[#111] bg-white shadow-[8px_8px_0_#e8117f]">
+    <div class="flex h-24 items-start justify-end border-b-2 border-[#111] bg-[#f5e642] px-5 py-3 font-mono text-sm font-bold">@<%= profile.handle %></div>
+    <div class="px-6 pb-6">
+      <div class="-mt-10 flex items-end justify-between gap-4">
+        <%= render InitialsAvatar.new(name: profile.name, seed: profile.handle, size: :xl, class: "ring-4 ring-white") %>
+        <div class="flex flex-wrap justify-end gap-2">
+          <% unless @own %>
+            <% if @viewer_profile %>
+              <%= render "shared/follow_button", profile:, following: @following, followed_by: @followed_by %>
+            <% else %>
+              <%= link_to (current_user ? new_developer_profile_path : rodauth(:user).login_path), class: "dc-btn dc-btn-primary dc-btn-sm",
+                    title: (current_user ? "Create a developer profile to follow people" : "Log in to follow") do %>
+                <%= render Phlex::TablerIcons::UserPlus.new(class: "h-4 w-4") %> Follow
+              <% end %>
+            <% end %>
+          <% end %>
+          <button type="button" data-controller="clipboard" data-clipboard-text-value="<%= request.original_url %>" data-action="clipboard#copy"
+                  class="dc-btn dc-btn-white dc-btn-sm">
+            <span data-clipboard-target="label">Copy link</span>
+          </button>
+        </div>
+      </div>
+      <div class="mt-4 space-y-2">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h1 class="dc-heading text-4xl"><%= profile.name %></h1>
+          <%= availability_pill(profile) %>
+        </div>
+        <% if profile.headline.present? %><p class="text-lg text-[#555]"><%= profile.headline %></p><% end %>
+        <p class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#555]">
+          <% if profile.location.present? %><span class="flex items-center gap-1"><%= render Phlex::TablerIcons::MapPin.new(class: "h-4 w-4") %> <%= profile.location %></span><% end %>
+          <% if profile.remote_ok? %><span>Open to remote</span><% end %>
+          <% if profile.open_to_relocation? %><span>Open to relocating</span><% end %>
+          <% if profile.seniority %><span><%= profile.seniority.humanize %><%= " · #{pluralize(profile.years_experience, "year")} experience" if profile.years_experience %></span><% end %>
+        </p>
+        <p class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+          <span><strong><%= @network_counts[:followers] %></strong> <%= "follower".pluralize(@network_counts[:followers]) %></span>
+          <span><strong><%= @network_counts[:following] %></strong> following</span>
+          <span><strong><%= @network_counts[:connections] %></strong> <%= "connection".pluralize(@network_counts[:connections]) %></span>
+          <% if @connected %>
+            <span class="rounded-full bg-[#dcfce7] px-2.5 py-0.5 text-xs font-semibold text-[#166534]">You're connected</span>
+          <% elsif @followed_by %>
+            <span class="rounded-full bg-[#e0f2fe] px-2.5 py-0.5 text-xs font-semibold text-[#075985]">Follows you</span>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1fr]">
+    <div class="min-w-0 space-y-10">
+      <% if profile.bio.present? %>
+        <section>
+          <h2 class="dc-heading text-3xl">About</h2>
+          <div class="prose mt-4 max-w-none prose-a:text-[#e8117f]"><%= render_markdown(profile.bio) %></div>
+        </section>
+      <% end %>
+
+      <section>
+        <h2 class="dc-heading text-3xl">Experience</h2>
+        <% if @experiences.any? %>
+          <ol class="relative ml-2 mt-6 space-y-6 border-l-2 border-[#111]">
+            <% @experiences.each do |experience| %>
+              <li class="ml-6">
+                <span class="absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-[#111] <%= experience.current? ? "bg-[#e8117f]" : "bg-white" %>"></span>
+                <p class="font-semibold"><%= experience.title %></p>
+                <p class="text-sm text-[#555]"><%= [experience.company_name, experience.location.presence].compact.join(" · ") %></p>
+                <p class="text-xs text-[#6b6b6b]"><%= experience.started_on.strftime("%b %Y") %> – <%= experience.ended_on&.strftime("%b %Y") || "Present" %></p>
+                <% if experience.description.present? %><div class="prose prose-sm mt-2 max-w-none"><%= render_markdown(experience.description) %></div><% end %>
+              </li>
+            <% end %>
+          </ol>
+        <% else %>
+          <p class="mt-4 text-[#555]">No experience added yet.</p>
+        <% end %>
+      </section>
+
+      <section>
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="dc-heading text-3xl">Projects</h2>
+          <% if @own %><%= link_to "Add a project", developer_portal_new_project_path(profile), class: "dc-link" %><% end %>
+        </div>
+        <% if @projects.any? %>
+          <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <% @projects.each do |project| %>
+              <%= render "site/projects/project_card", project: %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="mt-4 text-[#555]"><%= @own ? "Add things you've built and credit the people you built them with." : "No projects yet." %></p>
+        <% end %>
+      </section>
+    </div>
+
+    <aside class="space-y-8">
+      <section class="dc-box p-5">
+        <h2 class="font-semibold">Skills</h2>
+        <% if @profile_skills.any? %>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            <% @profile_skills.each do |profile_skill| %>
+              <li class="inline-flex items-stretch overflow-hidden rounded-full border-2 border-[#111] bg-[#f5f2e8] text-sm">
+                <%= link_to developers_directory_path(skill: profile_skill.skill.slug), class: "inline-flex items-center gap-1.5 px-3 py-1 hover:bg-[#f5e642]" do %>
+                  <span class="font-medium"><%= profile_skill.skill.name %></span>
+                  <% details = [profile_skill.level&.humanize, (pluralize(profile_skill.years, "yr") if profile_skill.years)].compact %>
+                  <% if details.any? %><span class="whitespace-nowrap text-xs text-[#555]"><%= details.join(" · ") %></span><% end %>
+                <% end %>
+                <% count = profile_skill.endorsements_count %>
+                <% if @connected %>
+                  <% endorsed = @endorsed_skill_ids.include?(profile_skill.id) %>
+                  <%= button_to endorse_skill_path(handle: profile.handle, skill: profile_skill.skill.slug), method: (endorsed ? :delete : :post),
+                        form: {class: "flex"},
+                        class: class_names("inline-flex items-center gap-1 border-l-2 border-[#111] px-2.5 text-xs font-semibold", endorsed ? "bg-[#e8117f] text-white" : "bg-white hover:bg-[#f5e642]"),
+                        title: (endorsed ? "Remove your endorsement" : "Endorse #{profile.name.split.first} for #{profile_skill.skill.name}"),
+                        "aria-pressed": endorsed do %>
+                    <%= render Phlex::TablerIcons::ThumbUp.new(class: "h-3.5 w-3.5") %><span><%= count.positive? ? count : "Endorse" %></span>
+                  <% end %>
+                <% elsif count.positive? %>
+                  <span class="inline-flex items-center gap-1 border-l-2 border-[#111] bg-white px-2.5 text-xs font-semibold" title="<%= pluralize(count, "endorsement") %> from connections">
+                    <%= render Phlex::TablerIcons::ThumbUp.new(class: "h-3.5 w-3.5") %><%= count %>
+                  </span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+          <% if @connected %>
+            <p class="mt-3 text-xs text-[#6b6b6b]">You're connected, so you can endorse skills you've seen <%= profile.name.split.first %> use.</p>
+          <% end %>
+        <% else %>
+          <p class="mt-3 text-sm text-[#555]">No skills added yet.</p>
+        <% end %>
+      </section>
+
+      <section class="dc-box p-5">
+        <h2 class="font-semibold">Contact</h2>
+        <% if contact_visible && (profile.contact_email.present? || profile.phone.present?) %>
+          <ul class="mt-4 space-y-2 text-sm">
+            <% if profile.contact_email.present? %>
+              <li class="flex items-center gap-2"><%= render Phlex::TablerIcons::Mail.new(class: "h-4 w-4 text-[#6b6b6b]") %> <%= mail_to profile.contact_email, class: "text-[#e8117f] hover:underline" %></li>
+            <% end %>
+            <% if profile.phone.present? %>
+              <li class="flex items-center gap-2"><%= render Phlex::TablerIcons::Phone.new(class: "h-4 w-4 text-[#6b6b6b]") %> <%= link_to profile.phone, "tel:#{profile.phone}", class: "text-[#e8117f] hover:underline" %></li>
+            <% end %>
+          </ul>
+        <% elsif !contact_visible && profile.contact_visible_to_members? && current_user.nil? %>
+          <p class="mt-3 text-sm text-[#555]"><%= link_to "Log in", rodauth(:user).login_path, class: "dc-link" %> to see contact details.</p>
+        <% elsif !contact_visible && profile.contact_visible_to_connections? %>
+          <p class="mt-3 text-sm text-[#555]">
+            <%= profile.name.split.first %> shares contact details with connections only.
+            <% if @following %>They'll show here if they follow you back.<% else %>Follow them, and if they follow you back you'll be connected.<% end %>
+          </p>
+        <% else %>
+          <p class="mt-3 text-sm text-[#555]">Contact details aren't shared publicly.</p>
+        <% end %>
+
+        <% if links.any? %>
+          <ul class="mt-4 space-y-2 border-t border-[#e0ddd4] pt-4 text-sm">
+            <% links.each do |icon, url| %>
+              <li class="flex min-w-0 items-center gap-2">
+                <%= render icon.new(class: "h-4 w-4 shrink-0 text-[#6b6b6b]") %>
+                <%= link_to url.sub(%r{\Ahttps?://(www\.)?}, ""), url, target: "_blank", rel: "nofollow noopener", class: "truncate text-[#e8117f] hover:underline" %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </section>
+
+      <% if @posts.any? %>
+        <section class="dc-box p-5">
+          <h2 class="font-semibold">Posted by <%= @profile.name.split.first %></h2>
+          <ul class="mt-3 space-y-3">
+            <% @posts.each do |post| %>
+              <li>
+                <%= link_to post.title, public_job_path(post), class: "block dc-link" %>
+                <span class="text-xs text-[#6b6b6b]"><%= [post.type_label, post.pay].compact.join(" · ") %></span>
+              </li>
+            <% end %>
+          </ul>
+        </section>
+      <% end %>
+    </aside>
+  </div>
+</div>

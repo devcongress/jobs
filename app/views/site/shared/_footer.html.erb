@@ -1,0 +1,56 @@
+<% socials = {
+     "slack" => Slack.invite_url,
+     "linkedin" => "https://www.linkedin.com/company/devcongress",
+     "x" => "https://x.com/devcongress",
+     "github" => "https://github.com/devcongress",
+     "youtube" => "https://youtube.com/devcongress",
+     "facebook" => "https://facebook.com/devcongress",
+     "instagram" => "https://www.instagram.com/devcongress/"
+   }.compact %>
+<footer class="dc-footer">
+  <div class="dc-container dc-footer-body">
+    <div class="dc-footer-brand">
+      <a href="<%= root_path %>" aria-label="DevCongress Connect home" class="w-fit">
+        <%= image_tag "brand/devcongress-wordmark.png", alt: "dev:congress{};", class: "h-9 w-auto" %>
+      </a>
+      <p class="dc-footer-tagline">Connect is where Africa's builders show their work, find each other and get hired. Free, always.</p>
+      <a href="mailto:hello@devcongress.org" class="dc-footer-chip">hello@devcongress.org</a>
+    </div>
+    <nav aria-label="Footer links">
+      <p class="dc-footer-label">Connect</p>
+      <ul class="dc-footer-links">
+        <li><%= link_to "Developers", developers_directory_path, class: "dc-footer-chip" %></li>
+        <li><%= link_to "Projects", public_projects_path, class: "dc-footer-chip" %></li>
+        <li><%= link_to "Jobs & gigs", public_jobs_path, class: "dc-footer-chip" %></li>
+        <li><%= link_to "Post a job", (current_user ? "/dashboard" : rodauth(:user).create_account_path), class: "dc-footer-chip" %></li>
+        <% if current_user %>
+          <li><%= link_to "Dashboard", "/dashboard", class: "dc-footer-chip" %></li>
+        <% else %>
+          <li><%= link_to "Log in", rodauth(:user).login_path, class: "dc-footer-chip" %></li>
+          <li><%= link_to "Join Connect", rodauth(:user).create_account_path, class: "dc-footer-chip" %></li>
+        <% end %>
+      </ul>
+      <p class="dc-footer-label mt-8">DevCongress</p>
+      <ul class="dc-footer-links">
+        <li><a href="https://devcongress.org/" class="dc-footer-chip">devcongress.org</a></li>
+        <li><a href="https://devcongress.org/#programs" class="dc-footer-chip">Programs</a></li>
+        <li><a href="https://devcongress.org/events/" class="dc-footer-chip">Events</a></li>
+        <li><a href="https://paystack.shop/pay/devcongress-meetup" target="_blank" rel="noopener noreferrer" class="dc-footer-chip">Support us</a></li>
+      </ul>
+    </nav>
+    <div>
+      <p class="dc-footer-label">Find us</p>
+      <ul class="dc-footer-links max-w-[320px]">
+        <% socials.each do |name, url| %>
+          <li><a href="<%= url %>" target="_blank" rel="noopener noreferrer" class="dc-footer-chip capitalize"><%= name %></a></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="dc-footer-bottom">
+    <div class="dc-container dc-footer-bottom-inner">
+      <span>&copy; <%= Date.current.year %> DevCongress. Built by the community, for the community.</span>
+      <a href="https://devcongress.org/">A DevCongress project</a>
+    </div>
+  </div>
+</footer>

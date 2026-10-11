@@ -1,0 +1,8 @@
+<% content_for :preheader, "Your account is ready. Set up a developer profile, a company, or both." %>
+<%= email_heading "Welcome to DevCongress Connect" %>
+<%= render "greeting" %>
+<%= email_paragraph "Your account is ready. DevCongress Connect is the DevCongress community's catalogue of developers, jobs and the people behind them." %>
+<%= email_paragraph "Next, set up a developer profile so companies and the community can find you, a company so you can post jobs, or both." %>
+<%= email_button "Set up my account", @url %>
+<%= email_link_fallback @url %>
+<% content_for :footer_note, "You're getting this email because you just joined DevCongress Connect." %>

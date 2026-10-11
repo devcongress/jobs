@@ -1,0 +1,57 @@
+{
+  "planPath": "docs/superpowers/plans/2026-10-08-email-notifications.md",
+  "tasks": [
+    {
+      "id": 0,
+      "subject": "Task 1: Opt-out model and user API",
+      "status": "completed",
+      "description": "See docs/superpowers/plans/2026-10-08-email-notifications.md, Task 1.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 1,
+      "subject": "Task 2: Email settings page",
+      "status": "completed",
+      "description": "See docs/superpowers/plans/2026-10-08-email-notifications.md, Task 2.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "subject": "Task 3: Unsubscribe page",
+      "status": "completed",
+      "description": "See docs/superpowers/plans/2026-10-08-email-notifications.md, Task 3.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "subject": "Task 4: Categorised mail, footer and developer-facing mailers",
+      "status": "completed",
+      "description": "See docs/superpowers/plans/2026-10-08-email-notifications.md, Task 4.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "subject": "Task 5: One email per company user",
+      "status": "completed",
+      "description": "See docs/superpowers/plans/2026-10-08-email-notifications.md, Task 5.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        3
+      ]
+    },
+    {
+      "id": 5,
+      "subject": "Task 6: Full suite and manual check",
+      "status": "completed",
+      "description": "See docs/superpowers/plans/2026-10-08-email-notifications.md, Task 6.\n\n```json:metadata\n{\"requiresUserVerification\": false}\n```",
+      "blockedBy": [
+        4
+      ]
+    }
+  ],
+  "lastUpdated": "2026-10-08T16:33:31.090896+00:00"
+}

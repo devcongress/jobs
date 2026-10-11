@@ -1,0 +1,11 @@
+<% content_for :title, "Not found" %>
+<% content_for :noindex, true %>
+<section class="dc-container max-w-2xl py-28 text-center">
+  <p class="dc-heading text-7xl text-[#e8117f]">404</p>
+  <h1 class="mt-4 dc-heading text-4xl">Nothing to see here.</h1>
+  <p class="mt-4 text-[#555]">This page doesn't exist, or it isn't visible to you. Some profiles and jobs are only visible to signed-in members.</p>
+  <div class="mt-8 flex justify-center gap-3">
+    <%= link_to "Browse developers", developers_directory_path, class: "dc-btn dc-btn-outline" %>
+    <%= link_to "Browse jobs", public_jobs_path, class: "dc-btn dc-btn-primary" %>
+  </div>
+</section>

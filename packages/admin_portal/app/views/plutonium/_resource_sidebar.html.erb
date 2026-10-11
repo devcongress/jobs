@@ -1,0 +1,24 @@
+<%= render Plutonium::UI::Layout::IconRail.new(
+      menu: Phlexi::Menu::Builder.new do |m|
+        m.item "Overview", url: root_path, icon: Phlex::TablerIcons::LayoutDashboard
+        m.item "Developers", url: resource_url_for(Developers::Profile, parent: nil), icon: Phlex::TablerIcons::Id
+        m.item "Companies", url: resource_url_for(Company, parent: nil), icon: Phlex::TablerIcons::Building
+        m.item "Posts", url: resource_url_for(Hiring::JobPost, parent: nil), icon: Phlex::TablerIcons::Briefcase
+        m.item "Applications", url: resource_url_for(Hiring::JobApplication, parent: nil), icon: Phlex::TablerIcons::Send
+        m.item "Projects", url: resource_url_for(Showcase::Project, parent: nil), icon: Phlex::TablerIcons::Stack2
+        m.item "Network", icon: Phlex::TablerIcons::Affiliate do |n|
+          n.item "Follows", url: resource_url_for(Network::Follow, parent: nil)
+          n.item "Endorsements", url: resource_url_for(Network::Endorsement, parent: nil)
+          n.item "Project credits", url: resource_url_for(Showcase::ProjectContributor, parent: nil)
+        end
+        m.item "Skills", url: resource_url_for(Skill, parent: nil), icon: Phlex::TablerIcons::Tools
+        m.item "Accounts", icon: Phlex::TablerIcons::Users do |n|
+          n.item "Users", url: resource_url_for(User, parent: nil)
+          n.item "Admins", url: resource_url_for(Admin, parent: nil)
+        end
+      end
+    ) do |rail| %>
+  <% rail.with_brand do %>
+    <%= resource_logo_tag(classname: "h-10 w-10") %>
+  <% end %>
+<% end %>

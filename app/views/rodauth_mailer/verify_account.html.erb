@@ -1,0 +1,15 @@
+<% content_for :preheader, "One click to confirm your email and finish signing up." %>
+<%= email_heading "Confirm your email" %>
+<%= email_paragraph do %>
+  <% if @admin %>
+    An admin account was created for <strong><%= @account.email %></strong>. Confirm it's your email to finish setting it up.
+  <% else %>
+    Welcome to DevCongress Connect, the DevCongress community's catalogue of developers, jobs and the people behind them. Confirm <strong><%= @account.email %></strong> is your email to finish signing up.
+  <% end %>
+<% end %>
+<%= email_button "Confirm my email", @url %>
+<% unless @admin %>
+  <%= email_paragraph "Then set up a developer profile, a company, or both." %>
+<% end %>
+<%= email_link_fallback @url %>
+<% content_for :footer_note, "Didn't sign up? Ignore this email and the account won't be activated." %>

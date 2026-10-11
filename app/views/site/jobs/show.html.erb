@@ -1,0 +1,110 @@
+<% job = @job %>
+<% company = job.company %>
+<% content_for :title, "#{job.title} at #{company.display_name}" %>
+<% content_for :description, [job.type_label, job.location.presence, job.pay, job.timing].compact.join(" · ") %>
+<% poster_link = poster_path(job) %>
+<% content_for :noindex, true unless job.visible_to_everyone? %>
+<% if job.visible_to?(nil) %>
+  <% og_card OgCard::Job.new(job) %>
+  <% structured_data StructuredData::JobPosting.new(job, view: self).to_h %>
+<% end %>
+
+<div class="dc-container max-w-5xl py-10">
+  <%= link_to "← All jobs & gigs", public_jobs_path, class: "text-sm font-semibold text-[#555] hover:text-[#111]" %>
+
+  <div class="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1fr]">
+    <article class="min-w-0">
+      <div class="flex items-start gap-4">
+        <%= poster_avatar(job, size: :lg) %>
+        <div class="min-w-0">
+          <h1 class="dc-heading text-4xl leading-tight"><%= job.title %></h1>
+          <p class="mt-1 text-[#555]"><%= poster_link ? link_to(company.display_name, poster_link, class: "font-semibold text-[#111] hover:text-[#e8117f]") : tag.span(company.display_name, class: "font-semibold text-[#111]") %><%= " · #{job.location}" if job.location.present? %></p>
+        </div>
+      </div>
+
+      <div class="mt-5 flex flex-wrap gap-2">
+        <%= pill(job.type_label) %>
+        <% if job.seniority %><%= pill(job.seniority.humanize) %><% end %>
+        <% if job.remote_ok? %><%= pill("Remote OK") %><% end %>
+        <% if job.pay %><%= pill(job.pay) %><% end %>
+        <% if job.timing %><%= pill(job.timing) %><% end %>
+        <% if company.personal? %><%= pill("Posted by an individual") %><% end %>
+        <% if job.visible_to_members? %><%= pill("Members only") %><% end %>
+      </div>
+      <p class="mt-3 text-sm text-[#6b6b6b]">Posted <%= time_ago_in_words(job.published_at) %> ago · closes <%= job.expires_at.strftime("%-d %b %Y") %></p>
+
+      <div class="prose mt-8 max-w-none prose-a:text-[#e8117f]"><%= render_markdown(job.description) %></div>
+    </article>
+
+    <aside class="space-y-6">
+      <section class="dc-box p-5 shadow-[6px_6px_0_#e8117f]">
+        <h2 class="dc-heading text-2xl">Apply</h2>
+        <div class="mt-4 space-y-3">
+          <% if job.accepts_applications? && current_user && company.personal_owner_id == current_user.id %>
+            <p class="text-sm">This is your <%= job.kind_noun %>. You'll find applicants on your <%= link_to "posting dashboard", company_portal_home_path(company), class: "dc-link" %>.</p>
+          <% elsif job.accepts_applications? %>
+            <% if @application %>
+              <p class="text-sm">You applied <%= time_ago_in_words(@application.created_at) %> ago. Status: <strong><%= @application.status.humanize %></strong>.</p>
+              <%= link_to "View your application", developer_portal_application_path(@profile, @application), class: "w-full dc-btn dc-btn-white dc-btn-sm" %>
+            <% elsif @profile %>
+              <%= link_to "Apply with your profile", developer_portal_apply_path(@profile, job), class: "w-full dc-btn dc-btn-primary dc-btn-sm" %>
+              <p class="text-xs text-[#6b6b6b]"><%= company.personal? ? company.display_name : "The company" %> sees your profile and an optional note.</p>
+            <% elsif current_user %>
+              <%= link_to "Create a developer profile to apply", new_developer_profile_path, class: "w-full dc-btn dc-btn-primary dc-btn-sm" %>
+            <% else %>
+              <%= link_to "Log in to apply", rodauth(:user).login_path, class: "w-full dc-btn dc-btn-primary dc-btn-sm" %>
+              <p class="text-xs text-[#6b6b6b]">New here? <%= link_to "Create an account", rodauth(:user).create_account_path, class: "dc-link" %>. It's free.</p>
+            <% end %>
+          <% end %>
+          <% if job.apply_url.present? %>
+            <%= link_to (company.personal? ? "Apply via their link ↗" : "Apply on #{company.display_name}'s site ↗"), job.apply_url, target: "_blank", rel: "nofollow noopener",
+                  class: "w-full dc-btn dc-btn-white dc-btn-sm" %>
+          <% end %>
+        </div>
+      </section>
+
+      <% if job.slack_message_url.present? || (Slack.invite_url && !current_user) %>
+        <section class="dc-box space-y-2 p-5">
+          <% if job.slack_message_url.present? %>
+            <%= link_to job.slack_message_url, target: "_blank", rel: "noopener", class: "flex items-center gap-2 text-sm font-semibold hover:text-[#e8117f]" do %>
+              <%= render Phlex::TablerIcons::BrandSlack.new(class: "h-5 w-5") %> Discuss in #jobs
+            <% end %>
+          <% end %>
+          <% if Slack.invite_url && !current_user %>
+            <%= link_to "Join the DevCongress Slack", Slack.invite_url, target: "_blank", rel: "noopener", class: "block text-sm text-[#e8117f] hover:underline" %>
+          <% end %>
+        </section>
+      <% end %>
+
+      <section class="dc-box p-5">
+        <% if company.personal? %>
+          <% poster = company.personal_profile %>
+          <h2 class="font-semibold">About the poster</h2>
+          <p class="mt-2 text-sm text-[#555]"><%= company.display_name %><%= " · #{poster.headline}" if poster&.headline.present? %></p>
+          <p class="mt-1 text-sm text-[#555]"><%= poster&.location.presence || "Location not listed" %></p>
+          <% if poster_link %>
+            <%= link_to "View their profile →", poster_link, class: "mt-4 inline-block text-sm font-semibold hover:text-[#e8117f]" %>
+          <% end %>
+        <% else %>
+          <h2 class="font-semibold">About <%= company.display_name %></h2>
+          <p class="mt-2 text-sm text-[#555]"><%= [company.city, company.country].compact_blank.join(", ").presence || "Location not listed" %></p>
+          <% if company.website.present? %>
+            <%= link_to company.website.sub(%r{\Ahttps?://(www\.)?}, ""), company.website, target: "_blank", rel: "nofollow noopener", class: "mt-1 block truncate text-sm text-[#e8117f] hover:underline" %>
+          <% end %>
+          <%= link_to "Company page →", public_company_path(company.slug), class: "mt-4 inline-block text-sm font-semibold hover:text-[#e8117f]" %>
+        <% end %>
+      </section>
+
+      <% if @more_jobs.any? %>
+        <section>
+          <h2 class="font-semibold">More from <%= company.display_name %></h2>
+          <ul class="mt-3 space-y-2">
+            <% @more_jobs.each do |other| %>
+              <li><%= link_to other.title, public_job_path(other), class: "text-sm text-[#e8117f] hover:underline" %></li>
+            <% end %>
+          </ul>
+        </section>
+      <% end %>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+Confirm your email
+==================
+
+<% if @admin -%>
+An admin account was created for <%= @account.email %>. Confirm it's your email to finish setting it up:
+<% else -%>
+Welcome to DevCongress Connect, the DevCongress community's catalogue of developers, jobs and the people behind them. Confirm <%= @account.email %> is your email to finish signing up:
+<% end -%>
+
+<%= @url %>
+
+Didn't sign up? Ignore this email and the account won't be activated.

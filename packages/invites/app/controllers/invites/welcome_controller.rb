@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+module Invites
+  class WelcomeController < ApplicationController
+    include Plutonium::Auth::Rodauth(:user)
+
+    before_action { rodauth.require_authentication }
+    include Plutonium::Invites::PendingInviteCheck
+
+    prepend_view_path Invites::Engine.root.join("app/views")
+    layout "invites/invitation"
+
+    def index
+      @invite = pending_invite
+
+      if @invite
+        render :pending_invitation
+      else
+        redirect_to after_welcome_path, allow_other_host: false
+      end
+    end
+
+    def skip
+      cookies.delete(:pending_invitation)
+      redirect_to after_welcome_path, allow_other_host: false
+    end
+
+    private
+
+    def invite_classes
+      [::Invites::CompanyUserInvite]
+    end
+
+    # Returns the path to redirect to after the welcome flow completes.
+    # This reads from session[:after_welcome_redirect] which should be set
+    # by the after_login hook in Rodauth.
+    def after_welcome_path
+      session.delete(:after_welcome_redirect) || default_redirect_path
+    end
+
+    def default_redirect_path
+      "/dashboard"
+    end
+  end
+end

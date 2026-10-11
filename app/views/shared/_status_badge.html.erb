@@ -1,0 +1,10 @@
+<%# Job and application statuses. Pass label: to override the wording
+    (the hiring team calls "submitted" applications "New"). %>
+<% variant = {
+     "active" => "pu-badge-success", "draft" => "pu-badge-neutral", "pending_review" => "pu-badge-warning", "expired" => "pu-badge-warning",
+     "filled" => "pu-badge-info", "archived" => "pu-badge-neutral",
+     "submitted" => "pu-badge-info", "reviewing" => "pu-badge-primary", "shortlisted" => "pu-badge-warning",
+     "rejected" => "pu-badge-danger", "hired" => "pu-badge-success", "withdrawn" => "pu-badge-neutral"
+   }.fetch(status.to_s, "pu-badge-neutral") %>
+<% label = local_assigns[:label].presence || ((status.to_s == "pending_review") ? "In review" : status.to_s.humanize) %>
+<span class="pu-badge <%= variant %>"><%= label %></span>

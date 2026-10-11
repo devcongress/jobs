@@ -1,0 +1,100 @@
+<% profile = current_user.developer_profile %>
+<% memberships = current_user.company_users.includes(:company).sort_by { |m| m.company.display_name } %>
+<% content_for :title, "Home" %>
+
+<div class="mx-auto max-w-5xl space-y-8">
+  <header>
+    <h1 class="font-display text-3xl text-[var(--pu-text)]">
+      Welcome back<%= ", #{profile.name.split.first}" if profile %>
+    </h1>
+    <p class="mt-1 text-[var(--pu-text-muted)]">Pick up where you left off.</p>
+  </header>
+
+  <% if slack_available? && current_user.slack_identity.nil? && cookies[:slack_prompt_dismissed].blank? %>
+    <div class="relative" data-controller="dismiss" data-dismiss-cookie-value="slack_prompt_dismissed">
+      <%= render "shared/slack_card", user: current_user %>
+      <button type="button" data-action="dismiss#dismiss" aria-label="Dismiss" class="absolute right-3 top-3 text-[var(--pu-text-subtle)] hover:text-[var(--pu-text)]">
+        <%= render Phlex::TablerIcons::X.new(class: "h-4 w-4") %>
+      </button>
+    </div>
+  <% end %>
+
+  <section aria-labelledby="profile-heading" class="space-y-3">
+    <h2 id="profile-heading" class="text-sm font-semibold uppercase tracking-wide text-[var(--pu-text-subtle)]">Developer profile</h2>
+
+    <% if profile %>
+      <% percent = profile.completeness_percent %>
+      <a href="<%= developer_portal_home_path(profile) %>" class="dc-card block transition-transform hover:-translate-y-0.5">
+        <div class="pu-card-body flex flex-col gap-5 sm:flex-row sm:items-center">
+          <div class="flex min-w-0 flex-1 items-center gap-4">
+            <%= render InitialsAvatar.new(name: profile.name, seed: profile.handle, size: :lg) %>
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="truncate text-lg font-semibold text-[var(--pu-text)]"><%= profile.name %></span>
+                <%= render "shared/availability_badge", profile: %>
+              </div>
+              <p class="truncate text-sm text-[var(--pu-text-muted)]">@<%= profile.handle %><%= " · #{profile.headline}" if profile.headline.present? %></p>
+            </div>
+          </div>
+          <div class="w-full sm:w-64">
+            <p class="mb-1 text-xs font-medium text-[var(--pu-text-muted)]"><%= percent == 100 ? "Profile complete" : "Profile completeness" %></p>
+            <%= render "shared/progress", percent: %>
+          </div>
+          <span class="pu-btn pu-btn-sm pu-btn-primary self-start sm:self-center">Open</span>
+        </div>
+      </a>
+    <% else %>
+      <a href="<%= new_developer_profile_path %>" class="flex items-center gap-4 rounded-[var(--pu-radius-lg)] border-2 border-dashed border-[var(--pu-border)] p-6 transition-colors hover:border-primary-400 hover:bg-[var(--pu-surface-alt)]">
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600 dark:bg-primary-900/30">
+          <%= render Phlex::TablerIcons::Id.new(class: "h-6 w-6") %>
+        </span>
+        <span>
+          <span class="block font-semibold text-[var(--pu-text)]">Create your developer profile</span>
+          <span class="block text-sm text-[var(--pu-text-muted)]">Get listed in the directory with your skills and experience.</span>
+        </span>
+      </a>
+    <% end %>
+  </section>
+
+  <section aria-labelledby="companies-heading" class="space-y-3">
+    <h2 id="companies-heading" class="text-sm font-semibold uppercase tracking-wide text-[var(--pu-text-subtle)]">Hiring</h2>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <% memberships.each do |membership| %>
+        <% company = membership.company %>
+        <a href="<%= company_portal_home_path(company) %>" class="pu-card block transition-shadow hover:shadow-[var(--pu-shadow-lg)]">
+          <div class="pu-card-body flex items-center gap-4">
+            <%= render InitialsAvatar.new(name: company.display_name, seed: company.slug, shape: :square) %>
+            <div class="min-w-0">
+              <p class="truncate font-semibold text-[var(--pu-text)]"><%= company.display_name %></p>
+              <p class="text-sm text-[var(--pu-text-muted)]"><%= company.personal? ? "Posting as yourself" : "#{membership.role.humanize} · #{pluralize(company.company_users.size, "member")}" %></p>
+            </div>
+          </div>
+        </a>
+      <% end %>
+
+      <% if profile && memberships.none? { |m| m.company.personal? } %>
+        <%= button_to post_as_yourself_path, method: :post, form: {class: "contents"},
+              class: "flex w-full items-center gap-4 rounded-[var(--pu-radius-lg)] border-2 border-dashed border-[var(--pu-border)] p-5 text-left transition-colors hover:border-primary-400 hover:bg-[var(--pu-surface-alt)]" do %>
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-[var(--pu-radius-lg)] bg-[var(--pu-surface-alt)] text-[var(--pu-text-muted)]">
+            <%= render Phlex::TablerIcons::Send.new(class: "h-5 w-5") %>
+          </span>
+          <span>
+            <span class="block font-semibold text-[var(--pu-text)]">Post as yourself</span>
+            <span class="block text-sm text-[var(--pu-text-muted)]">Need a hand with a project? Post a gig or job under your own name.</span>
+          </span>
+        <% end %>
+      <% end %>
+
+      <a href="<%= new_company_path %>" class="flex items-center gap-4 rounded-[var(--pu-radius-lg)] border-2 border-dashed border-[var(--pu-border)] p-5 transition-colors hover:border-primary-400 hover:bg-[var(--pu-surface-alt)]">
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-[var(--pu-radius-lg)] bg-[var(--pu-surface-alt)] text-[var(--pu-text-muted)]">
+          <%= render Phlex::TablerIcons::Plus.new(class: "h-5 w-5") %>
+        </span>
+        <span>
+          <span class="block font-semibold text-[var(--pu-text)]">Set up a company</span>
+          <span class="block text-sm text-[var(--pu-text-muted)]">Post jobs and invite recruiters.</span>
+        </span>
+      </a>
+    </div>
+  </section>
+</div>

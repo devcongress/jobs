@@ -1,0 +1,18 @@
+<% tone, icon, audience, detail =
+     if profile.visible_to_hidden?
+       ["border-warning-200 bg-warning-50 text-warning-800 dark:border-warning-900 dark:bg-warning-950/50 dark:text-warning-300",
+        Phlex::TablerIcons::EyeOff, "hidden", "Only you can see it, so companies and other members can't find you."]
+     elsif profile.visible_to_members?
+       ["border-info-200 bg-info-50 text-info-800 dark:border-info-900 dark:bg-info-950/50 dark:text-info-300",
+        Phlex::TablerIcons::Users, "visible to signed-in members only", "Guests and search engines can't see it."]
+     else
+       ["border-success-200 bg-success-50 text-success-800 dark:border-success-900 dark:bg-success-950/50 dark:text-success-300",
+        Phlex::TablerIcons::World, "public", "Anyone can find it in the directory, on your /@#{profile.handle} page and through search engines."]
+     end %>
+<div class="<%= tone %> flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between" role="status" data-visibility-banner="<%= profile.visibility %>">
+  <p class="flex items-start gap-2 text-sm">
+    <%= render icon.new(class: "mt-0.5 h-4 w-4 shrink-0") %>
+    <span>Your profile is <strong><%= audience %></strong>. <%= detail %></span>
+  </p>
+  <a href="<%= edit_profile_url %>#developers_profile_<%= profile.id %>_visibility" class="pu-btn pu-btn-sm pu-btn-outline shrink-0">Change visibility</a>
+</div>

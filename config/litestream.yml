@@ -1,0 +1,35 @@
+# This is the actual configuration file for litestream.
+#
+# bin/litestream runs the binary directly, so the $LITESTREAM_* variables come
+# straight from the container env (config/deploy.yml). The bucket is on
+# Backblaze B2, over its S3-compatible API.
+#
+# Only the primary database is replicated. Solid Cache/Queue/Cable/Errors and
+# Rails Pulse are all reconstructible, and replicating a hot queue database is
+# cost and churn for no recovery value.
+#
+# The local path is absolute, so `litestream:restore_missing` (run by
+# .kamal/hooks/pre-deploy) restores to exactly the file the app opens. The
+# replica path is prefixed with the service name so the bucket can be shared
+# with other apps.
+#
+# B2 needs path-style addressing; its endpoint does not serve virtual-hosted
+# bucket names.
+#
+# For more details, see: https://litestream.io/reference/config/
+# Each replica keeps seven days of history, so the database can be restored to
+# any moment in the last week, with a snapshot a day so a restore replays at
+# most a day of changes.
+dbs:
+  - path: /rails/storage/production.sqlite3
+    replicas:
+      - type: s3
+        bucket: $LITESTREAM_REPLICA_BUCKET
+        path: devcongress_connect/production.sqlite3
+        region: $LITESTREAM_REPLICA_REGION
+        endpoint: $LITESTREAM_REPLICA_ENDPOINT
+        force-path-style: true
+        access-key-id: $LITESTREAM_ACCESS_KEY_ID
+        secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
+        retention: 168h
+        snapshot-interval: 24h

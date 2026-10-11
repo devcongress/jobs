@@ -1,15 +1,56 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-    <style>
-      
-      /* Email styles need to be inline */
-
-    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light only">
+    <title><%= message.subject %></title>
   </head>
-  <body>
-    <%= yield %>
-    <p>The <a href="https://devcongress.org">DevCongress Jobs</a> Team</p>
-    <p><em>Looking for the most vibrant community of African programmers? Join <a href="https://slack.devcongress.org">our Slack community</a></em></p>
+  <body style="margin:0;padding:0;background:<%= EmailHelper::CREAM %>;font-family:<%= EmailHelper::FONT %>;color:<%= EmailHelper::INK %>;-webkit-text-size-adjust:100%;">
+    <% if content_for?(:preheader) %>
+      <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;"><%= yield :preheader %></div>
+    <% end %>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:<%= EmailHelper::CREAM %>;">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+            <tr>
+              <td style="padding:0 4px 20px;">
+                <a href="<%= root_url %>" style="text-decoration:none;">
+                  <%= image_tag "brand/email-wordmark.png", alt: "dev:congress{};", width: 180, height: 29,
+                        style: "display:block;border:0;font-family:monospace;font-size:20px;font-weight:700;color:#{EmailHelper::PINK};" %>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#ffffff;border:2px solid <%= EmailHelper::INK %>;border-radius:16px;box-shadow:6px 6px 0 <%= EmailHelper::PINK %>;padding:32px 28px 16px;font-family:<%= EmailHelper::FONT %>;">
+                <%= yield %>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 4px 0;font-family:<%= EmailHelper::FONT %>;font-size:12px;line-height:1.6;color:<%= EmailHelper::MUTED %>;">
+                <p style="margin:0 0 8px;">
+                  <%= content_for?(:footer_note) ? yield(:footer_note) : "You're getting this email because of activity on your DevCongress Connect account." %>
+                </p>
+                <% if @unsubscribe_url %>
+                  <p style="margin:0 0 8px;">
+                    <a href="<%= @unsubscribe_url %>" style="color:<%= EmailHelper::MUTED %>;">Turn off <%= @email_category[:label].downcase %> emails</a> ·
+                    <a href="<%= @notification_settings_url %>" style="color:<%= EmailHelper::MUTED %>;">Notification settings</a>
+                  </p>
+                <% end %>
+                <p style="margin:0;">
+                  <a href="<%= root_url %>" style="color:<%= EmailHelper::MUTED %>;">DevCongress Connect</a> ·
+                  <a href="<%= public_jobs_url %>" style="color:<%= EmailHelper::MUTED %>;">Jobs</a> ·
+                  <a href="<%= developers_directory_url %>" style="color:<%= EmailHelper::MUTED %>;">Developers</a> ·
+                  <a href="<%= public_projects_url %>" style="color:<%= EmailHelper::MUTED %>;">Projects</a>
+                  <br>Where the DevCongress community connects.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

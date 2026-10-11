@@ -1,0 +1,4 @@
+ignore:
+  - "db/*schema.rb"
+  - "node_modules/**/*"
+  - "vendor/**/*"

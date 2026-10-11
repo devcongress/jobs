@@ -1,0 +1,24 @@
+Hi <%= @profile.name.split.first %>,
+
+<% case @application.status -%>
+<% when "shortlisted" -%>
+<%= @company.display_name %> shortlisted you for <%= @job.title %>. Expect them to reach out about next steps.
+<% when "hired" -%>
+Congratulations! <%= @company.display_name %> marked you as hired for <%= @job.title %>. If you're no longer looking, update your availability so other companies know.
+<% when "rejected" -%>
+<%= @company.display_name %> decided not to move forward with your application for <%= @job.title %>. It's not the news you wanted, and it's no reflection on what you can do. Thanks for putting yourself forward.
+<% else -%>
+<%= @company.display_name %> started reviewing your application for <%= @job.title %>.
+<% end -%>
+<% if @message.present? -%>
+
+A note from <%= @company.display_name %>:
+
+<%= @message %>
+<% end -%>
+
+<% if @application.rejected? -%>
+Browse open jobs: <%= @jobs_url %>
+<% else -%>
+View your application: <%= @application_url %>
+<% end -%>

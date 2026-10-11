@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+#
+# Deploy to production with Kamal from a local machine.
+#
+# Kamal resolves .kamal/secrets ($VAR) and the ERB in config/deploy.yml from the
+# shell environment and does NOT load .env files itself. This wrapper loads
+# .env.production (copy it from .env.production.template) so Kamal can see them.
+#
+# The tracked .env is not sourced here: it holds dev-only defaults.
+#
+# Usage:  bin/deploy            # build + deploy to production
+#         bin/deploy --version  # any extra args are passed through to kamal
+set -euo pipefail
+
+cd "$(dirname "$0")/.."   # -> project root
+
+# 1) Load prod config and secrets into the shell.
+if [[ -f .env.production ]]; then
+  set -a
+  # shellcheck disable=SC1090
+  source .env.production
+  set +a
+fi
+
+# 2) Fall back to config/master.key for RAILS_MASTER_KEY if it's not already
+#    set (Rails keeps it in that file; Kamal needs it as an env var).
+if [[ -z "${RAILS_MASTER_KEY:-}" && -f config/master.key ]]; then
+  RAILS_MASTER_KEY="$(tr -d '[:space:]' < config/master.key)"
+  export RAILS_MASTER_KEY
+fi
+
+# 3) Fail fast if anything Kamal needs is missing. Kamal writes an empty value
+#    rather than failing when a variable is unset, and the app then refuses to
+#    boot (config/initializers/001_ensure_required_env.rb) mid-deploy.
+required=(
+  KAMAL_REGISTRY_PASSWORD
+  RAILS_MASTER_KEY
+  ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+  ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+  ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
+  RESEND_API_KEY
+  LITESTREAM_REPLICA_BUCKET
+  LITESTREAM_REPLICA_REGION
+  LITESTREAM_REPLICA_ENDPOINT
+  LITESTREAM_ACCESS_KEY_ID
+  LITESTREAM_SECRET_ACCESS_KEY
+)
+missing=()
+for v in "${required[@]}"; do
+  [[ -n "${!v:-}" ]] || missing+=("$v")
+done
+if (( ${#missing[@]} )); then
+  echo "✗ Missing required env: ${missing[*]}" >&2
+  echo "  Set them in .env.production (see .env.production.template), then retry." >&2
+  echo "  RAILS_MASTER_KEY comes from config/master.key; get it from whoever has it." >&2
+  exit 1
+fi
+
+# 4) Confidence check (no secret values printed) — confirm the prod target,
+#    read straight from config/deploy.yml so it can't drift from this script.
+prod_url="$(awk -F'"' '/RAILS_DEFAULT_URL:/ {print $2; exit}' config/deploy.yml)"
+echo "Deploy target:"
+echo "  RAILS_DEFAULT_URL = ${prod_url:-<unset in deploy.yml>}  (from config/deploy.yml)"
+for v in "${required[@]}"; do
+  printf '  %-44s = (set)\n' "$v"
+done
+for v in GOOGLE_CLIENT_ID GITHUB_CLIENT_ID; do
+  printf '  %-44s = %s\n' "$v" "$([[ -n "${!v:-}" ]] && echo "(set)" || echo "(unset, sign-in hidden)")"
+done
+echo
+
+# 5) Deploy. Clear any stale deploy lock first (non-fatal if none).
+bin/kamal lock release 2>/dev/null || true
+
+# Extra args go straight through, since they may not apply to a build.
+if (( $# )); then
+  exec bin/kamal deploy "$@"
+fi
+
+# Build and push under a deadline, then roll out without one.
+#
+# A wedged buildx prints nothing and waits forever, which reads exactly like a
+# slow push. Cutting it off is safe: the build happens before anything on the
+# server is touched, so a failure here leaves production exactly as it was.
+#
+# The rollout deliberately gets no deadline. Interrupting it between the
+# container swap and the cleanup leaves the old job container running next to
+# the new one, both working the same queues, and the deploy lock held.
+BUILD_TIMEOUT="${BUILD_TIMEOUT:-1800}"
+
+if command -v timeout >/dev/null 2>&1; then
+  limit=(timeout "$BUILD_TIMEOUT")
+elif command -v gtimeout >/dev/null 2>&1; then
+  limit=(gtimeout "$BUILD_TIMEOUT")
+else
+  limit=(env)  # no timeout available, run it unbounded
+fi
+
+status=0
+"${limit[@]}" bin/kamal build push || status=$?
+
+if (( status != 0 )); then
+  if (( status == 124 )); then
+    echo "✗ Build stalled: nothing after ${BUILD_TIMEOUT}s. Production is untouched." >&2
+    echo "  Retry. If it stalls again, the build cache is the usual cause:" >&2
+    echo "    docker buildx prune --builder kamal-local-docker-container" >&2
+  else
+    echo "✗ Build failed (exit ${status}). Production is untouched." >&2
+  fi
+  bin/kamal lock release >/dev/null 2>&1 || true
+  exit "$status"
+fi
+
+# --skip-push: the step above already built and pushed this version. Without
+# it kamal builds a second time, which is a cache hit but still not free.
+exec bin/kamal deploy --skip-push
