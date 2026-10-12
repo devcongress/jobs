@@ -46,3 +46,5 @@
 
 # Yarn install cache, rewritten on every install
 .yarn/install-state.gz
+
+.DS_Store
