@@ -41,6 +41,8 @@ class Developers::ProfileSkill < Developers::ResourceRecord
 
   # add has_one associations above.
 
+  has_many :experience_skills, class_name: "Developers::ExperienceSkill", inverse_of: :profile_skill, dependent: :delete_all
+  has_many :experiences, through: :experience_skills
   has_many :endorsements, class_name: "Network::Endorsement", dependent: :delete_all
   has_many :endorsers, through: :endorsements
   # add has_many associations above.

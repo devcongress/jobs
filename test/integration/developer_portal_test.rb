@@ -57,6 +57,31 @@ class DeveloperPortalTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "US Navy"
   end
 
+  test "links experience to skills from the owner's profile only" do
+    ruby = @profile.profile_skills.create!(skill: Skill.create!(name: "Ruby"))
+    elixir = @profile.profile_skills.create!(skill: Skill.create!(name: "Elixir"))
+    other_skill = @other.profile_skills.create!(skill: Skill.create!(name: "COBOL"))
+
+    get "/developer/ada/developers/experiences/new"
+    assert_response :success
+    assert_includes response.body, "Ruby"
+    assert_includes response.body, "Elixir"
+    assert_not_includes response.body, "COBOL"
+
+    post "/developer/ada/developers/experiences", params: {developers_experience: {
+      title: "Analyst", company_name: "Analytical Engines", started_on: "1842-01-01",
+      profile_skills: [ruby.to_signed_global_id.to_s, other_skill.to_signed_global_id.to_s]
+    }}
+    experience = @profile.experiences.find_by!(title: "Analyst")
+    assert_equal [ruby], experience.profile_skills.to_a
+
+    patch "/developer/ada/developers/experiences/#{experience.id}", params: {developers_experience: {
+      profile_skills: [elixir.to_signed_global_id.to_s]
+    }}
+    assert_response :redirect
+    assert_equal [elixir], experience.profile_skills.reload
+  end
+
   test "adds skills from the shared taxonomy" do
     skill = Skill.create!(name: "Ruby")
 
