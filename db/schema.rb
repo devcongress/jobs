@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_150100) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_13_113521) do
   create_table "active_shrine_attachments", force: :cascade do |t|
     t.string "record_type"
     t.bigint "record_id"
@@ -140,6 +140,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_150100) do
     t.index ["company_id", "user_id"], name: "index_company_users_on_company_id_and_user_id", unique: true
     t.index ["company_id"], name: "index_company_users_on_company_id"
     t.index ["user_id"], name: "index_company_users_on_user_id"
+  end
+
+  create_table "developers_experience_skills", force: :cascade do |t|
+    t.integer "experience_id", null: false
+    t.integer "profile_skill_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["experience_id", "profile_skill_id"], name: "idx_on_experience_id_profile_skill_id_491a95c723", unique: true
+    t.index ["profile_skill_id"], name: "index_developers_experience_skills_on_profile_skill_id"
   end
 
   create_table "developers_experiences", force: :cascade do |t|
@@ -396,6 +405,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_150100) do
   add_foreign_key "company_user_invites", "users"
   add_foreign_key "company_users", "companies"
   add_foreign_key "company_users", "users"
+  add_foreign_key "developers_experience_skills", "developers_experiences", column: "experience_id", on_delete: :cascade
+  add_foreign_key "developers_experience_skills", "developers_profile_skills", column: "profile_skill_id", on_delete: :cascade
   add_foreign_key "developers_experiences", "companies"
   add_foreign_key "developers_experiences", "developers_profiles", column: "profile_id"
   add_foreign_key "developers_profile_skills", "developers_profiles", column: "profile_id"

@@ -20,7 +20,7 @@ module Site
       @profile = Developers::Profile.find_by!(handle: params[:handle].to_s.downcase)
       raise ActiveRecord::RecordNotFound unless @profile.visible_to?(current_user)
 
-      @experiences = @profile.experiences
+      @experiences = @profile.experiences.includes(profile_skills: :skill)
       @profile_skills = @profile.profile_skills.includes(:skill).sort_by { |ps| [-ps.endorsements_count, -(ps.years || 0), ps.skill.name] }
       @own = current_user && @profile.user_id == current_user.id
       # Gigs and jobs they've posted as themselves.

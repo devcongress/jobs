@@ -41,6 +41,8 @@ class Developers::Experience < Developers::ResourceRecord
 
   # add has_one associations above.
 
+  has_many :experience_skills, class_name: "Developers::ExperienceSkill", inverse_of: :experience, dependent: :delete_all
+  has_many :profile_skills, through: :experience_skills
   # add has_many associations above.
 
   # add attachments above.

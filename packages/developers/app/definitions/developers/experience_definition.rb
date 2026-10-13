@@ -9,6 +9,11 @@ module Developers
     input :title, placeholder: "e.g. Senior Backend Engineer"
     input :company_name, label: "Company"
     input :location, placeholder: "e.g. Accra, Ghana or Remote"
+    input :profile_skills, as: :secure_association,
+      label: "Skills used",
+      hint: "Choose skills already listed on your profile.",
+      choices: ->(form) { form.view_context.current_scoped_entity.profile_skills.includes(:skill).order("skills.name") },
+      wrapper: {class: "col-span-full"}
     input :ended_on, hint: "Leave blank if this is your current role"
     field :started_on, label: "Started"
     field :ended_on, label: "Ended"
@@ -22,6 +27,7 @@ module Developers
     form_layout do
       section :role, :title, :company_name, :location, columns: 2, label: "Role"
       section :dates, :started_on, :ended_on, columns: 2, label: "Dates"
+      section :skills, :profile_skills, label: "Skills used"
       section :details, :description, label: "What you did"
       ungrouped label: "Other"
     end
@@ -29,6 +35,7 @@ module Developers
     display_layout do
       section :role, :title, :company_name, :location, label: "Role"
       section :dates, :started_on, :ended_on, label: "Dates"
+      section :skills, :profile_skills, label: "Skills used"
       section :details, :description, label: "What you did"
       ungrouped label: "Other"
     end

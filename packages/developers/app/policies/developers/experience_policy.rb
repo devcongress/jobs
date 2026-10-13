@@ -9,7 +9,7 @@ module Developers
     def destroy? = true
 
     def permitted_attributes_for_create
-      %i[title company_name location started_on ended_on description]
+      %i[title company_name location started_on ended_on description profile_skills]
     end
 
     def permitted_attributes_for_read

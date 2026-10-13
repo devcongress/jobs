@@ -92,6 +92,17 @@ class PublicSiteTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "<script>alert(1)</script>"
   end
 
+  test "experience entries show the profile skills used there" do
+    experience = @public.experiences.create!(title: "Engineer", company_name: "Acme", started_on: Date.new(2020, 1, 1))
+    experience.profile_skills << @public.profile_skills.sole
+
+    get "/@pat"
+
+    assert_select ".experience-skills[aria-label=?]", "Skills used in Engineer at Acme" do
+      assert_select "a[href=?]", "/devs?skill=elixir", text: "Elixir"
+    end
+  end
+
   test "guests see only public, active jobs" do
     get "/jobs"
     assert_response :success
