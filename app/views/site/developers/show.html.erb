@@ -97,6 +97,16 @@
                 <p class="font-semibold"><%= experience.title %></p>
                 <p class="text-sm text-[#555]"><%= [experience.company_name, experience.location.presence].compact.join(" · ") %></p>
                 <p class="text-xs text-[#6b6b6b]"><%= experience.started_on.strftime("%b %Y") %> – <%= experience.ended_on&.strftime("%b %Y") || "Present" %></p>
+                <% if experience.profile_skills.any? %>
+                  <ul class="experience-skills mt-2 flex flex-wrap gap-1.5" aria-label="Skills used in <%= experience.to_label %>">
+                    <% experience.profile_skills.sort_by { |profile_skill| profile_skill.skill.name }.each do |profile_skill| %>
+                      <li>
+                        <%= link_to profile_skill.skill.name, developers_directory_path(skill: profile_skill.skill.slug),
+                              class: "inline-flex rounded-full border border-[#111] bg-[#f5f2e8] px-2 py-0.5 text-xs font-medium hover:bg-[#f5e642]" %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% end %>
                 <% if experience.description.present? %><div class="prose prose-sm mt-2 max-w-none"><%= render_markdown(experience.description) %></div><% end %>
               </li>
             <% end %>
