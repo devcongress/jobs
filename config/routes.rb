@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   scope module: :site do
     get "devs", to: "developers#index", as: :developers_directory
+    get "technical-skills/:skill", to: "developers#index", as: :technical_skill, constraints: {skill: /[a-z0-9-]+/}
     get "@:handle", to: "developers#show", as: :developer_page, constraints: {handle: /[A-Za-z0-9_-]+/}
     get "jobs", to: "jobs#index", as: :public_jobs
     get "jobs/:id", to: "jobs#show", as: :public_job

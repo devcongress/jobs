@@ -155,7 +155,7 @@
       <% if @top_skills.any? %>
         <div class="mt-10 flex flex-wrap gap-2.5">
           <% @top_skills.each do |(name, slug), count| %>
-            <%= link_to developers_directory_path(skill: slug), class: "dc-pill dc-pill-sm" do %>
+            <%= link_to technical_skill_path(skill: slug), class: "dc-pill dc-pill-sm" do %>
               <%= name %> <span class="text-[var(--dc-pink)]"><%= count %></span>
             <% end %>
           <% end %>

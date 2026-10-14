@@ -5,6 +5,8 @@ module SeoHelper
 
   # The page without its filters, keeping the page number on listings.
   def canonical_url
+    return content_for(:canonical_url) if content_for?(:canonical_url)
+
     page = params[:page].to_i
     "#{request.base_url}#{request.path}#{"?page=#{page}" if page > 1}"
   end

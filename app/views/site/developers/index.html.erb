@@ -1,14 +1,48 @@
-<% content_for :title, "Developers" %>
-<% content_for :description, "Browse developers in the DevCongress community: skills, experience and availability." %>
+<% page_title = @selected_skill ? "#{@selected_skill.name} developers" : "Developers" %>
+<% page_description = @selected_skill&.canonical_description || "Browse developers in the DevCongress community: skills, experience and availability." %>
+<% content_for :title, page_title %>
+<% content_for :description, page_description %>
+<% if @selected_skill %>
+  <% content_for :noindex, true unless @selected_skill.content_curated? %>
+  <% canonical_page = params[:page].to_i > 1 ? {page: params[:page]} : {} %>
+  <% content_for :canonical_url, technical_skill_url(@selected_skill, **canonical_page) %>
+<% end %>
 <% filtered = params.values_at(:q, :skill, :country, :availability, :remote).any?(&:present?) %>
 
 <section class="border-b-2 border-[#111]">
   <div class="dc-container py-16 sm:py-20">
-    <p class="dc-eyebrow">The community</p>
-    <h1 class="dc-heading text-[clamp(2.5rem,6vw,4rem)]">Developers</h1>
-    <p class="mt-4 max-w-2xl text-[#555]">
-      <%= current_user ? "Everyone who's chosen to be visible to members or the public." : "Developers who've made their profiles public. Sign in to see members-only profiles too." %>
-    </p>
+    <% if @selected_skill %>
+      <p class="dc-eyebrow">Technical skill<%= " · #{@selected_skill.category}" if @selected_skill.category.present? %></p>
+      <h1 class="dc-heading text-[clamp(2.5rem,6vw,4rem)]"><%= @selected_skill.name %> developers</h1>
+      <p class="mt-4 max-w-3xl text-lg leading-8 text-[#444]"><%= @selected_skill.canonical_description %></p>
+      <p class="mt-3 max-w-3xl leading-7 text-[#555]">
+        <%= @selected_skill.canonical_why_description %>
+        <% if @selected_skill.company_examples.any? %>
+          Companies using <%= @selected_skill.name %> include
+          <%= safe_join(@selected_skill.company_examples.map { |company| link_to("#{company.fetch("name")} ↗", company.fetch("url"), class: "dc-link font-semibold", target: "_blank", rel: "noopener") }, ", ") %>.
+        <% end %>
+      </p>
+      <% if @selected_skill.website_url.present? || @selected_skill.source_url.present? %>
+        <div class="mt-5 flex flex-wrap gap-3 text-sm font-semibold">
+          <% if @selected_skill.website_url.present? %>
+            <%= link_to "Official website ↗", @selected_skill.website_url, class: "dc-link", target: "_blank", rel: "noopener" %>
+          <% end %>
+          <% if @selected_skill.source_url.present? %>
+            <% source_label = @selected_skill.source_url.include?("github.com") ? "GitHub ↗" : "Source repository ↗" %>
+            <%= link_to source_label, @selected_skill.source_url, class: "dc-link", target: "_blank", rel: "noopener" %>
+          <% end %>
+        </div>
+      <% end %>
+      <p class="mt-3 max-w-3xl text-sm text-[#666]">
+        <%= current_user ? "Browse members who list #{@selected_skill.name} among their skills." : "Browse public profiles that list #{@selected_skill.name}. Sign in to see members-only profiles too." %>
+      </p>
+    <% else %>
+      <p class="dc-eyebrow">The community</p>
+      <h1 class="dc-heading text-[clamp(2.5rem,6vw,4rem)]">Developers</h1>
+      <p class="mt-4 max-w-2xl text-[#555]">
+        <%= current_user ? "Everyone who's chosen to be visible to members or the public." : "Developers who've made their profiles public. Sign in to see members-only profiles too." %>
+      </p>
+    <% end %>
 
     <%= form_with url: developers_directory_path, method: :get, class: "mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_auto] lg:items-end", data: {turbo_action: "advance"} do %>
       <label class="block sm:col-span-2 lg:col-span-1">

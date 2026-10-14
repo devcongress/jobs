@@ -101,7 +101,7 @@
                   <ul class="experience-skills mt-2 flex flex-wrap gap-1.5" aria-label="Skills used in <%= experience.to_label %>">
                     <% experience.profile_skills.sort_by { |profile_skill| profile_skill.skill.name }.each do |profile_skill| %>
                       <li>
-                        <%= link_to profile_skill.skill.name, developers_directory_path(skill: profile_skill.skill.slug),
+                        <%= link_to profile_skill.skill.name, technical_skill_path(skill: profile_skill.skill.slug),
                               class: "inline-flex rounded-full border border-[#111] bg-[#f5f2e8] px-2 py-0.5 text-xs font-medium hover:bg-[#f5e642]" %>
                       </li>
                     <% end %>
@@ -140,7 +140,7 @@
           <ul class="mt-4 flex flex-wrap gap-2">
             <% @profile_skills.each do |profile_skill| %>
               <li class="inline-flex items-stretch overflow-hidden rounded-full border-2 border-[#111] bg-[#f5f2e8] text-sm">
-                <%= link_to developers_directory_path(skill: profile_skill.skill.slug), class: "inline-flex items-center gap-1.5 px-3 py-1 hover:bg-[#f5e642]" do %>
+                <%= link_to technical_skill_path(skill: profile_skill.skill.slug), class: "inline-flex items-center gap-1.5 px-3 py-1 hover:bg-[#f5e642]" do %>
                   <span class="font-medium"><%= profile_skill.skill.name %></span>
                   <% details = [profile_skill.level&.humanize, (pluralize(profile_skill.years, "yr") if profile_skill.years)].compact %>
                   <% if details.any? %><span class="whitespace-nowrap text-xs text-[#555]"><%= details.join(" · ") %></span><% end %>

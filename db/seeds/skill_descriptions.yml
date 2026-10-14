@@ -1,0 +1,767 @@
+# Curated skill content for skills surfaced by the public directory. Company
+# links identify real-world examples without adding a usage narrative to the UI.
+
+hotwire:
+  description: >-
+    Hotwire is a set of frameworks for building fast, interactive web and mobile applications by sending server-rendered HTML instead of JSON and minimising client-side JavaScript. Turbo handles navigation, form submissions, partial-page updates and real-time streams; Stimulus adds focused behaviour to existing HTML; and Hotwire Native lets mobile apps reuse the web application.
+  website_url: https://hotwired.dev/
+  source_url: https://github.com/hotwired
+  why_description: >-
+    Hotwire lets developers build fast, interactive interfaces while keeping rendering and most application state on the server. This can reduce duplicated client-side code, preserve progressive enhancement and help small teams work across the full stack.
+  company_examples:
+    - name: 37signals
+      url: https://dev.37signals.com/building-basecamp-project-stacks-with-hotwire/
+    - name: Cycode
+      url: https://cycode.com/blog/why-hotwire/
+
+javascript:
+  description: >-
+    JavaScript is the web's general-purpose scripting language. It runs in every modern browser and in non-browser runtimes such as Node.js, enabling developers to build interactive interfaces, servers, development tools and cross-platform applications.
+  website_url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  source_url: https://github.com/tc39/ecma262
+  why_description: >-
+    JavaScript connects frontend, backend and tooling work through one widely supported language. Understanding its asynchronous model, browser APIs and ecosystem helps developers build and debug the full path from an interface to the services behind it.
+  company_examples:
+    - name: Meta
+      url: https://engineering.fb.com/2020/05/08/web/facebook-redesign/
+    - name: Shopify
+      url: https://shopify.dev/docs/api/hydrogen-react/latest
+
+postgresql:
+  description: >-
+    PostgreSQL is a relational database designed for workloads that need transactional integrity, expressive SQL and extensibility. It combines advanced indexing, JSON support, full-text search and replication with a type and function system that applications can extend.
+  website_url: https://www.postgresql.org/
+  source_url: https://github.com/postgres/postgres
+  why_description: >-
+    PostgreSQL supports the dependable data modelling and query design at the heart of most production applications. Its breadth lets developers start with straightforward relational data and grow into demanding workloads without giving up correctness or mature operational tooling.
+  company_examples:
+    - name: GitLab
+      url: https://about.gitlab.com/blog/2022/06/02/splitting-database-into-main-and-ci/
+    - name: OpenAI
+      url: https://openai.com/index/scaling-postgresql/
+
+react:
+  description: >-
+    React is a JavaScript library for composing interfaces from reusable components and updating them as application data changes. Developers use it for interactive web applications and can apply the same component model to native applications.
+  website_url: https://react.dev/
+  source_url: https://github.com/react/react
+  why_description: >-
+    React's component model makes complex interfaces easier to divide, reason about and evolve. Its large ecosystem, gradual adoption path and reach across web and native development make the knowledge useful on both new products and established codebases.
+  company_examples:
+    - name: Meta
+      url: https://engineering.fb.com/2020/05/08/web/facebook-redesign/
+    - name: Discord
+      url: https://discord.com/blog/supercharging-discord-mobile-our-journey-to-a-faster-app
+    - name: Shopify
+      url: https://shopify.dev/docs/api/hydrogen-react/latest
+
+ruby:
+  description: >-
+    Ruby is an interpreted, object-oriented programming language designed to make code expressive and straightforward to change. Developers use it for web applications, automation, command-line tools, data processing and the libraries and frameworks in the wider Ruby ecosystem.
+  website_url: https://www.ruby-lang.org/en/
+  source_url: https://github.com/ruby/ruby
+  why_description: >-
+    Ruby's readable syntax and flexible object model help developers express complex behaviour with relatively little code. Its mature package ecosystem and strong conventions support rapid development while still powering large, long-lived systems.
+  company_examples:
+    - name: GitHub
+      url: https://github.blog/engineering/building-github-with-ruby-and-rails/
+    - name: Shopify
+      url: https://rubyonrails.org/foundation/shopify
+
+ruby-on-rails:
+  description: >-
+    Ruby on Rails is a full-stack Ruby framework that gives web applications a common structure from the database to the browser. It combines data modelling, routing, HTML rendering, APIs, email, background jobs, file storage, real-time updates and security protections in one system.
+  website_url: https://rubyonrails.org/
+  source_url: https://github.com/rails/rails
+  why_description: >-
+    Ruby on Rails combines convention over configuration with an integrated toolset that lets small teams deliver complete products quickly. The same conventions make large applications easier to navigate, test and evolve over many years.
+  company_examples:
+    - name: GitHub
+      url: https://github.blog/engineering/building-github-with-ruby-and-rails/
+    - name: Shopify
+      url: https://rubyonrails.org/foundation/shopify
+    - name: 37signals
+      url: https://dev.37signals.com/
+
+ai-strategy:
+  description: >-
+    AI strategy is the practice of deciding where artificial intelligence can create durable value, what capabilities and data are required, and how adoption will be governed. It connects business goals with product choices, operating models, risk controls and measurable outcomes.
+  website_url: https://www.nist.gov/itl/ai-risk-management-framework
+  why_description: >-
+    AI strategy focuses programmes on worthwhile problems while accounting for organisational change, cost and risk—not merely model selection. It helps teams turn experiments into responsible systems that serve clear organisational goals.
+  company_examples:
+    - name: Microsoft
+      url: https://www.microsoft.com/
+    - name: IBM
+      url: https://www.ibm.com/
+
+amazon-web-services-aws:
+  description: >-
+    Amazon Web Services is a cloud-computing platform offering infrastructure, databases, networking, analytics, machine learning and managed application services. Developers use AWS to deploy systems without owning physical data-centre hardware and to scale capacity as demand changes.
+  website_url: https://aws.amazon.com/
+  why_description: >-
+    AWS architecture shapes how many products are built, secured, observed and operated. Knowing its service boundaries, identity model and cost trade-offs helps developers design dependable systems instead of merely provisioning resources.
+  company_examples:
+    - name: Netflix
+      url: https://netflixtechblog.com/
+    - name: Airbnb
+      url: https://airbnb.tech/
+
+angular:
+  description: >-
+    Angular is a TypeScript framework for building client-side and server-rendered web applications. It provides components, templates, routing, forms, dependency injection and a coordinated toolchain for developing large interfaces.
+  website_url: https://angular.dev/
+  source_url: https://github.com/angular/angular
+  why_description: >-
+    Angular's integrated architecture gives teams a shared way to organise complex, long-lived applications. Its strong typing, testing support and release discipline are especially useful where many developers contribute to the same interface.
+  company_examples:
+    - name: Google
+      url: https://about.google/
+    - name: Deutsche Bank
+      url: https://www.db.com/
+
+apache-kafka:
+  description: >-
+    Apache Kafka is a distributed platform for storing and processing ordered streams of events. It lets independent producers and consumers exchange high-volume data durably for messaging, integration, analytics and stream processing.
+  website_url: https://kafka.apache.org/
+  source_url: https://github.com/apache/kafka
+  why_description: >-
+    Kafka makes the mechanics of ordering, delivery, partitions, retention and failure explicit. Understanding those mechanics helps developers connect services and data pipelines without hiding important consistency trade-offs.
+  company_examples:
+    - name: LinkedIn
+      url: https://engineering.linkedin.com/
+    - name: Netflix
+      url: https://netflixtechblog.com/
+
+astro:
+  description: >-
+    Astro is a web framework that renders content-driven sites to HTML and hydrates only the parts that need browser interaction. It can combine several UI frameworks in one project while keeping client-side JavaScript confined to interactive islands.
+  website_url: https://astro.build/
+  source_url: https://github.com/withastro/astro
+  why_description: >-
+    Astro gives developers an explicit way to control how much JavaScript reaches the browser. That makes it well suited to fast marketing, publishing and documentation sites that still need selective rich interaction.
+  company_examples:
+    - name: Trivago
+      url: https://www.trivago.com/
+    - name: Google
+      url: https://about.google/
+
+backend-development:
+  description: >-
+    Backend development is the work of building the server-side systems behind an application. It covers domain logic, APIs, data storage, authentication, asynchronous jobs, integrations, security, observability and the operational behaviour users do not see directly.
+  website_url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side
+  why_description: >-
+    Reliable products depend on correct data and predictable behaviour beyond the interface. Backend development builds the ability to model business rules, design service boundaries and diagnose failures across an entire request lifecycle.
+  company_examples:
+    - name: GitHub
+      url: https://github.blog/engineering/
+    - name: Stripe
+      url: https://stripe.com/blog/engineering
+
+bootstrap:
+  description: >-
+    Bootstrap is a frontend toolkit for assembling responsive interfaces from a shared grid, utilities and components. Its mobile-first layout system, design tokens and interactive components can be customised with Sass and JavaScript.
+  website_url: https://getbootstrap.com/
+  source_url: https://github.com/twbs/bootstrap
+  why_description: >-
+    Bootstrap helps teams assemble consistent, responsive interfaces quickly while retaining control over styling. Knowing its grid, utilities and component conventions is also valuable when maintaining the many established products built with it.
+  company_examples:
+    - name: X
+      url: https://x.com/
+    - name: Spotify
+      url: https://www.spotify.com/
+
+c:
+  description: >-
+    C is a compiled systems programming language with direct access to memory and a small runtime model. It underpins operating systems, embedded software, databases, language runtimes and performance-critical libraries across nearly every computing platform.
+  website_url: https://open-std.org/jtc1/sc22/wg14/
+  why_description: >-
+    C teaches how data, memory and machine-level costs shape software behaviour. That understanding is valuable far beyond C itself, especially when debugging native dependencies, constrained devices or performance-sensitive systems.
+  company_examples:
+    - name: Microsoft
+      url: https://www.microsoft.com/
+    - name: NVIDIA
+      url: https://www.nvidia.com/
+
+c-sharp:
+  description: >-
+    C# is a statically typed, garbage-collected programming language for the .NET platform. Developers use it for web services, desktop software, cloud systems, games, mobile applications and tools, drawing on object-oriented, functional and asynchronous features.
+  website_url: https://dotnet.microsoft.com/en-us/languages/csharp
+  source_url: https://github.com/dotnet/roslyn
+  why_description: >-
+    C#'s type system, tooling and extensive standard libraries support both rapid delivery and large-scale maintenance. Experience with C# transfers across application, cloud and game development while building strong foundations in API and domain design.
+  company_examples:
+    - name: Microsoft
+      url: https://www.microsoft.com/
+    - name: Unity
+      url: https://unity.com/
+
+c-plus-plus:
+  description: >-
+    C++ is a compiled, multi-paradigm programming language designed for software that needs close control over performance and resources. It is widely used in browsers, game engines, operating systems, financial infrastructure, creative tools and scientific computing.
+  website_url: https://isocpp.org/
+  source_url: https://github.com/cplusplus/draft
+  why_description: >-
+    C++ develops precise reasoning about ownership, lifetimes, memory layout and performance. Modern C++ also offers powerful abstractions that let developers build low-level systems without giving up expressive, reusable design.
+  company_examples:
+    - name: Google
+      url: https://google.github.io/styleguide/cppguide.html
+    - name: Epic Games
+      url: https://www.epicgames.com/
+
+c-plus-plus-cli:
+  description: >-
+    C++/CLI is Microsoft's extension of C++ for interoperating with the .NET runtime. It lets native C++ code and managed .NET code live in the same component, making it useful for wrapping established libraries and bridging Windows applications across runtime boundaries.
+  website_url: https://learn.microsoft.com/en-us/cpp/dotnet/dotnet-programming-with-cpp-cli-visual-cpp
+  why_description: >-
+    C++/CLI bridges mature native code and .NET applications when a product must combine both ecosystems. It requires an uncommon but valuable understanding of both memory models, type systems and the ownership rules at their boundary.
+  company_examples:
+    - name: Microsoft
+      url: https://www.microsoft.com/
+
+dart:
+  description: >-
+    Dart is a client-focused programming language with sound null safety, asynchronous programming and both ahead-of-time and just-in-time compilation. It is the language used by Flutter to build applications across mobile, web and desktop platforms.
+  website_url: https://dart.dev/
+  source_url: https://github.com/dart-lang/sdk
+  why_description: >-
+    Dart's productive development cycle and predictable type system suit applications that must run across mobile, web and desktop. Learning it also builds the language foundation needed to use the wider Flutter ecosystem effectively.
+  company_examples:
+    - name: Google
+      url: https://about.google/
+    - name: Nubank
+      url: https://nubank.com.br/en/
+
+devops:
+  description: >-
+    DevOps is a set of technical and organisational practices that bring software delivery and operations closer together. It includes automated builds and deployments, infrastructure as code, observability, incident learning and shared responsibility for production reliability.
+  website_url: https://learn.microsoft.com/en-us/devops/what-is-devops
+  why_description: >-
+    DevOps connects software delivery with production operation so changes reach users safely and repeatedly. Its practices shorten feedback loops, reduce manual risk and make operability part of product design rather than an afterthought.
+  company_examples:
+    - name: GitLab
+      url: https://about.gitlab.com/
+    - name: Atlassian
+      url: https://www.atlassian.com/
+
+django:
+  description: >-
+    Django is a Python framework for building database-backed web applications with an integrated application stack. It includes URL routing, templates, forms, authentication, an object-relational mapper, administration tools and security protections.
+  website_url: https://www.djangoproject.com/
+  source_url: https://github.com/django/django
+  why_description: >-
+    Django's mature conventions let developers focus on product behaviour while relying on well-tested foundations. Its explicit project structure and security defaults support everything from prototypes to large, long-lived services.
+  company_examples:
+    - name: Instagram
+      url: https://about.instagram.com/
+    - name: Mozilla
+      url: https://www.mozilla.org/
+
+express-js:
+  description: >-
+    Express is a small routing and middleware framework for HTTP applications on Node.js. It provides the request-response primitives for websites and APIs while leaving database, authentication, validation and application-structure choices to the developer.
+  website_url: https://expressjs.com/
+  source_url: https://github.com/expressjs/express
+  why_description: >-
+    Express's small core makes the request-response lifecycle easy to see and customise. It teaches middleware composition and API fundamentals that transfer to many Node.js frameworks built on similar ideas.
+  company_examples:
+    - name: IBM
+      url: https://www.ibm.com/
+    - name: Uber
+      url: https://www.uber.com/
+
+firebase:
+  description: >-
+    Firebase is Google's application-development platform for web and mobile products. It offers managed authentication, databases, hosting, storage, serverless functions, messaging, analytics and testing services designed to work together.
+  website_url: https://firebase.google.com/
+  source_url: https://github.com/firebase/firebase-js-sdk
+  why_description: >-
+    Firebase lets teams validate and ship connected applications without first operating every backend component themselves. Using it well still demands careful decisions about data shape, security rules, offline behaviour, cost and vendor boundaries.
+  company_examples:
+    - name: Duolingo
+      url: https://www.duolingo.com/
+    - name: The New York Times
+      url: https://www.nytco.com/
+
+flutter:
+  description: >-
+    Flutter is a UI framework for compiling one Dart codebase into applications for mobile, web and desktop. It provides its own rendering system, composable widgets, development tools and APIs for integrating with each target platform.
+  website_url: https://flutter.dev/
+  source_url: https://github.com/flutter/flutter
+  why_description: >-
+    Flutter lets product teams share interface logic while still delivering responsive, custom experiences across platforms. Its widget composition model and fast feedback loop make it effective for both prototyping and production applications.
+  company_examples:
+    - name: BMW
+      url: https://www.bmw.com/
+    - name: Nubank
+      url: https://nubank.com.br/en/
+
+frontend-development:
+  description: >-
+    Frontend development is the work of building the part of a web product people see and operate. It combines semantic HTML, CSS, JavaScript, accessibility, performance, browser APIs, design implementation and communication with backend services.
+  website_url: https://developer.mozilla.org/en-US/docs/Learn_web_development
+  why_description: >-
+    Frontend development directly affects whether people can understand, trust and complete tasks in a product. It brings engineering and design together under real constraints such as devices, networks, browsers and assistive technology.
+  company_examples:
+    - name: GitHub
+      url: https://github.blog/engineering/
+    - name: Shopify
+      url: https://shopify.engineering/
+
+go:
+  description: >-
+    Go is a compiled, statically typed language designed for straightforward systems and network software. It has built-in concurrency primitives, fast compilation, a strong standard library and a deliberately compact language specification.
+  website_url: https://go.dev/
+  source_url: https://github.com/golang/go
+  why_description: >-
+    Go encourages straightforward code and makes concurrent network services easier to build and operate. Its deployment model and tooling are particularly useful for cloud infrastructure, command-line tools and high-throughput backends.
+  company_examples:
+    - name: Google
+      url: https://about.google/
+    - name: Cloudflare
+      url: https://blog.cloudflare.com/
+
+graphic-design:
+  description: >-
+    Graphic design is the practice of communicating ideas through typography, colour, imagery, composition and visual systems. In digital products it shapes brand expression, information hierarchy, marketing assets, illustrations and the visual coherence of interfaces.
+  website_url: https://teachingresource.aiga.org/resources/
+  why_description: >-
+    Graphic design helps people notice, understand and remember information through clear visual decisions. It combines creative judgement with repeatable systems, enabling organisations to communicate consistently across products and channels.
+  company_examples:
+    - name: IBM
+      url: https://www.ibm.com/design/language/
+    - name: Airbnb
+      url: https://airbnb.design/
+
+html:
+  description: >-
+    HTML is the standard markup language for describing the structure and meaning of web documents and applications. Its elements represent content such as headings, links, forms, media and landmarks that browsers and assistive technologies can understand.
+  website_url: https://html.spec.whatwg.org/
+  source_url: https://github.com/whatwg/html
+  why_description: >-
+    Semantic structure is the foundation of accessibility, search visibility, resilient styling and browser behaviour. Strong HTML often produces simpler interfaces that work before additional CSS or JavaScript is applied.
+  company_examples:
+    - name: GitHub
+      url: https://github.com/
+    - name: GOV.UK
+      url: https://www.gov.uk/
+
+java:
+  description: >-
+    Java is a statically typed programming language and runtime platform built around portable bytecode and automatic memory management. It is widely used for enterprise services, Android applications, financial systems, data platforms and developer tools.
+  website_url: https://dev.java/
+  source_url: https://github.com/openjdk/jdk
+  why_description: >-
+    Java's mature runtime, libraries and tooling support dependable software at significant scale. Learning it develops strong habits around types, concurrency, profiling and long-term maintenance in large codebases.
+  company_examples:
+    - name: Netflix
+      url: https://netflixtechblog.com/
+    - name: LinkedIn
+      url: https://engineering.linkedin.com/
+
+kotlin:
+  description: >-
+    Kotlin is a statically typed language that targets the Java Virtual Machine, Android, JavaScript, WebAssembly and native platforms. It emphasises concise syntax, null safety, coroutines and practical interoperability with existing Java code.
+  website_url: https://kotlinlang.org/
+  source_url: https://github.com/JetBrains/kotlin
+  why_description: >-
+    Kotlin improves developer ergonomics without abandoning the mature Java ecosystem. It is especially valuable for Android and JVM services where safer types and structured asynchronous code reduce common sources of defects.
+  company_examples:
+    - name: Google
+      url: https://about.google/
+    - name: Pinterest
+      url: https://www.pinterest.com/
+
+laravel:
+  description: >-
+    Laravel is a PHP framework that brings common web application and API concerns into one development workflow. It provides routing, database access, validation, authentication, queues, events, email, testing tools and a broad ecosystem of first-party services.
+  website_url: https://laravel.com/
+  source_url: https://github.com/laravel/framework
+  why_description: >-
+    Laravel's expressive conventions and integrated ecosystem help developers move from an idea to a maintainable product quickly. It also exposes the full lifecycle of modern server applications without requiring every concern to be assembled from scratch.
+  company_examples:
+    - name: Redberry
+      url: https://laravel.com/cloud/customer-stories/from-0-to-150k-visitors-in-4-hours-scaling-a-real-time-engagement-platform
+    - name: Roomies
+      url: https://laravel.com/cloud/customer-stories/how-roomies-cut-compute-costs-80-and-unlocked-nightwatch
+
+laravel-livewire:
+  description: >-
+    Laravel Livewire adds reactive interfaces to Laravel applications primarily through PHP and server-rendered templates. It synchronises component state and browser events over network requests while allowing focused JavaScript when a richer client-side interaction is needed.
+  website_url: https://livewire.laravel.com/
+  source_url: https://github.com/livewire/livewire
+  why_description: >-
+    Livewire lets Laravel developers add interactive behaviour while keeping validation, authorisation and state close to server-side domain logic. That can reduce duplicated client code and make full-stack work accessible to smaller teams.
+  company_examples:
+    - name: Laravel
+      url: https://laravel.com/
+    - name: Laracasts
+      url: https://laracasts.com/
+
+large-language-models-llms:
+  description: >-
+    Large language models are machine-learning systems trained on extensive text and other data to understand and generate sequences. They can support search, extraction, classification, summarisation, coding and conversational interfaces, but their outputs remain probabilistic.
+  website_url: https://huggingface.co/learn/llm-course/chapter1/1
+  why_description: >-
+    Building useful applications with LLMs requires more than calling a model: developers must design context, retrieval, evaluation, safeguards, latency and cost controls. Understanding limitations such as hallucination and bias is essential to building trustworthy features.
+  company_examples:
+    - name: Morgan Stanley
+      url: https://www.morganstanley.com/
+    - name: Duolingo
+      url: https://www.duolingo.com/
+
+mongodb:
+  description: >-
+    MongoDB is a document database that stores records in flexible, JSON-like structures. It supports indexes, aggregation, transactions, replication and horizontal scaling for applications whose data is naturally represented as evolving documents.
+  website_url: https://www.mongodb.com/
+  source_url: https://github.com/mongodb/mongo
+  why_description: >-
+    MongoDB document modelling demands thoughtful decisions about access patterns, consistency and data ownership. Used well, it can simplify application data while still supporting demanding operational and analytical workloads.
+  company_examples:
+    - name: Coinbase
+      url: https://www.coinbase.com/
+    - name: eBay
+      url: https://www.ebay.com/
+
+mysql:
+  description: >-
+    MySQL is a relational database used for transactional web applications, business systems and managed cloud services. It provides SQL queries, transactions, indexing, replication and mature tooling for operating production data.
+  website_url: https://www.mysql.com/
+  source_url: https://github.com/mysql/mysql-server
+  why_description: >-
+    MySQL puts relational modelling and query performance at the centre of many production systems. Its large installed base makes the ability to design schemas, inspect execution plans and operate replicas valuable across both new and established applications.
+  company_examples:
+    - name: GitHub
+      url: https://github.blog/engineering/
+    - name: Meta
+      url: https://engineering.fb.com/
+
+next-js:
+  description: >-
+    Next.js is a React framework that coordinates routing, rendering, data access and production builds for web applications. It provides file-based routing, server and client components, multiple rendering strategies, data mutation and image optimisation.
+  website_url: https://nextjs.org/
+  source_url: https://github.com/vercel/next.js
+  why_description: >-
+    Next.js makes routing, rendering, caching and server boundaries explicit concerns in production React applications. Understanding those decisions helps developers build fast interfaces while keeping data access and deployment behaviour clear.
+  company_examples:
+    - name: Vercel
+      url: https://vercel.com/
+    - name: Sonos
+      url: https://www.sonos.com/
+
+node-js:
+  description: >-
+    Node.js is a JavaScript runtime built on V8 for running event-driven applications outside the browser. Its non-blocking I/O model supports web servers, APIs, command-line tools, real-time systems and much of the JavaScript ecosystem's development tooling.
+  website_url: https://nodejs.org/
+  source_url: https://github.com/nodejs/node
+  why_description: >-
+    Node.js lets developers use JavaScript across the network boundary while learning event loops, streams and asynchronous resource management. Its ecosystem is important both for backend products and for modern frontend build systems.
+  company_examples:
+    - name: Netflix
+      url: https://netflixtechblog.com/
+    - name: PayPal
+      url: https://www.paypal.com/
+
+php:
+  description: >-
+    PHP is a programming language and runtime designed primarily for generating web responses on the server. It powers content-management systems, commerce platforms, APIs and full-stack frameworks and can be deployed on nearly every mainstream hosting environment.
+  website_url: https://www.php.net/
+  source_url: https://github.com/php/php-src
+  why_description: >-
+    PHP remains central to a large share of the web and has a mature package and framework ecosystem. Modern PHP combines approachable deployment with strong types, performance improvements and tooling suited to long-lived applications.
+  company_examples:
+    - name: Automattic
+      url: https://automattic.com/
+    - name: Etsy
+      url: https://www.etsy.com/
+
+pl-sql:
+  description: >-
+    PL/SQL is Oracle's procedural extension to SQL. It adds variables, control flow, exceptions, functions, procedures, packages and triggers so logic can execute close to data in Oracle Database.
+  website_url: https://docs.oracle.com/en/database/oracle/oracle-database/23/lnpls/
+  why_description: >-
+    PL/SQL keeps data-intensive logic close to Oracle's execution engine in systems where correctness, performance and governance depend on database-resident logic. It helps developers understand transaction boundaries, set-based operations and how application behaviour interacts with that engine.
+  company_examples:
+    - name: Oracle
+      url: https://www.oracle.com/
+    - name: FedEx
+      url: https://www.fedex.com/
+
+product-management:
+  description: >-
+    Product management is the practice of identifying valuable problems, setting direction and coordinating the work needed to deliver and improve a product. It combines customer research, prioritisation, strategy, measurement and collaboration across design, engineering and business teams.
+  website_url: https://www.atlassian.com/agile/product-management
+  why_description: >-
+    Product management disciplines the choices about whom to serve, what to build and how success will be measured. It helps teams learn before over-investing and keeps day-to-day delivery connected to a coherent outcome.
+  company_examples:
+    - name: Atlassian
+      url: https://www.atlassian.com/
+    - name: Intercom
+      url: https://www.intercom.com/
+
+progressive-web-apps:
+  description: >-
+    Progressive web apps use modern browser capabilities to make web applications reliable, installable and engaging. They combine responsive interfaces with features such as service workers, offline support, web app manifests, background work and device integration.
+  website_url: https://web.dev/explore/progressive-web-apps
+  why_description: >-
+    Progressive web apps extend the web's reach without giving up linkability or cross-platform delivery. Building them well requires careful attention to caching, update safety, accessibility and behaviour on unreliable networks.
+  company_examples:
+    - name: Pinterest
+      url: https://www.pinterest.com/
+    - name: Starbucks
+      url: https://www.starbucks.com/
+
+prompt-engineering:
+  description: >-
+    Prompt engineering is the practice of designing instructions, context and examples that help generative AI systems perform a task reliably. It includes structuring inputs, selecting tools and output formats, testing edge cases and evaluating results against explicit criteria.
+  website_url: https://platform.openai.com/docs/guides/prompt-engineering
+  why_description: >-
+    Prompt engineering structures the problem, evidence and constraints presented to a model. Rigorous prompting makes AI features easier to test, safer to operate and clearer to improve, especially when combined with retrieval and automated evaluation.
+  company_examples:
+    - name: GitHub
+      url: https://github.com/
+    - name: Duolingo
+      url: https://www.duolingo.com/
+
+python:
+  description: >-
+    Python is a general-purpose programming language with readable syntax and a broad standard library. Developers use it for web services, automation, data analysis, machine learning, scientific computing, education and developer tooling.
+  website_url: https://www.python.org/
+  source_url: https://github.com/python/cpython
+  why_description: >-
+    Python lets developers express ideas quickly while drawing on mature ecosystems across many disciplines. Its clarity makes it approachable, while its libraries and extension model support serious production and research workloads.
+  company_examples:
+    - name: Instagram
+      url: https://about.instagram.com/
+    - name: Dropbox
+      url: https://dropbox.tech/
+
+rest-apis:
+  description: >-
+    REST APIs are network interfaces designed around resources and the semantics of HTTP. They commonly use stable URLs, standard methods, status codes, headers and representations so clients can retrieve and change application data across system boundaries.
+  website_url: https://developer.mozilla.org/en-US/docs/Glossary/REST
+  why_description: >-
+    REST API design gives public and internal integrations predictable contracts. It develops judgement about resource modelling, authentication, errors, idempotency, pagination, caching and how an interface can evolve without breaking clients.
+  company_examples:
+    - name: Stripe
+      url: https://docs.stripe.com/api
+    - name: GitHub
+      url: https://docs.github.com/en/rest
+
+rabbitmq:
+  description: >-
+    RabbitMQ is a message broker for routing work and events between processes through exchanges and queues. It implements AMQP and other messaging protocols, supports acknowledgements and delivery controls, and helps services communicate asynchronously.
+  website_url: https://www.rabbitmq.com/
+  source_url: https://github.com/rabbitmq/rabbitmq-server
+  why_description: >-
+    RabbitMQ makes routing, retries, ordering, acknowledgements and failure recovery explicit parts of asynchronous work. Those concepts help developers build services that remain responsive when dependencies are slow or temporarily unavailable.
+  company_examples:
+    - name: GitLab
+      url: https://about.gitlab.com/
+    - name: Bloomberg
+      url: https://www.bloomberg.com/company/
+
+react-native:
+  description: >-
+    React Native is a framework for building iOS and Android applications with React and JavaScript or TypeScript while rendering platform-native interface components. Its architecture lets teams share product logic and integrate directly with each platform's APIs.
+  website_url: https://reactnative.dev/
+  source_url: https://github.com/facebook/react-native
+  why_description: >-
+    React Native applies React's component model to mobile products without reducing the interface to a web view. It helps teams balance shared code with the platform-specific behaviour, performance and polish users expect.
+  company_examples:
+    - name: Discord
+      url: https://discord.com/
+    - name: Shopify
+      url: https://www.shopify.com/
+
+redis:
+  description: >-
+    Redis is an in-memory data store organised around structures such as strings, hashes, lists, sets, streams and sorted sets. Applications use those structures for caching, queues, rate limiting, sessions, leaderboards and fast coordination between processes.
+  website_url: https://redis.io/
+  source_url: https://github.com/redis/redis
+  why_description: >-
+    Redis addresses performance and coordination problems with specialised data structures rather than a generic cache alone. Understanding expiry, persistence, replication and atomic operations helps developers use its speed without compromising correctness.
+  company_examples:
+    - name: GitHub
+      url: https://github.blog/engineering/
+    - name: Airbnb
+      url: https://airbnb.tech/
+
+responsive-web-design:
+  description: >-
+    Responsive web design is the practice of making interfaces adapt to different screen sizes, input methods, content lengths and user preferences. It uses flexible layouts, fluid media, container or media queries and progressive enhancement rather than fixed device assumptions.
+  website_url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design
+  why_description: >-
+    Responsive web design accounts for the wide range of devices and conditions no single mock-up can capture. It produces interfaces that remain usable, readable and efficient as their environment changes.
+  company_examples:
+    - name: The Guardian
+      url: https://www.theguardian.com/
+    - name: BBC
+      url: https://www.bbc.com/
+
+rust:
+  description: >-
+    Rust is a systems programming language that combines low-level performance with compile-time memory and concurrency safety. Its ownership and borrowing model prevents broad classes of errors without requiring a garbage collector.
+  website_url: https://www.rust-lang.org/
+  source_url: https://github.com/rust-lang/rust
+  why_description: >-
+    Rust combines low-level control with strong compile-time guarantees. Learning it develops precise reasoning about ownership and concurrency and is valuable for infrastructure, embedded software, developer tools and performance-critical services.
+  company_examples:
+    - name: Cloudflare
+      url: https://blog.cloudflare.com/
+    - name: Discord
+      url: https://discord.com/blog/
+
+sql:
+  description: >-
+    SQL is the standard language for defining, querying and changing data in relational databases. It expresses filtering, joins, aggregation, constraints, transactions and set-based transformations independently of a particular application's programming language.
+  website_url: https://www.postgresql.org/docs/current/tutorial-sql.html
+  why_description: >-
+    Data questions are often solved more clearly and efficiently in the database than in application loops. Strong SQL improves data modelling, reporting, debugging and performance work across nearly every relational system.
+  company_examples:
+    - name: GitLab
+      url: https://about.gitlab.com/
+    - name: OpenAI
+      url: https://openai.com/
+
+scala:
+  description: >-
+    Scala is a statically typed programming language that combines object-oriented and functional programming on the Java Virtual Machine. It offers expressive types, immutable data patterns, concurrency libraries and direct access to the Java ecosystem.
+  website_url: https://www.scala-lang.org/
+  source_url: https://github.com/scala/scala3
+  why_description: >-
+    Scala supports concise domain models and large-scale data or distributed systems while retaining JVM interoperability. It also develops functional-programming techniques that improve reasoning about state, composition and concurrency.
+  company_examples:
+    - name: Databricks
+      url: https://www.databricks.com/
+    - name: LinkedIn
+      url: https://engineering.linkedin.com/
+
+spring-boot:
+  description: >-
+    Spring Boot packages Spring applications with opinionated defaults, embedded servers and production diagnostics so teams can start and operate JVM services consistently. Its dependency starters, configuration model and health endpoints support Java and Kotlin applications.
+  website_url: https://spring.io/projects/spring-boot
+  source_url: https://github.com/spring-projects/spring-boot
+  why_description: >-
+    Spring Boot turns Spring's broad capabilities into a repeatable way to deliver and operate services. Knowing its configuration, dependency injection and observability model is valuable in organisations with substantial JVM infrastructure.
+  company_examples:
+    - name: Netflix
+      url: https://netflixtechblog.com/
+    - name: Microsoft
+      url: https://www.microsoft.com/
+
+spring-framework:
+  description: >-
+    Spring Framework supplies the dependency container and foundational modules used to structure Java applications. Its modules support web applications, data access, transactions, security integration, messaging and reactive programming.
+  website_url: https://spring.io/projects/spring-framework
+  source_url: https://github.com/spring-projects/spring-framework
+  why_description: >-
+    Spring Framework teaches how large JVM applications separate configuration, infrastructure and domain behaviour. Its abstractions are widely used in enterprise systems where testability, integration and long-term evolution matter.
+  company_examples:
+    - name: Netflix
+      url: https://netflixtechblog.com/
+    - name: Alibaba
+      url: https://www.alibabagroup.com/
+
+supabase:
+  description: >-
+    Supabase is a backend platform that packages PostgreSQL with authentication, file storage, generated APIs, real-time updates, edge functions and local development tooling. Teams can use its hosted services or run the components themselves.
+  website_url: https://supabase.com/
+  source_url: https://github.com/supabase/supabase
+  why_description: >-
+    Supabase accelerates common backend work while keeping relational data and SQL visible to the developer. Understanding its PostgreSQL foundation and security policies helps teams move quickly without treating the backend as a black box.
+  company_examples:
+    - name: Mozilla
+      url: https://www.mozilla.org/
+    - name: PwC
+      url: https://www.pwc.com/
+
+tailwind-css:
+  description: >-
+    Tailwind CSS is a CSS framework built around small utility classes composed directly in application templates. It generates a stylesheet from the classes a project uses, including responsive states and design-system constraints.
+  website_url: https://tailwindcss.com/
+  source_url: https://github.com/tailwindlabs/tailwindcss
+  why_description: >-
+    Tailwind CSS gives teams a constrained vocabulary for implementing interfaces without repeatedly inventing one-off selectors. Used with components and design tokens, it can make visual changes faster and keep responsive behaviour consistent.
+  company_examples:
+    - name: Vercel
+      url: https://vercel.com/
+    - name: Shopify
+      url: https://www.shopify.com/
+
+tanstack-query:
+  description: >-
+    TanStack Query manages asynchronous server state in web applications, including fetching, caching, synchronising and updating remote data. It handles request lifecycle state, deduplication, invalidation, retries and background refresh independently of global client-state stores.
+  website_url: https://tanstack.com/query/latest
+  source_url: https://github.com/TanStack/query
+  why_description: >-
+    TanStack Query models the ownership and freshness rules that distinguish server state from local interface state. It helps developers build responsive interfaces without duplicating fragile loading and cache logic.
+  company_examples:
+    - name: Personio
+      url: https://medium.com/inside-personio/moving-to-react-query-462f8e5811b6
+    - name: League
+      url: https://medium.com/inside-league/from-redux-sagas-to-react-query-f5ef7a676503
+
+typescript:
+  description: >-
+    TypeScript extends JavaScript with static types that editors and build tools can check before code runs. It compiles to JavaScript and can describe existing libraries, browser APIs and application data while supporting incremental adoption.
+  website_url: https://www.typescriptlang.org/
+  source_url: https://github.com/microsoft/TypeScript
+  why_description: >-
+    TypeScript makes assumptions visible and gives editors enough information to catch mistakes during development. Its type system is especially valuable in shared codebases where safe refactoring and clear contracts matter more as a product grows.
+  company_examples:
+    - name: Slack
+      url: https://slack.engineering/
+    - name: Airbnb
+      url: https://airbnb.tech/
+
+vite:
+  description: >-
+    Vite is a frontend development server and build tool designed around native JavaScript modules and a fast feedback loop. It serves source modules on demand during development and produces optimised bundles through a plugin-based production pipeline.
+  website_url: https://vite.dev/
+  source_url: https://github.com/vitejs/vite
+  why_description: >-
+    Vite shortens the feedback loop for running, testing and shipping frontend changes. Understanding its module graph, environment handling and plugin system helps teams keep that loop fast without hiding production constraints.
+  company_examples:
+    - name: Shopify
+      url: https://shopify.engineering/
+    - name: Laravel
+      url: https://laravel.com/
+
+web-application-development:
+  description: >-
+    Web application development is the end-to-end work of creating interactive software delivered through browsers. It spans interface design, frontend behaviour, server logic, data, authentication, security, accessibility, performance, testing and deployment.
+  website_url: https://developer.mozilla.org/en-US/docs/Learn_web_development
+  why_description: >-
+    Web application development connects the layers of a useful product rather than focusing on a single framework. It builds the ability to trace user needs through an interface, network boundary, domain model and reliable production operation.
+  company_examples:
+    - name: GitHub
+      url: https://github.com/
+    - name: Shopify
+      url: https://www.shopify.com/
+
+wordpress:
+  description: >-
+    WordPress is a content-management system for creating and publishing websites through themes, blocks, plugins and editorial workflows. Built with PHP and MySQL-compatible databases, it supports sites ranging from personal blogs to newsrooms, commerce and large organisational platforms.
+  website_url: https://wordpress.org/
+  source_url: https://github.com/WordPress/wordpress-develop
+  why_description: >-
+    WordPress combines a vast installed base with flexible content and extension models. Developers who understand its hooks, templates, blocks, security and performance can improve systems that many organisations already depend on.
+  company_examples:
+    - name: Automattic
+      url: https://automattic.com/
+    - name: TechCrunch
+      url: https://techcrunch.com/
+
+zig:
+  description: >-
+    Zig is a systems programming language and toolchain for explicit resource control, predictable performance and straightforward interoperability with C. It includes cross-compilation support, compile-time code execution and a build system without a hidden runtime.
+  website_url: https://ziglang.org/
+  source_url: https://github.com/ziglang/zig
+  why_description: >-
+    Zig offers a modern way to reason about low-level software while integrating pragmatically with existing C code. Its explicit error handling, allocator model and toolchain are useful for runtimes, embedded systems and portable developer tools.
+  company_examples:
+    - name: Oven
+      url: https://bun.sh/
+    - name: TigerBeetle
+      url: https://tigerbeetle.com/
