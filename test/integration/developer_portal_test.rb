@@ -82,6 +82,22 @@ class DeveloperPortalTest < ActionDispatch::IntegrationTest
     assert_equal [elixir], experience.profile_skills.reload
   end
 
+  test "shows frontend-only guidance for an experience description" do
+    get "/developer/ada/developers/experiences/new"
+    assert_response :success
+    assert_includes response.body, "Describe your contribution, not just the role. Use 2–4 short bullets."
+    assert_description_checklist
+
+    experience = @profile.experiences.create!(
+      title: "Analyst",
+      company_name: "Analytical Engines",
+      started_on: Date.new(1842, 1, 1)
+    )
+    get "/developer/ada/developers/experiences/#{experience.id}/edit"
+    assert_response :success
+    assert_description_checklist
+  end
+
   test "adds skills from the shared taxonomy" do
     skill = Skill.create!(name: "Ruby")
 
@@ -89,5 +105,16 @@ class DeveloperPortalTest < ActionDispatch::IntegrationTest
     assert_response :redirect
 
     assert_equal [skill], @profile.skills.to_a
+  end
+
+  private
+
+  def assert_description_checklist
+    assert_select ".experience-description-checklist" do
+      assert_select "legend", text: "Description checklist"
+      assert_select "input[type=checkbox]:not([name])", count: 4
+      assert_select "details", count: 0
+      assert_select "p", text: /not saved/
+    end
   end
 end

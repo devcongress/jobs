@@ -25,3 +25,4 @@ their env vars were set; no Slack messages were sent.
 | 17-profile-connected | A profile seen by a connection: follow state, endorse buttons, projects |
 | 18-network | Developer portal network page, "People you may know" |
 | 19-credits | Credits: projects you've been added to, to confirm or decline |
+| 20-experience-description-checklist | New experience form with description guidance and a private self-review checklist |

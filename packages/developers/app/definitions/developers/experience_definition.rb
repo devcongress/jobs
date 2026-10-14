@@ -14,6 +14,12 @@ module Developers
       hint: "Choose skills already listed on your profile.",
       choices: ->(form) { form.view_context.current_scoped_entity.profile_skills.includes(:skill).order("skills.name") },
       wrapper: {class: "col-span-full"}
+    # Keep the persisted field unchanged while wrapping its Markdown editor in
+    # frontend-only writing guidance and self-review controls.
+    input :description,
+      hint: "Describe your contribution, not just the role. Use 2–4 short bullets." do |field|
+      render Forms::ExperienceDescriptionInput.new(field:)
+    end
     input :ended_on, hint: "Leave blank if this is your current role"
     field :started_on, label: "Started"
     field :ended_on, label: "Ended"
