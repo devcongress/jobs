@@ -10,7 +10,8 @@ class PublicSiteTest < ActionDispatch::IntegrationTest
     @members = create_profile!(name: "Mo Members", handle: "momo", visibility: :members, contact_email: "mo@example.com",
       contact_visibility: :everyone, country: "Nigeria")
     @hidden = create_profile!(name: "Hal Hidden", handle: "hal", visibility: :hidden)
-    @public.profile_skills.create!(skill: Skill.create!(name: "Elixir"))
+    @elixir = Skill.create!(name: "Elixir", category: "Languages", description: "Elixir is a functional language for reliable, concurrent systems.")
+    @public.profile_skills.create!(skill: @elixir)
 
     @company = create_company!(name: "Acme Labs")
     @public_job = create_job!(company: @company, title: "Public Role", apply_url: "https://acme.test/apply")
@@ -85,6 +86,57 @@ class PublicSiteTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "Mo Members"
   end
 
+  test "skill pages explain the skill and remain visible with no matches" do
+    get "/devs", params: {skill: "elixir"}
+
+    assert_response :success
+    assert_select "h1", "Elixir developers"
+    assert_includes response.body, @elixir.description
+    assert_select "title", "Elixir developers · DevCongress Connect"
+    assert_select "meta[name=description][content=?]", @elixir.description
+    assert_select "link[rel=canonical][href='http://www.example.com/technical-skills/elixir']"
+    assert_select "meta[name=robots][content=noindex]"
+
+    get "/technical-skills/elixir", params: {country: "Nowhere"}
+
+    assert_response :success
+    assert_select "h1", "Elixir developers"
+    assert_includes response.body, @elixir.description
+    assert_includes response.body, "No one matches that yet."
+  end
+
+  test "unknown skills have an intentional not-found state" do
+    get "/technical-skills/not-a-real-skill"
+    assert_response :not_found
+
+    get "/devs", params: {skill: "not-a-real-skill"}
+    assert_response :not_found
+  end
+
+  test "curated skill pages link to resources and reference companies using the skill" do
+    react = Skill.create!(
+      name: "React",
+      category: "Frontend",
+      description: "React builds component-based interfaces.",
+      website_url: "https://react.dev/",
+      source_url: "https://github.com/react/react",
+      why_description: "React's component model helps teams build complex interfaces.",
+      company_examples: [{"name" => "Shopify", "url" => "https://shopify.dev/docs/api/hydrogen-react/latest"}],
+      content_curated: true
+    )
+
+    get "/technical-skills/#{react.slug}"
+
+    assert_response :success
+    assert_select "a[href='https://react.dev/']", "Official website ↗"
+    assert_select "a[href='https://github.com/react/react']", "GitHub ↗"
+    assert_select "h1 + p + p", text: /#{Regexp.escape(react.why_description)}.*Companies using React include/m do
+      assert_select "a[href='https://shopify.dev/docs/api/hydrogen-react/latest']", "Shopify ↗"
+    end
+    assert_select "h2", count: 0
+    assert_select "meta[name=robots]", count: 0
+  end
+
   test "user-written markdown can't inject markup" do
     @public.update!(bio: "Hello <script>alert(1)</script> **world**")
     get "/@pat"
@@ -99,7 +151,7 @@ class PublicSiteTest < ActionDispatch::IntegrationTest
     get "/@pat"
 
     assert_select ".experience-skills[aria-label=?]", "Skills used in Engineer at Acme" do
-      assert_select "a[href=?]", "/devs?skill=elixir", text: "Elixir"
+      assert_select "a[href=?]", "/technical-skills/elixir", text: "Elixir"
     end
   end
 

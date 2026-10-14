@@ -3,12 +3,14 @@ module Site
     AVAILABILITY_FILTERS = %w[looking open].freeze
 
     def index
+      @selected_skill = Skill.find_by!(slug: params[:skill]) if params[:skill].present?
       scope = Developers::Profile.visible_to(current_user)
       @countries = scope.where.not(country: [nil, ""]).distinct.order(:country).pluck(:country)
-      @skills = Skill.joins(profile_skills: :profile).merge(scope).distinct.order(:name)
+      @skills = Skill.joins(profile_skills: :profile).merge(scope).distinct.order(:name).to_a
+      @skills = (@skills << @selected_skill).compact.uniq(&:id).sort_by(&:name)
 
       scope = scope.search(params[:q]) if params[:q].present?
-      scope = scope.where(id: Developers::ProfileSkill.joins(:skill).where(skills: {slug: params[:skill]}).select(:profile_id)) if params[:skill].present?
+      scope = scope.where(id: Developers::ProfileSkill.where(skill: @selected_skill).select(:profile_id)) if @selected_skill
       scope = scope.where(country: params[:country]) if params[:country].present?
       scope = scope.where(availability: params[:availability]) if AVAILABILITY_FILTERS.include?(params[:availability])
       scope = scope.where(remote_ok: true) if params[:remote] == "1"

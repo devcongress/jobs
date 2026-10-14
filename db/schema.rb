@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_13_113521) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_14_090000) do
   create_table "active_shrine_attachments", force: :cascade do |t|
     t.string "record_type"
     t.bigint "record_id"
@@ -346,6 +346,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_113521) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "category"
+    t.text "description"
+    t.string "website_url"
+    t.string "source_url"
+    t.text "why_description"
+    t.json "company_examples", default: [], null: false
+    t.boolean "content_curated", default: false, null: false
+    t.index ["category"], name: "index_skills_on_category"
+    t.index ["content_curated"], name: "index_skills_on_content_curated"
     t.index ["name"], name: "index_skills_on_name", unique: true
     t.index ["slug"], name: "index_skills_on_slug", unique: true
   end

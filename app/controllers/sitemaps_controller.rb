@@ -6,6 +6,7 @@ class SitemapsController < ActionController::Base
     @jobs = Hiring::JobPost.visible_to(nil).order(:id)
     @companies = Company.organizations.where(id: @jobs.select(:company_id)).order(:id)
     @projects = Showcase::Project.visible_to(nil).order(:id)
+    @skills = Skill.with_curated_content.order(:id)
     expires_in 1.hour, public: true
   end
 end

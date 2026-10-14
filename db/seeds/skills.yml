@@ -1,4 +1,4 @@
-# Skills offered on profiles and project stacks, by category.
+# Skills offered on profiles and project stacks, with category-level fallback copy.
 #
 # Built from public data, then reviewed by hand to keep only things people list as skills:
 # - Stack Overflow: every tag with 1,000+ questions (5,418 tags, October 2026), plus
@@ -11,9 +11,13 @@
 # databases, agent frameworks, ...).
 #
 # Version-specific entries, file formats, devices, consumer apps and generic programming
-# concepts are left out. Add new skills here; db:seed only ever adds.
+# concepts are left out. Add new skills and categories here; db:seed updates the
+# catalogue idempotently.
 
 "Languages":
+  description: "%{name} lets developers express data and program behaviour across applications, automation and systems."
+  why_description: "Working with %{name} builds fluency in turning ideas into clear, safe and maintainable software."
+  skills:
   - "ABAP"
   - "ActionScript"
   - "Ada"
@@ -100,6 +104,9 @@
   - "Zig"
 
 "Frontend":
+  description: "Developers use %{name} to build or improve the interfaces people use on the web."
+  why_description: "Experience with %{name} helps developers make interfaces accessible, responsive and interactive, directly shaping how useful and trustworthy a product feels."
+  skills:
   - "Accessibility"
   - "AG Grid"
   - "AJAX"
@@ -137,6 +144,7 @@
   - "Highcharts"
   - "HTML"
   - "HTML5 Canvas"
+  - "Hotwire"
   - "Hugo"
   - "IndexedDB"
   - "Inertia.js"
@@ -210,6 +218,9 @@
   - "WebGL"
 
 "Backend & APIs":
+  description: "Developers use %{name} to implement application logic, integrations and services behind user-facing products."
+  why_description: "Working with %{name} develops the ability to keep data, business rules and connected applications working together securely."
+  skills:
   - ".NET"
   - ".NET Framework"
   - "Active Record"
@@ -425,6 +436,9 @@
   - "YouTube Data API"
 
 "Mobile":
+  description: "Developers use %{name} to build, deliver or improve applications for phones and tablets."
+  why_description: "Experience with %{name} helps developers navigate mobile constraints around user experience, performance, hardware and distribution."
+  skills:
   - ".NET MAUI"
   - "Alamofire"
   - "Android"
@@ -484,6 +498,9 @@
   - "Xamarin.Forms"
 
 "Desktop":
+  description: "Developers use %{name} to build or improve applications that run on personal computers and workstations."
+  why_description: "Experience with %{name} supports products that need deep operating-system integration, offline capabilities or workflows designed for larger screens and local hardware."
+  skills:
   - "AppKit"
   - "Boost"
   - "C++Builder"
@@ -522,6 +539,9 @@
   - "XAML"
 
 "Databases & data stores":
+  description: "Developers use %{name} to organise, query, protect and retrieve application data."
+  why_description: "Understanding %{name} helps developers make data-store decisions that protect a product's correctness, reliability and ability to scale."
+  skills:
   - "Amazon Aurora"
   - "Amazon DynamoDB"
   - "Amazon Neptune"
@@ -616,6 +636,9 @@
   - "Vertica"
 
 "Cloud & DevOps":
+  description: "Developers use %{name} to build, deploy, observe or operate software environments."
+  why_description: "Experience with %{name} helps teams ship changes safely while keeping services available and efficient."
+  skills:
   - "Amazon API Gateway"
   - "Amazon CloudFront"
   - "Amazon CloudWatch"
@@ -758,6 +781,9 @@
   - "Zabbix"
 
 "Operating systems & networking":
+  description: "Developers use %{name} to run computers, connect services or manage the environments software depends on."
+  why_description: "Understanding %{name} helps developers reason about the performance, availability and security of the systems underneath an application."
+  skills:
   - "Active Directory"
   - "Alpine Linux"
   - "Arch Linux"
@@ -856,6 +882,9 @@
   - "z/OS"
 
 "Developer tools":
+  description: "Developers use %{name} to create, inspect, organise or ship software more effectively."
+  why_description: "Fluency with %{name} can reduce repetitive work, reveal problems earlier and make development workflows more consistent."
+  skills:
   - "Adobe Dreamweaver"
   - "Aider"
   - "Amp"
@@ -950,6 +979,9 @@
   - "Zed"
 
 "Testing & QA":
+  description: "Teams use %{name} to verify software behaviour and find risks before they reach users."
+  why_description: "Experience with %{name} helps developers make products more reliable, accessible and safe to change."
+  skills:
   - "Accessibility testing"
   - "Allure Report"
   - "Apache JMeter"
@@ -1029,6 +1061,9 @@
   - "xUnit.net"
 
 "Security":
+  description: "Security teams use %{name} to identify, prevent or respond to threats affecting software, infrastructure and data."
+  why_description: "Understanding %{name} helps developers protect people and organisations while preserving the confidentiality, integrity and availability of information."
+  skills:
   - "Active Directory Federation Services (AD FS)"
   - "Acunetix"
   - "API security"
@@ -1118,6 +1153,9 @@
   - "Zero trust architecture"
 
 "Data, analytics & AI":
+  description: "Teams use %{name} to turn information into models, insights or automated decisions."
+  why_description: "Experience with %{name} helps organisations understand what is happening, predict outcomes and build more capable products."
+  skills:
   - "A/B testing"
   - "Ab Initio"
   - "African-language NLP"
@@ -1373,6 +1411,9 @@
   - "YOLO"
 
 "AI agents & LLM engineering":
+  description: "Developers use %{name} to build, evaluate or operate systems powered by generative models."
+  why_description: "Working with %{name} develops the orchestration, grounding, evaluation and safeguarding practices that dependable AI products require."
+  skills:
   - "AG-UI protocol"
   - "Agent Development Kit (ADK)"
   - "Agent evaluation"
@@ -1481,6 +1522,9 @@
   - "Zep"
 
 "Payments & fintech":
+  description: "Teams use %{name} to move money, connect financial services or build regulated financial products."
+  why_description: "Experience with %{name} develops the combination of customer experience, correctness, security and operational resilience that financial systems demand."
+  skills:
   - "Africa's Talking"
   - "Airtel Money"
   - "Authorize.Net"
@@ -1510,6 +1554,9 @@
   - "Yoco"
 
 "Blockchain & Web3":
+  description: "Developers use %{name} to build or interact with decentralised networks, digital assets and smart-contract applications."
+  why_description: "Working with %{name} exposes the distinct trade-offs distributed systems make around trust, ownership, security and transaction cost."
+  skills:
   - "Bitcoin"
   - "Blockchain"
   - "Corda"
@@ -1527,6 +1574,9 @@
   - "Web3.js"
 
 "Embedded, hardware & IoT":
+  description: "Developers use %{name} to connect software with physical devices and sensors."
+  why_description: "Working with %{name} applies software thinking to real-world constraints such as limited resources, unreliable connectivity, safety and power use."
+  skills:
   - "Arduino"
   - "ARM architecture"
   - "ARM Cortex-M"
@@ -1595,6 +1645,9 @@
   - "Yocto Project"
 
 "Game development":
+  description: "Developers use %{name} to create interactive worlds, mechanics, visuals or the technology that supports them."
+  why_description: "Experience with %{name} brings together real-time software, design and media under demanding performance and player-experience constraints."
+  skills:
   - "Cocos2d"
   - "Cocos2d-x"
   - "CryEngine"
@@ -1637,6 +1690,9 @@
   - "Vulkan"
 
 "Design & creative":
+  description: "Designers use %{name} to shape how digital products look, communicate or behave."
+  why_description: "Experience with %{name} helps make complex ideas understandable and products easier to use confidently and effectively."
+  skills:
   - "2D animation"
   - "3D animation"
   - "3D modelling"
@@ -1716,6 +1772,9 @@
   - "ZBrush"
 
 "Business platforms (CMS, e-commerce, ERP, CRM)":
+  description: "Teams use %{name} to configure, extend or integrate systems that support content, commerce, operations or customer relationships."
+  why_description: "Understanding %{name} helps teams improve the everyday workflows and data that depend on a central business platform."
+  skills:
   - "Acumatica"
   - "Adobe Experience Manager (AEM)"
   - "Alfresco"
@@ -1796,6 +1855,9 @@
   - "Zapier"
 
 "Product, project & collaboration":
+  description: "Teams apply %{name} to align people, priorities and delivery around a shared outcome."
+  why_description: "Experience with %{name} supports the clear decisions, coordinated execution and continuous learning that successful software requires."
+  skills:
   - "Agile"
   - "Airtable"
   - "Asana"
@@ -1846,6 +1908,9 @@
   - "Zoho Projects"
 
 "Writing & communication":
+  description: "Teams apply %{name} to explain technical work, share knowledge and help people make informed decisions."
+  why_description: "Experience with %{name} reduces ambiguity and makes products, processes and expertise more accessible."
+  skills:
   - "API documentation"
   - "Content strategy"
   - "Copywriting"
@@ -1861,6 +1926,9 @@
   - "UX writing"
 
 "Leadership & management":
+  description: "Leaders apply %{name} to support people, shape direction and improve how teams work."
+  why_description: "Experience with %{name} helps create clear expectations, sound decisions and an environment in which people can do their best work."
+  skills:
   - "AI strategy"
   - "Data strategy"
   - "Design leadership"
@@ -1875,6 +1943,9 @@
   - "Technology strategy"
 
 "Practices & concepts":
+  description: "Teams apply %{name} to reason about, design or improve digital systems."
+  why_description: "Understanding %{name} helps teams make consistent trade-offs and build software that remains understandable as it grows."
+  skills:
   - "Algorithms"
   - "Aspect-oriented programming"
   - "Asynchronous programming"
