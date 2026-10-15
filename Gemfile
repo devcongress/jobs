@@ -74,7 +74,7 @@ gem "standard", ">= 1.35.1", group: :development
 
 gem "letter_opener", "~> 1.10", group: :development
 
-gem "actual_db_schema", "~> 0.9.2", groups: [:development, :test]
+gem "actual_db_schema", "~> 0.10.0", groups: [:development, :test]
 
 gem "mission_control-jobs", "~> 1.3"
 
